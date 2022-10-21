@@ -1,0 +1,93 @@
+name: CICD Pipeline (Shared)
+
+#
+# This is a shared workflow used by ALL projects and is auto-generated.
+#
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  actionlint:
+    name: Action Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Setup Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.19'
+      - name: Run Action Lint
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/action-lint/master/pipeline.sh)
+
+  awesomebot:
+    name: Awesomebot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Set up Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+      - name: Run Awesomebot
+        env:
+          FLAGS: "default"
+          EXCLUDE_FILES: "CHANGELOG.md"
+          WHITELIST: "https://img.shields.io"
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/awesomebot/master/pipeline.sh)
+
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Setup node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Run Markdown Lint
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/markdown-lint/master/pipeline.sh)
+        env:
+          EXCLUDE_FILES: "README.md"
+
+  yaml-lint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run YAML-Lint
+        env:
+          EXCLUDE_FILES: ".github/workflows"
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/yaml-lint/master/pipeline.sh)
+
+  slack-workflow-status:
+    if: always()
+    name: Slack Post Workflow Notification
+    needs:
+      - actionlint
+      - awesomebot
+      - markdown-lint
+      - yaml-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Workflow Notifications
+        if: ${{ github.event_name == 'push' }}
+        uses: Gamesight/slack-workflow-status@v1.1.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          include_jobs: on-failure
+          include_commit_message: true
