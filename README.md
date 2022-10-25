@@ -37,7 +37,7 @@ If you download it and do something stupid (illegal) with it then you are on you
 ## Usage
 
 ```text
-usage: portscan [-h] [-q] [-v] [-D DELAY_TIME] [-p PORTS] -t TARGETS [-T THREADS] [-a] [-c] [-d] [-f FILENAME] [-j] [-r]
+usage: port-scan [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-d] [-j] [-s] [-r] [-t TARGETS] [-D DELAY_TIME] [-p PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
 
 Check for open ports on target host
 
@@ -45,27 +45,32 @@ flags:
   -h, --help            show this help message and exit
   -q, --quiet           Do not show the results on the screen (default: False)
   -v, --verbose         Verbose output (default: False)
+  -4, --ipv4-only       Scan IPv4 addresses only (default: False)
+  -6, --ipv6-only       Scan IPv4 addresses only (default: False)
+  -A, --all-results     Show or save all results (default is to list open ports only) (default: False)
+  -c, --csv             Save the results as a csv formatted file (default: False)
+  -d, --delay           Add a random delay to each thread (default: False)
+  -j, --json            Save the results as a json formatted file (default: False)
+  -s, --shuffle         Randomise the scanning order (default: False)
+  -r, --list-rules      List the available rules (default: False)
 
 required arguments:
+  -t TARGETS, --targets TARGETS
+                        A comma separated list of targets to scan (default: None)
+
+optional arguments:
   -D DELAY_TIME, --delay-time DELAY_TIME
                         Random delay to use if --delay is given (default: 3)
   -p PORTS, --ports PORTS
-                        The search regex (default: 1-1024)
-  -t TARGETS, --targets TARGETS
-                        A comma separated list of targets to scan (default: None)
+                        The ports you want to scan (default: 1-1024)
+  -e EXCLUDE_PORTS, --exclude-ports EXCLUDE_PORTS
+                        The ports you want to exclude from a scan (default: None)
   -T THREADS, --threads THREADS
                         The number of threads to use (default: 1024)
-
-optional arguments:
-  -a, --all-results     Show all results (default is to list open ports only) (default: False)
-  -c, --csv             Save the results as a csv formatted file (default: False)
-  -d, --delay           Add a random delay to each thread (default: False)
   -f FILENAME, --filename FILENAME
                         The filename to save the results to (default: portscan-results)
-  -j, --json            Save the results as a json formatted file (default: False)
-  -r, --random          Randomise the scanning order (default: False)
 
-Port options: port range e.g. 1-1024 or 1:1024, port number e.g. 22, service name e.g. ssh
+Port options: port range e.g. 1-1024 or 1:1024, port number e.g. 22, rule set e.g. ruleset=web-servers, service name e.g. ssh
 ```
 
 <br />
