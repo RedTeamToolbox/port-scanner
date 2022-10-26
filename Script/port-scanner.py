@@ -129,6 +129,7 @@ def scan_target_port(target, port, spinner, args: argparse.Namespace) -> dict[st
         sock.settimeout(1)
         try:
             sock.connect((target, port))
+            sock.settimeout(3)
             status = True
             try:
                 banner = sock.recv(2048).decode('utf-8').strip()
@@ -341,13 +342,13 @@ def get_ports_from_rule_sets(rule_sets):
     return ports
 
 
-def get_port_list(args: argparse.Namespace) -> list[int]:
+def get_port_list(port_list) -> list[int]:
     """
     Docs
     """
     ports = []
 
-    for port in args.ports.split(','):
+    for port in port_list.split(','):
         # Format A-B
         result = re.search(r"(\d+)-(\d+)", port)
         if result is not None:
@@ -467,8 +468,12 @@ def process_arguments() -> argparse.Namespace:
         print(stylize("Fatal: You cannot use --ipv4_only AND --ipv6_only - pick one!", colored.fg("red")))
         sys.exit(0)
 
-    with yaspin(text=stylize("Generating Port list", colored.fg("green")), timer=True) as spinner:
-        args.ports = get_port_list(args)
+    with yaspin(text=stylize("Generating target port list", colored.fg("green")), timer=True) as spinner:
+        args.ports = get_port_list(args.ports)
+        if args.exclude_ports is not None:
+            args.exclude_ports = get_port_list(args.exclude_ports)
+            if len(args.exclude_ports) > 0:
+                args.ports = [x for x in args.ports if x not in args.exclude_ports]
     spinner.ok("✅")
     if len(args.ports) == 0:
         print(stylize("Fatal: No valid ports were found - Aborting!", colored.fg("red")))
@@ -497,7 +502,7 @@ def main() -> None:
     args = process_arguments()
 
     # Take all the ips and ports and get ALL combinations
-    with yaspin(text=stylize("Generating host:port combinations", colored.fg("green")), timer=True) as spinner:
+    with yaspin(text=stylize("Generating all host:port combinations", colored.fg("green")), timer=True) as spinner:
         target_list = get_all_host_port_combinations(args.targets, args.ports)
         if args.shuffle is True:
             target_list = shuffled(target_list)
