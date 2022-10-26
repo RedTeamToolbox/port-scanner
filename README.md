@@ -26,20 +26,30 @@
 
 ## Overview
 
-A multi-server mult-threaded port scanner.
+A multi-server mult-threaded multi-port scanner.
 
 ## Disclaimer
 
-This tool hs been designed and built to assist offensive security specialists to identify and remediate issues within the bounds of the law, e.g. `consent from the owner the the BASE MINIMUM`.
+This tool has been designed and built with a number of specific people and purposes in mind:
+1. To assist offensive security specialists to identify issues with systems they are `legally responsible for` to help in the timely remediation of security issues.
+2. To insist system owners to identify issues with systems they are `legally responsible for` to help in the timely remediation of security issues.
+3. For people interested in security to learn about different ways of testing a system `within the bounds of the law`.
 
-If you download it and do something stupid (illegal) with it then you are on your own!
+The one thing tying all of these uses together is `legal ownership or responsibility`. Any system that you use as a `target` for this tool must be a system you have permission to target!
+
+If you do not have permission then you are very likely committing a criminal offense in the jurisdiction where you reside as well as the jurisdiction where the targeted system resides. For example in the United Kingdom, this would be covered by the [`Police and Justice Act 2006: Section 36`](https://www.legislation.gov.uk/ukpga/2006/48/part/5/crossheading/computer-misuse)
+
+Don't download this tool if you want to use it for nefarious purposes. In short:
+
+<br />
+<p align="center"><img src="images/dbad.png" alt="Don't be a dick" /></p>
 
 ## Usage
 
 ```text
-usage: port-scan [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-d] [-j] [-s] [-r] [-t TARGETS] [-D DELAY_TIME] [-p PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
+usage: port-scan [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-d] [-j] [-s] [-r] [-t TARGETS] [-D DELAY_TIME] [-p INCLUDE_PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
 
-Check for open ports on target host
+Check for open port(s) on target host(s)
 
 flags:
   -h, --help            show this help message and exit
@@ -61,7 +71,7 @@ required arguments:
 optional arguments:
   -D DELAY_TIME, --delay-time DELAY_TIME
                         Random delay to use if --delay is given (default: 3)
-  -p PORTS, --ports PORTS
+  -p INCLUDE_PORTS, --include-ports INCLUDE_PORTS
                         The ports you want to scan (default: 1-1024)
   -e EXCLUDE_PORTS, --exclude-ports EXCLUDE_PORTS
                         The ports you want to exclude from a scan (default: None)
@@ -70,7 +80,7 @@ optional arguments:
   -f FILENAME, --filename FILENAME
                         The filename to save the results to (default: portscan-results)
 
-Port options: port range e.g. 1-1024 or 1:1024, port number e.g. 22, rule set e.g. ruleset=web-servers, service name e.g. ssh
+Port options for include and exclude: port range e.g. 1-1024 or 1:1024, port number e.g. 22, rule set e.g. ruleset=web-servers, service name e.g. ssh
 ```
 
 <br />

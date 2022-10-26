@@ -414,9 +414,9 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     Setup the arguments parser to handle the user input from the command line.
     """
 
-    epilog = "Port options: port range e.g. 1-1024 or 1:1024, port number e.g. 22, rule set e.g. ruleset=web-servers, service name e.g. ssh"
+    epilog = "Port options for include and exclude: port range e.g. 1-1024 or 1:1024, port number e.g. 22, rule set e.g. ruleset=web-servers, service name e.g. ssh"
 
-    parser = argparse.ArgumentParser(prog='port-scan', description='Check for open ports on target host', add_help=False, epilog=epilog, formatter_class=CustomFormatter)
+    parser = argparse.ArgumentParser(prog='port-scan', description='Check for open port(s) on target host(s)', add_help=False, epilog=epilog, formatter_class=CustomFormatter)
     flags = parser.add_argument_group('flags')
     required = parser.add_argument_group('required arguments')
     optional = parser.add_argument_group('optional arguments')
@@ -436,7 +436,7 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     required.add_argument('-t', '--targets', type=str, help='A comma separated list of targets to scan')
 
     optional.add_argument('-D', '--delay-time', type=int, help='Random delay to use if --delay is given', default=3)
-    optional.add_argument('-p', '--ports', type=str, help='The ports you want to scan', default="1-1024")
+    optional.add_argument('-p', '--include-ports', type=str, help='The ports you want to scan', default="1-1024")
     optional.add_argument('-e', '--exclude-ports', type=str, help='The ports you want to exclude from a scan')
     optional.add_argument('-T', '--threads', type=int, help='The number of threads to use', default=1024)
     optional.add_argument('-f', '--filename', type=str, help='The filename to save the results to', default='portscan-results')
@@ -469,13 +469,13 @@ def process_arguments() -> argparse.Namespace:
         sys.exit(0)
 
     with yaspin(text=stylize("Generating target port list", colored.fg("green")), timer=True) as spinner:
-        args.ports = get_port_list(args.ports)
+        args.include_ports = get_port_list(args.include_ports)
         if args.exclude_ports is not None:
             args.exclude_ports = get_port_list(args.exclude_ports)
             if len(args.exclude_ports) > 0:
-                args.ports = [x for x in args.ports if x not in args.exclude_ports]
+                args.include_ports = [x for x in args.include_ports if x not in args.exclude_ports]
     spinner.ok("✅")
-    if len(args.ports) == 0:
+    if len(args.include_ports) == 0:
         print(stylize("Fatal: No valid ports were found - Aborting!", colored.fg("red")))
         sys.exit(0)
 
@@ -503,7 +503,7 @@ def main() -> None:
 
     # Take all the ips and ports and get ALL combinations
     with yaspin(text=stylize("Generating all host:port combinations", colored.fg("green")), timer=True) as spinner:
-        target_list = get_all_host_port_combinations(args.targets, args.ports)
+        target_list = get_all_host_port_combinations(args.targets, args.include_ports)
         if args.shuffle is True:
             target_list = shuffled(target_list)
     spinner.ok("✅")
