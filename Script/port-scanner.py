@@ -326,6 +326,21 @@ def get_ports_from_rule(rule_name):
     return None
 
 
+def get_ports_from_rule_sets(rule_sets):
+    """
+    Docs
+    """
+    ports = []
+
+    for rule in rule_sets.split(','):
+        rule_ports = get_ports_from_rule(rule)
+        if rule_ports is not None:
+            ports += rule_ports
+        else:
+            print(stylize(f"{rule} is not a valid ruleset - Skipping!", colored.fg("yellow")))
+    return ports
+
+
 def get_port_list(args: argparse.Namespace) -> list[int]:
     """
     Docs
@@ -345,15 +360,9 @@ def get_port_list(args: argparse.Namespace) -> list[int]:
             ports += (list(range(int(result.group(1)), int(result.group(2)))))
             continue
 
-        result = re.search(r"ruleset:(.*)", port, re.IGNORECASE)
-        if result is not None:
-            rule_sets = result.group(1)
-            for rule in rule_sets.split(','):
-                rule_ports = get_ports_from_rule(rule)
-                if rule_ports is not None:
-                    ports += rule_ports
-                else:
-                    print(stylize(f"{rule} is not a valid ruleset - Skipping!", colored.fg("yellow")))
+        match_results = re.search(r"ruleset:(.*)", port, re.IGNORECASE)
+        if match_results is not None:
+            ports += get_ports_from_rule_sets(match_results.group(1))
             continue
 
         # Just a normal number
