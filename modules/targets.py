@@ -1,7 +1,6 @@
 """
 Docs
 """
-import argparse
 import ipaddress
 import itertools
 import socket
@@ -17,8 +16,8 @@ from yaspin import yaspin
 
 import modules.globals as PSglobals
 import modules.scanner as PSscanner
-import modules.targets as PStargets
 import modules.utils as PSutils
+
 
 def is_ip_address(target: str) -> Any:
     """
@@ -98,13 +97,12 @@ def scan_targets(args) -> list:
     """
     results = []
 
-   # Take all the ips and ports and get ALL combinations
+    # Take all the ips and ports and get ALL combinations
     with yaspin(text=stylize("Generating all host:port combinations", colored.fg("green")), timer=True) as spinner:
-        targets = PStargets.get_all_host_port_combinations(args.targets, args.include_ports)
+        targets = get_all_host_port_combinations(args.targets, args.include_ports)
         if args.shuffle is True:
             targets = PSutils.shuffled(targets)
     spinner.ok("✅")
-
 
     if args.threads > len(targets):
         how_many = len(targets)

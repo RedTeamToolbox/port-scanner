@@ -11,11 +11,11 @@ from typing import Any
 secretsGenerator = secrets.SystemRandom()
 
 
-def secure_random(min, max):
+def secure_random(min_number, max_number):
     """
     docs
     """
-    return secretsGenerator.randint(min, max)
+    return secretsGenerator.randint(min_number, max_number)
 
 
 def cmp(x, y) -> Any:

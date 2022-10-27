@@ -16,6 +16,7 @@ from colored import stylize
 import modules.globals as PSglobals
 import modules.utils as PSutils
 
+
 def scan_target_port(target, port, spinner, args: argparse.Namespace) -> dict[str, Any]:
     """
     docs

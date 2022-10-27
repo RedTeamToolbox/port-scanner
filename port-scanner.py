@@ -12,11 +12,8 @@ TODO: ports from filename: for both include and exclude
 import sys
 
 import modules.cli as PScli
-import modules.globals as PSglobals
 import modules.outputs as PSoutputs
-import modules.scanner as PSscanner
 import modules.targets as PStargets
-import modules.utils as PSutils
 
 
 def main() -> None:

@@ -10,6 +10,7 @@ from prettytable import PrettyTable
 
 import modules.utils as PSutils
 
+
 def save_results_as_csv(args: argparse.Namespace, results: list[dict]) -> None:
     """
     Docs

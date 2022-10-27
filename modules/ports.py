@@ -10,6 +10,7 @@ from colored import stylize
 
 import modules.globals as PSglobals
 
+
 def list_all_port_rules():
     """
     Docs
