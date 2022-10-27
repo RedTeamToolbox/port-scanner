@@ -104,6 +104,11 @@ def test_utils() -> None:
     if rint not in range(1, 11):
         errors.append(f"Test {count} security_random failed: {rint}")
 
+    slist = PSutils.shuffled(test_list, 0)
+    count += 1
+    if slist != test_list:
+        errors.append(f"Test {count} shuffled failed failed: {slist}")
+
     slist = PSutils.shuffled(test_list)
     count += 1
     if slist == test_list:
