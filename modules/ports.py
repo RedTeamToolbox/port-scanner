@@ -10,6 +10,8 @@ from colored import stylize
 
 import modules.globals as PSglobals
 
+# TODO: ports from filename: for both include and exclude
+
 
 def list_all_port_rules():
     """

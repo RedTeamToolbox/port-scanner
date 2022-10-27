@@ -18,6 +18,10 @@ import modules.globals as PSglobals
 import modules.scanner as PSscanner
 import modules.utils as PSutils
 
+# TODO: ip in range a.b.c.d-a.b.c.d
+# TODO: ip in cidr format a.b.c.d/nn
+# TODO: ip from filename:
+
 
 def is_ip_address(target: str) -> Any:
     """

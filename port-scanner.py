@@ -3,10 +3,8 @@
 """
 stuff
 
-TODO: ip in range a.b.c.d-a.b.c.d
-TODO: ip in cidr format a.b.c.d/nn
-TODO: ip from filename:
-TODO: ports from filename: for both include and exclude
+
+
 """
 
 import sys
@@ -24,7 +22,6 @@ def main() -> None:
     # Increase the resource limit ??
 
     args = PScli.process_arguments()
-
     results = PStargets.scan_targets(args)
     PSoutputs.display_results(results, args)
 

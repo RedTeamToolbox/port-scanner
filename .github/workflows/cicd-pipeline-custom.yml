@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Slack Workflow Notifications
-        if: ${{ env.SLACK_NOTIFY == true && github.event_name == 'push' }}
+        if: ${{ env.SLACK_NOTIFY == 'true' && github.event_name == 'push' }}
         uses: Gamesight/slack-workflow-status@v1.1.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
