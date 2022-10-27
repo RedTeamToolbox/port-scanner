@@ -16,17 +16,10 @@ on:
       - '**'
   workflow_dispatch:
 
-jobs:
-  slack-notify:
-    name: Slack notify?
-    runs-on: ubuntu-latest
-    outputs:
-      notify: ${{ steps.slack-notify.outputs.notify }}
-    steps:
-      - name: Set slack notify
-        id: slack-notify
-        run: echo "::set-output name=notify::false"
+env:
+  SLACK_NOTIFY: false
 
+jobs:
 #
 # End of Template (part 1)
 #
@@ -81,14 +74,13 @@ jobs:
     if: always()
     name: Slack Post Workflow Notification
     needs:
-      - slack-notify
       - bandit
       - pycodestyle
       - pylint
     runs-on: ubuntu-latest
     steps:
       - name: Slack Workflow Notifications
-        if: ${{ needs.slack-notify.outputs.notify == true && github.event_name == 'push' }}
+        if: ${{ env.SLACK_NOTIFY == true && github.event_name == 'push' }}
         uses: Gamesight/slack-workflow-status@v1.1.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
