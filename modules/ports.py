@@ -2,92 +2,153 @@
 Docs
 """
 
+from fileinput import filename
+import os.path
 import re
 import socket
 
 import colored
 from colored import stylize
 
-import modules.globals as PSglobals
+import modules.constants as PSconstants
+import modules.notify as PSnotify
 
-# TODO: ports from filename: for both include and exclude
 
-
-def list_all_port_rules():
+def list_all_port_rules() -> None:
     """
     Docs
     """
 
     print(stylize("Available rule sets:", colored.fg("cyan")))
     count = 0
-    for rule in PSglobals.port_rules:
+    for rule in PSconstants.port_rules:
         count += 1
         print(f"  Rule {count}: '{rule['rule']}': {rule['ports']}")
 
 
-def get_ports_from_rule(rule_name):
+def get_ports_by_name(port: str) -> list[int]:
+    """
+    Docs
+    """
+    ports = []
+
+    try:
+        ports.append(socket.getservbyname(port))
+    except OSError:
+        PSnotify.warn(f"{port} is not a valid service name - Skipping!")
+    return ports
+
+
+def get_ports_by_number(port: str) -> list[int]:
+    """
+    Docs
+    """
+    ports = []
+
+    if port.isnumeric():
+        ports.append(int(port))
+    return ports
+
+
+def get_ports_from_rule(rule_name: str) -> list[int]:
     """
     Docs
     """
 
-    for rule in PSglobals.port_rules:
+    for rule in PSconstants.port_rules:
         if rule['rule'] == rule_name:
             return rule['ports']
-    return None
+    PSnotify.warn(f"{rule_name} is not a valid ruleset - Skipping!")
+    return []
 
 
-def get_ports_from_rule_sets(rule_sets):
+def get_ports_from_rule_sets(port: str)-> list[int]:
     """
     Docs
     """
     ports = []
 
-    for rule in rule_sets.split(','):
-        rule_ports = get_ports_from_rule(rule)
-        if rule_ports is not None:
-            ports += rule_ports
-        else:
-            print(stylize(f"{rule} is not a valid ruleset - Skipping!", colored.fg("yellow")))
+    match_results = re.search(r"ruleset:(.*)", port, re.IGNORECASE)
+    if match_results is not None:
+        rule_sets = match_results.group(1)
+        for rule in rule_sets.split(','):
+            ports += get_ports_from_rule(rule)            
     return ports
 
 
-def get_port_list(port_list) -> list[int]:
+def get_ports_from_range(port: str) -> list[int]:
+    """
+    Get ports from a range
+    """
+
+    # Format A-B e.g. 1-1024
+    result = re.search(r"(\d+)-(\d+)", port)
+    if result is not None:
+        return list(range(int(result.group(1)), int(result.group(2))))
+
+    # Format A:B e.g.
+    result = re.search(r"(\d+):(\d+)", port)
+    if result is not None:
+        return list(range(int(result.group(1)), int(result.group(2))))
+
+    return []
+
+
+def get_port_list_from_file(port: str) -> list[str]:
     """
     Docs
     """
     ports = []
 
-    for port in port_list.split(','):
-        # Format A-B
-        result = re.search(r"(\d+)-(\d+)", port)
-        if result is not None:
-            ports += (list(range(int(result.group(1)), int(result.group(2)))))
-            continue
+    match_results = re.search(r"file:(.*)", port, re.IGNORECASE)
+    if match_results is not None:
+            filename = match_results.group(1)
 
-        # Format A:B
-        result = re.search(r"(\d+):(\d+)", port)
-        if result is not None:
-            ports += (list(range(int(result.group(1)), int(result.group(2)))))
-            continue
+            if not os.path.exists(filename):
+                PSnotify.warn(f"{filename} does not exist - aborting")
+            else:
+                print(filename)
+                with open(filename, 'r') as f:
+                    lines = f.readlines()
+                    for item in lines:
+                        for port in item.strip().split(','):
+                            ports.append(port)
+    return ports
 
-        match_results = re.search(r"ruleset:(.*)", port, re.IGNORECASE)
-        if match_results is not None:
-            ports += get_ports_from_rule_sets(match_results.group(1))
-            continue
 
-        # Just a normal number
-        if port.isnumeric():
-            ports.append(int(port))
-            continue
+def real_get_port_list(supplied_port_list: str) -> list[int]:
+    """
+    Docs
+    """
+    # This is order is important as once a port parameter is processed the loop is broken out of.
+    functions_to_call = [get_ports_from_range, get_ports_from_rule_sets, get_ports_by_number, get_ports_by_name]
+    generate_post_ports = []
 
-        # Left with a string like sshd
-        try:
-            ports.append(socket.getservbyname(port))
-        except OSError:
-            print(stylize(f"{port} is not a valid service name - Skipping!", colored.fg("yellow")))
-            continue
+    for port in supplied_port_list.split(','):
+        for func in functions_to_call:
+            port_list = func(port)
+            if port_list:
+                generate_post_ports += port_list
+                break
 
     # Now we need to remove any duplicates and sort
-    ports = sorted(list(set(ports)))
+    generate_post_ports = sorted(list(set(generate_post_ports)))
 
-    return ports
+    return generate_post_ports
+
+
+def get_port_list(supplied_port_list: str) -> list[int]:
+    """
+    Docs
+    """
+    # If there is a filename we need to pull the lists out of the file first!
+    generated_port_list = []
+
+    for port in supplied_port_list.split(','):
+        port_list = get_port_list_from_file(port)
+        if port_list:
+            generated_port_list += port_list
+        else:
+            generated_port_list.append(port)
+
+    return real_get_port_list(','.join(generated_port_list))

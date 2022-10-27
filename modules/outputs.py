@@ -50,7 +50,7 @@ def print_table_of_results(results: list[dict]) -> None:
     print(table)
 
 
-def process_results(results: list[dict], all_results = True):
+def process_results(results: list[dict], all_results = True) -> list[dict]:
     """
     docs
     """
@@ -59,7 +59,7 @@ def process_results(results: list[dict], all_results = True):
     return PSutils.multikeysort(results, ['target', 'ipnum', 'port'])
 
 
-def display_results(results: list[dict], args) -> None:
+def display_results(results: list[dict], args: argparse.Namespace) -> None:
     """
     Docs
     """

@@ -9,6 +9,8 @@ import colored
 from colored import stylize
 from yaspin import yaspin
 
+import modules.constants as PSconstants
+import modules.notify as PSnotify
 import modules.ports as PSports
 import modules.targets as PStargets
 
@@ -25,9 +27,7 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     Setup the arguments parser to handle the user input from the command line.
     """
 
-    epilog = "Port options for include and exclude: port range e.g. 1-1024 or 1:1024, port number e.g. 22, rule set e.g. ruleset=web-servers, service name e.g. ssh"
-
-    parser = argparse.ArgumentParser(prog='port-scan', description='Check for open port(s) on target host(s)', add_help=False, epilog=epilog, formatter_class=CustomFormatter)
+    parser = argparse.ArgumentParser(prog='port-scan', description='Check for open port(s) on target host(s)', add_help=False, epilog=PSconstants.epilog, formatter_class=CustomFormatter)
     flags = parser.add_argument_group('flags')
     required = parser.add_argument_group('required arguments')
     optional = parser.add_argument_group('optional arguments')
@@ -72,11 +72,11 @@ def process_arguments() -> argparse.Namespace:
         sys.exit(0)
 
     if args.quiet is True and args.json is False and args.csv is False:
-        print(stylize("Fatal: You cannot use --quiet unless you supply --csv or --json", colored.fg("red")))
+        PSnotify.error("Fatal: You cannot use --quiet unless you supply --csv or --json")
         sys.exit(0)
 
     if args.quiet is True and args.ipv4_only is False and args.ipv6_only is False:
-        print(stylize("Fatal: You cannot use --ipv4_only AND --ipv6_only - pick one!", colored.fg("red")))
+        PSnotify.error("Fatal: You cannot use --ipv4_only AND --ipv6_only - pick one!")
         sys.exit(0)
 
     with yaspin(text=stylize("Generating target port list", colored.fg("green")), timer=True) as spinner:
@@ -87,7 +87,7 @@ def process_arguments() -> argparse.Namespace:
                 args.include_ports = [x for x in args.include_ports if x not in args.exclude_ports]
     spinner.ok("✅")
     if len(args.include_ports) == 0:
-        print(stylize("Fatal: No valid ports were found - Aborting!", colored.fg("red")))
+        PSnotify.error("Fatal: No valid ports were found - Aborting!")
         sys.exit(0)
 
     # Change this to be single host!
@@ -97,7 +97,7 @@ def process_arguments() -> argparse.Namespace:
     spinner.ok("✅")
 
     if not args.targets:
-        print(stylize("Fatal: No valid targets were found - Aborting!", colored.fg("red")))
+        PSnotify.error("Fatal: No valid targets were found - Aborting!")
         sys.exit(0)
 
     return args

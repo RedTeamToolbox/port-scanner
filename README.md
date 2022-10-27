@@ -79,9 +79,38 @@ optional arguments:
                         The number of threads to use (default: 1024)
   -f FILENAME, --filename FILENAME
                         The filename to save the results to (default: portscan-results)
-
-Port options for include and exclude: port range e.g. 1-1024 or 1:1024, port number e.g. 22, rule set e.g. ruleset=web-servers, service name e.g. ssh
 ```
+
+There are a number of ways to specify which ports to scan: service names, port numbers, port ranges and rulsets:
+
+##### Service names
+* Names: ssh or http or any other valid service name (see /etc/services)
+
+##### Port numbers
+* Numbers: 22, 443 or any other valid port number
+
+##### Port ranges
+* Ranges: start-end OR start:end
+
+##### Rulesets
+* Rulesets: ruleset:rule-set-name 
+> Use -r or --list-rules to see the predefined ruleset names and associated ports
+
+You can use any combination of the above with the -p (or --include-ports) and the -e (--exclude-ports) to create the required port set.
+
+#### Example
+```text
+port-scanner.pt -t localhost -p 22,ruleset:file-transfer,http,8000-9000
+```
+
+You can also use file:filename and specify a file (or multiple files with the same logic as rulesets) to load port settings from a file. The rules can be on multiple lines or the same line (comma separated) or both and they are formatted exactly the same as the -p (and -e) parameter, so files can contain rulesets, port numbers and names.
+
+#### Example
+```text
+port-scanner.pt -t localhost -p filename:rules.txt,ruleset:file-transfer,http,8000-9000
+```
+
+Finally, there is not limit to the number of times you can specify rulesets or files, so you can change multiple files and rulesets together to make a completed port set. 
 
 <br />
 <p align="right"><a href="https://wolfsoftware.com/"><img src="https://img.shields.io/badge/Created%20by%20Wolf%20Software-blue?style=for-the-badge" /></a></p>
