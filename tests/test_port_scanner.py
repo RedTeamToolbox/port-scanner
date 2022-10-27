@@ -96,6 +96,8 @@ def test_utils() -> None:
     errors = []
     count = 0
     test_list = [1, 2, 3, 4, 5]
+    test_list_2 = [1, 2, 3, 4, 5, ['a', 'b', 'c']]
+
     multisort_test_list = [{'name': 'wolf'}, {'name': 'software'}]
     multisort_sorted_list = [{'name': 'software'}, {'name': 'wolf'}]
 
@@ -110,6 +112,11 @@ def test_utils() -> None:
         errors.append(f"Test {count} shuffled failed failed: {slist}")
 
     slist = PSutils.shuffled(test_list)
+    count += 1
+    if slist == test_list:
+        errors.append(f"Test {count} shuffled failed failed: {slist}")
+
+    slist = PSutils.shuffled(test_list_2)
     count += 1
     if slist == test_list:
         errors.append(f"Test {count} shuffled failed failed: {slist}")
