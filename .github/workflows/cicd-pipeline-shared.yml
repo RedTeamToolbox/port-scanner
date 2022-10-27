@@ -80,7 +80,6 @@ jobs:
     if: always()
     name: Slack Post Workflow Notification
     needs:
-      - slack-notify
       - actionlint
       - awesomebot
       - markdown-lint
