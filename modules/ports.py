@@ -102,17 +102,16 @@ def get_port_list_from_file(port: str) -> list[str]:
 
     match_results = re.search(r"file:(.*)", port, re.IGNORECASE)
     if match_results is not None:
-        filename = match_results.group(1)
+        fname = match_results.group(1)
 
-        if not os.path.exists(filename):
+        if not os.path.exists(fname):
             PSnotify.warn(f"{filename} does not exist - aborting")
         else:
-            print(filename)
-            with open(filename, 'r') as f:
+            with open(fname, 'r', encoding='UTF-8') as f:
                 lines = f.readlines()
-                for item in lines:
-                    for port in item.strip().split(','):
-                        ports.append(port)
+                for line in lines:
+                    for item in line.strip().split(','):
+                        ports.append(item)
     return ports
 
 
@@ -152,4 +151,3 @@ def get_port_list(supplied_port_list: str) -> list[int]:
             generated_port_list.append(port)
 
     return real_get_port_list(','.join(generated_port_list))
-    

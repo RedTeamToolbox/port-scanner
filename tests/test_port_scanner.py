@@ -26,7 +26,7 @@ def test_shuffled() -> None:
     errors = []
     count = 0
 
-    test_list = [1,2,3,4,5]
+    test_list = [1, 2, 3, 4, 5]
 
     v = PSutils.shuffled(test_list)
     if v == test_list:
