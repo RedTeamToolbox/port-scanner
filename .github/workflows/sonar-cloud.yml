@@ -30,6 +30,7 @@ jobs:
           pip install pytest
           pip install pytest-cov
           pytest --cov=./ --cov-report=xml
+          python -m coverage xml -i
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
