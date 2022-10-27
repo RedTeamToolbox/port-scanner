@@ -33,9 +33,9 @@ jobs:
           python -m coverage xml -i
       - name: Override Coverage Source Path for Sonar
         run: |
-          head -n 10 coverage.xm
+          head -n 10 coverage.xml
           sed -i "s/<source>\/home\/runner\/work\/${{ github.event.repository.name }}<\/source>/<source>\/github\/workspace<\/source>/g" coverage.xml
-          head -n 10 coverage.xm
+          head -n 10 coverage.xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
