@@ -46,7 +46,7 @@ def test_notify(capfd) -> None:
 
     if errors:
         errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"
+        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
 
 
 def test_globals() -> None:
@@ -64,7 +64,7 @@ def test_globals() -> None:
 
     if errors:
         errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"
+        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
 
 
 def test_ports() -> None:
@@ -86,7 +86,7 @@ def test_ports() -> None:
 
     if errors:
         errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"
+        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
 
 
 def test_utils() -> None:
@@ -109,4 +109,6 @@ def test_utils() -> None:
 
     if errors:
         errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"
+        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
+        
+
