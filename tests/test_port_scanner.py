@@ -2,6 +2,7 @@
 Docs
 """
 
+from email import header
 from queue import Empty
 import modules.constants as PSconstants
 import modules.globals as PSglobal
@@ -45,7 +46,7 @@ def test_notify(capfd) -> None:
         if test_string != result_string:
             errors.append(f"Test {count} failed: {test_string} vs {result_string}")
 
-    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
+    assert not errors, "{header}\n{errors}".format(header = ERRORS_OCCURRED, errors = "\n".join(errors))  # nosec: B101
 
 
 def test_globals() -> None:
@@ -61,7 +62,7 @@ def test_globals() -> None:
         if test != {}:
             errors.append(f"Test {count} get_ports_by_name'ssh' failed: {not Empty}")
 
-    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
+    assert not errors, "{header}\n{errors}".format(header = ERRORS_OCCURRED, errors = "\n".join(errors))  # nosec: B101
 
 
 def test_ports() -> None:
@@ -81,7 +82,7 @@ def test_ports() -> None:
     if port != [22]:
         errors.append(f"Test {count} get_ports_by_name'ssh' failed: {port}")
 
-    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
+    assert not errors, "{header}\n{errors}".format(header = ERRORS_OCCURRED, errors = "\n".join(errors))  # nosec: B101
 
 
 def test_utils() -> None:
@@ -102,4 +103,4 @@ def test_utils() -> None:
     if slist == test_list:
         errors.append(f"Test {count} shuffled failed failed: {slist}")
 
-    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
+    assert not errors, "{header}\n{errors}".format(header = ERRORS_OCCURRED, errors = "\n".join(errors))  # nosec: B101
