@@ -4,6 +4,7 @@ Constants live here
 
 import colorama
 
+colorama.init()
 RED = colorama.Fore.RED
 YELLOW = colorama.Fore.YELLOW
 GREEN = colorama.Fore.GREEN
