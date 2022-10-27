@@ -27,15 +27,51 @@ jobs:
         id: slack-notify
         run: echo "::set-output name=notify::false"
 
-  build:
-    name: Build pipeline
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
 #
 # End of Template (part 1)
 #
+
+  bandit:
+    runs-on: ubuntu-latest
+    name: Bandit
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run Bandit
+        env:
+          EXCLUDE_FILES: '\.md$'
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/bandit/master/pipeline.sh)
+
+  pycodestyle:
+    runs-on: ubuntu-latest
+    name: Pycodestyle
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run Pycodestyle
+        env:
+          EXCLUDE_FILES: '\.md$'
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/pycodestyle/master/pipeline.sh)
+
+  pylint:
+    runs-on: ubuntu-latest
+    name: Pylint
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run Pylint
+        env:
+          EXCLUDE_FILES: '\.md$,setup.py'
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/pylint/master/pipeline.sh)
 
 #
 # Start of Template (part 2)
@@ -46,7 +82,9 @@ jobs:
     name: Slack Post Workflow Notification
     needs:
       - slack-notify
-      - build
+      - bandit
+      - pycodestyle
+      - pylint
     runs-on: ubuntu-latest
     steps:
       - name: Slack Workflow Notifications

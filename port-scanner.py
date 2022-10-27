@@ -11,8 +11,6 @@ TODO: ports from filename: for both include and exclude
 
 import sys
 
-from typing import Any
-
 import modules.cli as PScli
 import modules.globals as PSglobals
 import modules.outputs as PSoutputs

@@ -13,6 +13,16 @@ on:
       - '**'
 
 jobs:
+  slack-notify:
+    name: Slack notify?
+    runs-on: ubuntu-latest
+    outputs:
+      notify: ${{ steps.slack-notify.outputs.notify }}
+    steps:
+      - name: Set slack notify
+        id: slack-notify
+        run: echo "::set-output name=notify::false"
+
   actionlint:
     name: Action Lint
     runs-on: ubuntu-latest
@@ -77,6 +87,7 @@ jobs:
     if: always()
     name: Slack Post Workflow Notification
     needs:
+      - slack-notify
       - actionlint
       - awesomebot
       - markdown-lint
@@ -84,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Slack Workflow Notifications
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ needs.slack-notify.outputs.notify == true && github.event_name == 'push' }}
         uses: Gamesight/slack-workflow-status@v1.1.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
