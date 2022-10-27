@@ -27,7 +27,7 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     Setup the arguments parser to handle the user input from the command line.
     """
 
-    parser = argparse.ArgumentParser(prog='port-scan', description='Check for open port(s) on target host(s)', add_help=False, epilog=PSconstants.epilog, formatter_class=CustomFormatter)
+    parser = argparse.ArgumentParser(prog='port-scan', description='Check for open port(s) on target host(s)', add_help=False, epilog=PSconstants.EPILOG, formatter_class=CustomFormatter)
     flags = parser.add_argument_group('flags')
     required = parser.add_argument_group('required arguments')
     optional = parser.add_argument_group('optional arguments')

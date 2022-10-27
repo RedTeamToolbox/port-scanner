@@ -21,7 +21,7 @@ def list_all_port_rules() -> None:
 
     print(stylize("Available rule sets:", colored.fg("cyan")))
     count = 0
-    for rule in PSconstants.port_rules:
+    for rule in PSconstants.PORT_RULES:
         count += 1
         print(f"  Rule {count}: '{rule['rule']}': {rule['ports']}")
 
@@ -55,7 +55,7 @@ def get_ports_from_rule(rule_name: str) -> list[int]:
     Docs
     """
 
-    for rule in PSconstants.port_rules:
+    for rule in PSconstants.PORT_RULES:
         if rule['rule'] == rule_name:
             return rule['ports']
     PSnotify.warn(f"{rule_name} is not a valid ruleset - Skipping!")

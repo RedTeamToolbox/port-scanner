@@ -16,9 +16,9 @@ WARN = colorama.Fore.YELLOW
 ERROR = colorama.Fore.RED
 INFO = colorama.Fore.LIGHTBLACK_EX
 
-epilog = "For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner"
+EPILOG = "For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner"
 
-port_rules = [
+PORT_RULES = [
     # mssql server, mssql browser, ingres, mysql, postgresql
     {'rule': 'databases', 'ports': [1433, 1434, 1524, 3306, 5432]},
     # smtp, pop3, imap, submission

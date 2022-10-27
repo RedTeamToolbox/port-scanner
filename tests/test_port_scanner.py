@@ -2,10 +2,14 @@
 Docs
 """
 
+from queue import Empty
 import modules.constants as PSconstants
+import modules.globals as PSglobal
 import modules.notify as PSnotify
 import modules.ports as PSports
 import modules.utils as PSutils
+
+ERRORS_OCCURRED = "errors occurred:\n"
 
 
 def test_notify(capfd) -> None:
@@ -41,7 +45,23 @@ def test_notify(capfd) -> None:
         if test_string != result_string:
             errors.append(f"Test {count} failed: {test_string} vs {result_string}")
 
-    assert not errors, "errors occurred:\n{}".format("\n".join(errors))  # nosec: B101
+    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
+
+
+def test_globals() -> None:
+    """
+    Docs
+    """
+    tests = [PSglobal.host_ip_mapping, PSglobal.ip_ipnum_mapping, PSglobal.service_name_mapping]
+    errors = []
+    count = 0
+
+    for test in tests:
+        count += 1
+        if test != {}:
+            errors.append(f"Test {count} get_ports_by_name'ssh' failed: {not Empty}")
+
+    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
 
 
 def test_ports() -> None:
@@ -61,7 +81,7 @@ def test_ports() -> None:
     if port != [22]:
         errors.append(f"Test {count} get_ports_by_name'ssh' failed: {port}")
 
-    assert not errors, "errors occurred:\n{}".format("\n".join(errors))  # nosec: B101
+    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
 
 
 def test_utils() -> None:
@@ -82,4 +102,4 @@ def test_utils() -> None:
     if slist == test_list:
         errors.append(f"Test {count} shuffled failed failed: {slist}")
 
-    assert not errors, "errors occurred:\n{}".format("\n".join(errors))  # nosec: B101
+    assert not errors, "{ERRORS_OCCURRED}{}".format("\n".join(errors))  # nosec: B101
