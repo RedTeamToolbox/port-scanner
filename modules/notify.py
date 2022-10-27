@@ -1,8 +1,9 @@
 """
-User based notifications 
+User based notifications
 """
 
 import modules.constants as PSconstants
+
 
 def success(message: str) -> None:
     """

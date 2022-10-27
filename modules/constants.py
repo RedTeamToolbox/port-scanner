@@ -4,11 +4,11 @@ Constants live here
 
 import colorama
 
-RED=colorama.Fore.RED
-YELLOW=colorama.Fore.YELLOW
-GREEN=colorama.Fore.GREEN
-GRAY=colorama.Fore.LIGHTBLACK_EX
-RESET=colorama.Style.RESET_ALL
+RED = colorama.Fore.RED
+YELLOW = colorama.Fore.YELLOW
+GREEN = colorama.Fore.GREEN
+GRAY = colorama.Fore.LIGHTBLACK_EX
+RESET = colorama.Style.RESET_ALL
 
 SUCCESS = colorama.Fore.GREEN
 WARN = colorama.Fore.YELLOW
