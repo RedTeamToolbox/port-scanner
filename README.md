@@ -42,7 +42,7 @@ If you do not have permission then you are very likely committing a criminal off
 Don't download this tool if you want to use it for nefarious purposes. In short:
 
 <br />
-<p align="center"><img src="images/dbad.png" alt="Don't be a dick" /></p>
+<p align="center"><img src="https://cdn.wolfsoftware.com/assets/images/misc/dbad.png" alt="Don't be a dick" /></p>
 
 ## Usage
 
