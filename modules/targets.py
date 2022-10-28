@@ -118,6 +118,7 @@ def scan_targets(config: PSconfig.Configuration) -> list:
     else:
         how_many = config.threads
 
+    # TODO: Add batching so you dont add to many workers at once
     with PSutils.create_bar(f"Scanning Hosts with {how_many} threads", len(targets)) as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
             futures = [executor.submit(PSscanner.scan_target_port, target[0], target[1]) for target in targets]

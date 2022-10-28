@@ -68,7 +68,6 @@ def create_bar(prefix: str, size: int, color: str = "cyan"):
     """
     Docs
     """
-    # bar_format = f"{prefix} |{PSconstants.GRAY}{{bar:80}}{PSconstants.RESET}| {{percentage:3.0f}}% [Run: {{elapsed}} ETA: {{remaining}}]"
     bar_format = f"{prefix} |{{bar:80}}| {{percentage:3.0f}}% [Run: {{elapsed}} ETA: {{remaining}}]"
 
     return tqdm(total=size, bar_format=bar_format, colour=color)

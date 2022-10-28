@@ -1,6 +1,7 @@
 """
 Docs
 """
+from pprint import pprint
 
 import modules.constants as PSconstants
 import modules.globals as PSglobal
@@ -9,6 +10,16 @@ import modules.ports as PSports
 import modules.utils as PSutils
 
 ERRORS_OCCURRED = "errors occurred:\n"
+
+
+def output_errors(errors, header = "Errors occurred:"):
+    """
+    Output the errors
+    """
+
+    print(header)
+    for error in errors:
+        print(error)
 
 
 def test_notify(capfd) -> None:
@@ -41,12 +52,10 @@ def test_notify(capfd) -> None:
 
         if test['strip'] is True:
             result_string = result_string.strip()
-        if test_string != result_string:
+        if test_string == result_string:
             errors.append(f"Test {count} failed: {test_string} vs {result_string}")
 
-    if errors:
-        errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
+    assert not errors, output_errors(errors)  # nosec: B101
 
 
 def test_globals() -> None:
@@ -62,9 +71,7 @@ def test_globals() -> None:
         if test:
             errors.append(f"Test {count} get_ports_by_name'ssh' failed: (not empty)")
 
-    if errors:
-        errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
+    assert not errors, output_errors(errors)  # nosec: B101
 
 
 def test_ports() -> None:
@@ -84,9 +91,7 @@ def test_ports() -> None:
     if port != [22]:
         errors.append(f"Test {count} get_ports_by_name'ssh' failed: {port}")
 
-    if errors:
-        errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
+    assert not errors, output_errors(errors)  # nosec: B101
 
 
 def test_utils() -> None:
@@ -126,6 +131,4 @@ def test_utils() -> None:
     if sorted_list != multisort_sorted_list:
         errors.append(f"Test {count} multi sort failed: {multisort_test_list} vs {multisort_sorted_list}")
 
-    if errors:
-        errors_list = "\n".join(errors)
-        assert f"{ERRORS_OCCURRED}\n{errors_list}"  # nosec: B101
+    assert not errors, output_errors(errors)  # nosec: B101
