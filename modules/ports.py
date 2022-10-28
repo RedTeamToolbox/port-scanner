@@ -177,4 +177,3 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
         sys.exit(0)
 
     return port_list
-

@@ -1,7 +1,6 @@
 """
 Docs
 """
-import argparse
 import ipaddress
 import itertools
 import socket
@@ -9,7 +8,7 @@ import sys
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from typing import Any, Type
+from typing import Any
 
 import dns.resolver
 import colored
@@ -98,6 +97,7 @@ def get_all_host_port_combinations(targets, ports):
     """
     return list(itertools.product(targets, ports))
 
+
 #
 # TODO: Move this to the scanner this is the wrong place
 #
@@ -112,7 +112,7 @@ def scan_targets(config: PSconfig.Configuration) -> list:
     targets = get_all_host_port_combinations(config.targets, config.ports)
     if config.shuffle is True:
         targets = PSutils.shuffled(targets)
-    
+
     if config.threads > len(targets):
         how_many = len(targets)
     else:
@@ -128,7 +128,7 @@ def scan_targets(config: PSconfig.Configuration) -> list:
                 if thread_results:
                     if config.verbose:
                         verbose_msg = f"{thread_results['target']} port {thread_results['port']} is {thread_results['status_string']}"
-                        if thread_results['status'] == True:
+                        if thread_results['status'] is True:
                             pbar.write(PSnotify.error_msg(f"[X] {verbose_msg}"))
                         else:
                             pbar.write(PSnotify.success_msg(f"[^] {verbose_msg}"))

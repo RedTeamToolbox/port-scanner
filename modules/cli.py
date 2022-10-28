@@ -6,15 +6,9 @@ import argparse
 import multiprocessing
 import sys
 
-import colored
-from colored import stylize
-from yaspin import yaspin
-
 import modules.constants as PSconstants
-import modules.globals as PSglobals
 import modules.notify as PSnotify
 import modules.ports as PSports
-import modules.targets as PStargets
 
 
 class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):

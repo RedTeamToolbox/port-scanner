@@ -3,13 +3,13 @@ A set of utility functions
 """
 
 import secrets
-from tqdm import tqdm
 
 from functools import cmp_to_key
 from operator import itemgetter
-from typing import Any, NoReturn
+from typing import Any
 
-import modules.constants as PSconstants
+from tqdm import tqdm
+
 
 secretsGenerator = secrets.SystemRandom()
 

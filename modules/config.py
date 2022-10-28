@@ -4,10 +4,9 @@ Global configuration
 
 import argparse
 
-from typing import Type
-
 import modules.ports as PSports
 import modules.targets as PStargets
+
 
 class Configuration():
     """
@@ -27,9 +26,9 @@ class Configuration():
     delay_time = 0  # TODO: make this do something
     filename = ''
     threads = 0
- 
 
-def build_configuration(args: argparse.Namespace)-> Configuration:
+
+def build_configuration(args: argparse.Namespace) -> Configuration:
     """
     Docs
     """
