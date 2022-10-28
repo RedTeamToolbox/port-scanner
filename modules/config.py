@@ -22,6 +22,8 @@ class Configuration():  # pylint: disable=too-many-instance-attributes,too-few-p
     all_results = False
     csv = False
     json = False
+    batch = False
+    batch_size = 0
     delay = False  # TODO: make this do something
     delay_time = 0  # TODO: make this do something
     filename = ''
@@ -44,6 +46,8 @@ def build_configuration(args: argparse.Namespace) -> Configuration:
     config.all_results = args.all_results
     config.csv = args.csv
     config.json = args.json
+    config.batch = args.batch
+    config.batch_size = args.batch_size
     config.delay = args.delay
     config.delay_time = args.delay_time
     config.filename = args.filename

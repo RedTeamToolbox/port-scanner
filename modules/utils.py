@@ -33,7 +33,7 @@ def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
     Docs
     """
     comparers = [
-        ((itemgetter(col[1:].strip()), -1) if col.startswith('-') else (itemgetter(col.strip()), 1))
+        ((itemgetter(col[1:].strip()), -1) if col.startswith("-") else (itemgetter(col.strip()), 1))
         for col in columns
     ]
 

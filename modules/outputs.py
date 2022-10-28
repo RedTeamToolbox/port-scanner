@@ -18,7 +18,7 @@ def save_results_as_csv(results: list[dict], fname: str) -> None:
     if len(results) == 0:
         return
 
-    with open(f'{fname}.csv', 'w', encoding="utf-8") as outfile:
+    with open(f"{fname}.csv", "w", encoding="utf-8") as outfile:
         writer = csv.writer(outfile)
         columns = list({column for row in results for column in row.keys()})
         writer.writerow(columns)
@@ -33,7 +33,7 @@ def save_results_as_json(results: list[dict], fname: str) -> None:
     if len(results) == 0:
         return
 
-    with open(f'{fname}.json', "w", encoding="utf-8") as outfile:
+    with open(f"{fname}.json", "w", encoding="utf-8") as outfile:
         json.dump(results, outfile, indent=4, default=str)
 
 
@@ -43,7 +43,7 @@ def print_table_of_results(results: list[dict]) -> None:
     """
     table = PrettyTable()
 
-    table.field_names = ['Target', 'IP', 'Port', 'Service', 'Open?', 'Banner', 'Errors']
+    table.field_names = ["Target", "IP", "Port", "Service", "Open?", "Banner", "Errors"]
 
     for parts in results:
         table.add_row([parts['target'], parts['ip'], parts['port'], parts['service'], parts['status'], parts['banner'], parts['error']])

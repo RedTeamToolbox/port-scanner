@@ -24,14 +24,14 @@ def test_notify(capfd) -> None:
     test notify
     """
     tests = [
-              {'function': PSnotify.success, 'color': PSconstants.SUCCESS, 'strip': True, 'return_value': False},
-              {'function': PSnotify.warn, 'color': PSconstants.WARN, 'strip': True, 'return_value': False},
-              {'function': PSnotify.error, 'color': PSconstants.ERROR, 'strip': True, 'return_value': False},
-              {'function': PSnotify.info, 'color': PSconstants.INFO, 'strip': True, 'return_value': False},
-              {'function': PSnotify.success_msg, 'color': PSconstants.SUCCESS, 'strip': False, 'return_value': True},
-              {'function': PSnotify.warn_msg, 'color': PSconstants.WARN, 'strip': False, 'return_value': True},
-              {'function': PSnotify.error_msg, 'color': PSconstants.ERROR, 'strip': False, 'return_value': True},
-              {'function': PSnotify.info_msg, 'color': PSconstants.INFO, 'strip': False, 'return_value': True},
+              {"function": PSnotify.success, "color": PSconstants.SUCCESS, "strip": True, "return_value": False},
+              {"function": PSnotify.warn, "color": PSconstants.WARN, "strip": True, "return_value": False},
+              {"function": PSnotify.error, "color": PSconstants.ERROR, "strip": True, "return_value": False},
+              {"function": PSnotify.info, "color": PSconstants.INFO, "strip": True, "return_value": False},
+              {"function": PSnotify.success_msg, "color": PSconstants.SUCCESS, "strip": False, "return_value": True},
+              {"function": PSnotify.warn_msg, "color": PSconstants.WARN, "strip": False, "return_value": True},
+              {"function": PSnotify.error_msg, "color": PSconstants.ERROR, "strip": False, "return_value": True},
+              {"function": PSnotify.info_msg, "color": PSconstants.INFO, "strip": False, "return_value": True},
     ]
     errors = []
     count = 0
@@ -78,12 +78,12 @@ def test_ports() -> None:
     errors = []
     count = 0
 
-    port = PSports.get_ports_by_number('22')
+    port = PSports.get_ports_by_number("22")
     count += 1
     if port != [22]:
         errors.append(f"Test {count} get_ports_by_name'ssh' failed: {port}")
 
-    port = PSports.get_ports_by_name('ssh')
+    port = PSports.get_ports_by_name("ssh")
     count += 1
     if port != [22]:
         errors.append(f"Test {count} get_ports_by_name'ssh' failed: {port}")
@@ -98,10 +98,10 @@ def test_utils() -> None:
     errors = []
     count = 0
     test_list = [1, 2, 3, 4, 5]
-    test_list_2 = [1, 2, 3, 4, 5, ['a', 'b', 'c']]
+    test_list_2 = [1, 2, 3, 4, 5, ["a", "b", "c"]]
 
-    multisort_test_list = [{'name': 'wolf'}, {'name': 'software'}]
-    multisort_sorted_list = [{'name': 'software'}, {'name': 'wolf'}]
+    multisort_test_list = [{"name": "wolf"}, {"name": "software"}]
+    multisort_sorted_list = [{"name": "software"}, {"name": "wolf"}]
 
     rint = PSutils.secure_random(1, 10)
     count += 1

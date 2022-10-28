@@ -57,11 +57,11 @@ def get_ips(target, ipv4_only, ipv6_only):
 
     if is_ip_address(target) is False:
         if ipv4_only is True:
-            results = sorted(get_records(target, 'A'))
+            results = sorted(get_records(target, "A"))
         elif ipv6_only is True:
-            results = sorted(get_records(target, 'AAAA'))
+            results = sorted(get_records(target, "AAAA"))
         else:
-            results = sorted(get_records(target, 'A')) + sorted(get_records(target, 'AAAA'))
+            results = sorted(get_records(target, "A")) + sorted(get_records(target, "AAAA"))
     else:
         results = [target]
     return results
@@ -144,7 +144,7 @@ def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[s
     """
 
     with yaspin(text=PSnotify.info_msg("[*] Generating a list of all target IP address"), timer=True) as spinner:
-        target_list = targets.split(',')
+        target_list = targets.split(",")
         valid_targets = validate_targets(target_list, ipv4_only, ipv6_only)
     spinner.stop()
 

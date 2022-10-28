@@ -72,7 +72,7 @@ def get_ports_from_rule_sets(port: str) -> list[int]:
     match_results = re.search(r"ruleset:(.*)", port, re.IGNORECASE)
     if match_results is not None:
         rule_sets = match_results.group(1)
-        for rule in rule_sets.split(','):
+        for rule in rule_sets.split(","):
             ports += get_ports_from_rule(rule)
     return ports
 
@@ -108,10 +108,10 @@ def get_port_list_from_file(port: str) -> list[str]:
         if not os.path.exists(fname):
             PSnotify.warn(f"{fname} does not exist - aborting")
         else:
-            with open(fname, 'r', encoding='UTF-8') as f:
+            with open(fname, "r", encoding="UTF-8") as f:
                 lines = f.readlines()
                 for line in lines:
-                    for item in line.strip().split(','):
+                    for item in line.strip().split(","):
                         ports.append(item)
     return ports
 
@@ -124,7 +124,7 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
     functions_to_call = [get_ports_from_range, get_ports_from_rule_sets, get_ports_by_number, get_ports_by_name]
     generate_post_ports = []
 
-    for port in supplied_port_list.split(','):
+    for port in supplied_port_list.split(","):
         for func in functions_to_call:
             port_list = func(port)
             if port_list:
@@ -144,14 +144,14 @@ def get_port_list(supplied_port_list: str) -> list[int]:
     # If there is a filename we need to pull the lists out of the file first!
     generated_port_list = []
 
-    for port in supplied_port_list.split(','):
+    for port in supplied_port_list.split(","):
         port_list = get_port_list_from_file(port)
         if port_list:
             generated_port_list += port_list
         else:
             generated_port_list.append(port)
 
-    return real_get_port_list(','.join(generated_port_list))
+    return real_get_port_list(",".join(generated_port_list))
 
 
 def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
