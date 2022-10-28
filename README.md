@@ -50,16 +50,16 @@ Don't download this tool if you want to use it for nefarious purposes. In short:
 ## Usage
 
 ```text
-usage: port-scan [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-d] [-j] [-s] [-r] [-t TARGETS] [-D DELAY_TIME] [-p INCLUDE_PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
+usage: port-scan [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-d] [-j] [-s] [-r] [-t TARGETS] [-b BATCH_SIZE] [-B BATCH_DELAY] [-D DELAY_TIME] [-p INCLUDE_PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
 
 Check for open port(s) on target host(s)
 
 flags:
   -h, --help            show this help message and exit
   -q, --quiet           Do not show the results on the screen (default: False)
-  -v, --verbose         Verbose output (default: False)
+  -v, --verbose         Verbose output - show scan results as they come in (default: False)
   -4, --ipv4-only       Scan IPv4 addresses only (default: False)
-  -6, --ipv6-only       Scan IPv4 addresses only (default: False)
+  -6, --ipv6-only       Scan IPv6 addresses only (default: False)
   -A, --all-results     Show or save all results (default is to list open ports only) (default: False)
   -c, --csv             Save the results as a csv formatted file (default: False)
   -d, --delay           Add a random delay to each thread (default: False)
@@ -72,6 +72,10 @@ required arguments:
                         A comma separated list of targets to scan (default: None)
 
 optional arguments:
+  -b BATCH_SIZE, --batch-size BATCH_SIZE
+                        The size of the batch to use when splitting larger scan sets (0 = no batching) (default: 0)
+  -B BATCH_DELAY, --batch-delay BATCH_DELAY
+                        The amount of time to wait between batches in seconds (default: 60)
   -D DELAY_TIME, --delay-time DELAY_TIME
                         Random delay to use if --delay is given (default: 3)
   -p INCLUDE_PORTS, --include-ports INCLUDE_PORTS
@@ -82,6 +86,8 @@ optional arguments:
                         The number of threads to use (default: 40)
   -f FILENAME, --filename FILENAME
                         The filename to save the results to (default: portscan-results)
+
+For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner
 ```
 > The default number of threads is calculated based on your server. (default_threads = multiprocessing.cpu_count() * 5). However if the number of ports you are testing is less than the default then the default is lowered to the number of checks.
 

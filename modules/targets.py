@@ -23,7 +23,7 @@ import modules.scanner as PSscanner
 import modules.utils as PSutils
 
 # TODO: ip from filename:
-
+# TODO: exclude ips so you can filter out ips from ranges
 
 def is_ip_address(target: str) -> Any:
     """
@@ -123,6 +123,7 @@ def get_how_many(targets: list, config: PSconfig.Configuration) -> int:
 
     return how_many
 
+
 def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configuration) -> list:
     """
     Docs
@@ -131,16 +132,16 @@ def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configur
 
     number_of_batches = math.ceil(len(targets) / config.batch_size)
     PSnotify.info(f"[+] We will execute the scans in {number_of_batches} batches with {config.batch_size} scan per batch")
-    batches = [targets[i * config.batch_size:(i + 1) * config.batch_size] for i in range((len(targets) + config.batch_size - 1) // config.batch_size )]
+    batches = [targets[i * config.batch_size:(i + 1) * config.batch_size] for i in range((len(targets) + config.batch_size - 1) // config.batch_size)]
 
     if how_many > config.batch_size:
         how_many = config.batch_size
 
     batch_counter = 0
-    
+
     with PSutils.create_bar("Total", len(targets)) as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
-             with PSutils.create_bar("Batches", number_of_batches, leave = False) as pbar_batches:
+            with PSutils.create_bar("Batches", number_of_batches, leave = False) as pbar_batches:
                 for batch in batches:
                     batch_counter += 1
                     with PSutils.create_bar(f"Batches {batch_counter}", config.batch_size, leave = False) as batches:
@@ -189,7 +190,7 @@ def scan_targets(config: PSconfig.Configuration) -> list:
     targets = get_all_host_port_combinations(config.targets, config.ports)
     if config.shuffle is True:
         targets = PSutils.shuffled(targets)
-    
+
     how_many = get_how_many(targets, config)
 
     if config.batched:

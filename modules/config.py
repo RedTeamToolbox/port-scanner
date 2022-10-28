@@ -28,7 +28,7 @@ class Configuration():  # pylint: disable=too-many-instance-attributes,too-few-p
     threads = 0
 
 
-def build_configuration(args: argparse.Namespace, get_target_port_list_fn, get_target_ip_list_fn ) -> Configuration:
+def build_configuration(args: argparse.Namespace, get_target_port_list_fn, get_target_ip_list_fn) -> Configuration:
     """
     Docs
     """
