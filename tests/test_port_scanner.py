@@ -52,7 +52,7 @@ def test_notify(capfd) -> None:
 
         if test['strip'] is True:
             result_string = result_string.strip()
-        if test_string == result_string:
+        if test_string != result_string:
             errors.append(f"Test {count} failed: {test_string} vs {result_string}")
 
     assert not errors, output_errors(errors)  # nosec: B101
