@@ -10,6 +10,8 @@ stuff
 import sys
 
 import modules.cli as PScli
+import modules.config as PSconfig
+import modules.notify as PSnotify
 import modules.outputs as PSoutputs
 import modules.targets as PStargets
 
@@ -22,13 +24,14 @@ def main() -> None:
     # Increase the resource limit ??
 
     args = PScli.process_arguments()
-    results = PStargets.scan_targets(args)
-    PSoutputs.display_results(results, args)
+    config = PSconfig.build_configuration(args)
+    results = PStargets.scan_targets(config)
+    PSoutputs.display_results(results, config)
 
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("[Exiting Program]")
+        PSnotify.info("[*] Exiting Program")
         sys.exit(0)

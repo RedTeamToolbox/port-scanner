@@ -14,11 +14,13 @@ RESET = colorama.Style.RESET_ALL
 SUCCESS = colorama.Fore.GREEN
 WARN = colorama.Fore.YELLOW
 ERROR = colorama.Fore.RED
-INFO = colorama.Fore.LIGHTBLACK_EX
+INFO = colorama.Fore.CYAN
 
 EPILOG = "For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner"
 
 PORT_RULES = [
+    # all available ports
+    {'rule': 'all-ports', 'ports': list(range(1, 65535))},
     # mssql server, mssql browser, ingres, mysql, postgresql
     {'rule': 'databases', 'ports': [1433, 1434, 1524, 3306, 5432]},
     # smtp, pop3, imap, submission

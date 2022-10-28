@@ -3,6 +3,7 @@ Cli stuff
 """
 
 import argparse
+import multiprocessing
 import sys
 
 import colored
@@ -10,6 +11,7 @@ from colored import stylize
 from yaspin import yaspin
 
 import modules.constants as PSconstants
+import modules.globals as PSglobals
 import modules.notify as PSnotify
 import modules.ports as PSports
 import modules.targets as PStargets
@@ -26,6 +28,7 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     """
     Setup the arguments parser to handle the user input from the command line.
     """
+    default_threads = multiprocessing.cpu_count() * 5
 
     parser = argparse.ArgumentParser(prog='port-scan', description='Check for open port(s) on target host(s)', add_help=False, epilog=PSconstants.EPILOG, formatter_class=CustomFormatter)
     flags = parser.add_argument_group('flags')
@@ -49,7 +52,7 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     optional.add_argument('-D', '--delay-time', type=int, help='Random delay to use if --delay is given', default=3)
     optional.add_argument('-p', '--include-ports', type=str, help='The ports you want to scan', default="1-1024")
     optional.add_argument('-e', '--exclude-ports', type=str, help='The ports you want to exclude from a scan')
-    optional.add_argument('-T', '--threads', type=int, help='The number of threads to use', default=1024)
+    optional.add_argument('-T', '--threads', type=int, help='The number of threads to use', default=default_threads)
     optional.add_argument('-f', '--filename', type=str, help='The filename to save the results to', default='portscan-results')
 
     return parser
@@ -67,6 +70,10 @@ def process_arguments() -> argparse.Namespace:
         PSports.list_all_port_rules()
         sys.exit(0)
 
+    if args.include_ports is None:
+        parser.print_help()
+        sys.exit(0)
+
     if args.targets is None:
         parser.print_help()
         sys.exit(0)
@@ -77,27 +84,6 @@ def process_arguments() -> argparse.Namespace:
 
     if args.quiet is True and args.ipv4_only is False and args.ipv6_only is False:
         PSnotify.error("Fatal: You cannot use --ipv4_only AND --ipv6_only - pick one!")
-        sys.exit(0)
-
-    with yaspin(text=stylize("Generating target port list", colored.fg("green")), timer=True) as spinner:
-        args.include_ports = PSports.get_port_list(args.include_ports)
-        if args.exclude_ports is not None:
-            args.exclude_ports = PSports.get_port_list(args.exclude_ports)
-            if len(args.exclude_ports) > 0:
-                args.include_ports = [x for x in args.include_ports if x not in args.exclude_ports]
-    spinner.ok("✅")
-    if len(args.include_ports) == 0:
-        PSnotify.error("Fatal: No valid ports were found - Aborting!")
-        sys.exit(0)
-
-    # Change this to be single host!
-    with yaspin(text=stylize("Generating IP target list", colored.fg("green")), timer=True) as spinner:
-        args.targets = args.targets.split(',')
-        args.targets = PStargets.validate_targets(args.targets, args.ipv4_only, args.ipv6_only)
-    spinner.ok("✅")
-
-    if not args.targets:
-        PSnotify.error("Fatal: No valid targets were found - Aborting!")
         sys.exit(0)
 
     return args

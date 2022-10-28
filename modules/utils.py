@@ -3,15 +3,18 @@ A set of utility functions
 """
 
 import secrets
+from tqdm import tqdm
 
 from functools import cmp_to_key
 from operator import itemgetter
-from typing import Any
+from typing import Any, NoReturn
+
+import modules.constants as PSconstants
 
 secretsGenerator = secrets.SystemRandom()
 
 
-def secure_random(min_number, max_number):
+def secure_random(min_number: int, max_number: int):
     """
     docs
     """
@@ -43,7 +46,7 @@ def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
     return sorted(items, key=cmp_to_key(comparer))
 
 
-def shuffled(things, depth = 1):
+def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
     """
     Simple function to shuffle the order of a list
     """
@@ -59,3 +62,13 @@ def shuffled(things, depth = 1):
             results.append(sublist)
     results = secretsGenerator.sample(results, len(results))
     return results
+
+
+def create_bar(prefix: str, size: int, color: str = "cyan"):
+    """
+    Docs
+    """
+    # bar_format = f"{prefix} |{PSconstants.GRAY}{{bar:80}}{PSconstants.RESET}| {{percentage:3.0f}}% [Run: {{elapsed}} ETA: {{remaining}}]"
+    bar_format = f"{prefix} |{{bar:80}}| {{percentage:3.0f}}% [Run: {{elapsed}} ETA: {{remaining}}]"
+
+    return tqdm(total=size, bar_format=bar_format, colour=color)

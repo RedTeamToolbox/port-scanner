@@ -2,23 +2,23 @@
 Code for handling results processing
 """
 
-import argparse
 import csv
 import json
 
 from prettytable import PrettyTable
 
+import modules.config as PSconfig
 import modules.utils as PSutils
 
 
-def save_results_as_csv(args: argparse.Namespace, results: list[dict]) -> None:
+def save_results_as_csv(results: list[dict], fname: str) -> None:
     """
     Docs
     """
     if len(results) == 0:
         return
 
-    with open(f'{args.filename}.csv', 'w', encoding="utf-8") as outfile:
+    with open(f'{fname}.csv', 'w', encoding="utf-8") as outfile:
         writer = csv.writer(outfile)
         columns = list({column for row in results for column in row.keys()})
         writer.writerow(columns)
@@ -26,14 +26,14 @@ def save_results_as_csv(args: argparse.Namespace, results: list[dict]) -> None:
             writer.writerow([None if column not in row else row[column] for column in columns])
 
 
-def save_results_as_json(args: argparse.Namespace, results: list[dict]) -> None:
+def save_results_as_json(results: list[dict], fname: str) -> None:
     """
     Docs
     """
     if len(results) == 0:
         return
 
-    with open(f'{args.filename}.json', "w", encoding="utf-8") as outfile:
+    with open(f'{fname}.json', "w", encoding="utf-8") as outfile:
         json.dump(results, outfile, indent=4, default=str)
 
 
@@ -59,15 +59,15 @@ def process_results(results: list[dict], all_results = True) -> list[dict]:
     return PSutils.multikeysort(results, ['target', 'ipnum', 'port'])
 
 
-def display_results(results: list[dict], args: argparse.Namespace) -> None:
+def display_results(results: list[dict], config: PSconfig.Configuration) -> None:
     """
     Docs
     """
-    results = process_results(results, args.all_results)
+    results = process_results(results, config.all_results)
 
-    if args.csv is True:
-        save_results_as_csv(args, results)
-    if args.json is True:
-        save_results_as_json(args, results)
-    if args.quiet is False:
+    if config.csv is True:
+        save_results_as_csv(results, config.filename)
+    if config.json is True:
+        save_results_as_json(results, config.filename)
+    if config.quiet is False:
         print_table_of_results(results)

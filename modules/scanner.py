@@ -2,37 +2,23 @@
 Docs
 """
 
-import argparse
 import ipaddress
 import re
 import socket
 
-from time import sleep
 from typing import Any
 
-import colored
-from colored import stylize
-
 import modules.globals as PSglobals
-import modules.utils as PSutils
 
 
-def scan_target_port(target, port, spinner, args: argparse.Namespace) -> dict[str, Any]:
+def scan_target_port(target: str, port: int) -> dict[str, Any]:
     """
     docs
     """
     status = False
+    status_string = 'Closed'
     error_msg = None
     banner = None
-
-    if args.delay is True:
-        sleep_time = PSutils.secure_random(1, args.delay_time)
-        if args.verbose is True:
-            spinner.write(stylize(f"Host: sleeping for {sleep_time} seconds", colored.fg("cyan")))
-        sleep(sleep_time)
-
-    if args.verbose is True:
-        spinner.write(stylize(f"Host: {target} Testing Port: {port}", colored.fg("cyan")))
 
     ip = ipaddress.ip_address(target)
     if isinstance(ip, ipaddress.IPv6Address) is True:
@@ -45,6 +31,7 @@ def scan_target_port(target, port, spinner, args: argparse.Namespace) -> dict[st
         try:
             sock.connect((target, port))
             sock.settimeout(3)
+            status_string = 'Open'
             status = True
             try:
                 banner = sock.recv(2048).decode('utf-8').strip()
@@ -55,16 +42,15 @@ def scan_target_port(target, port, spinner, args: argparse.Namespace) -> dict[st
             sock.close()
         except socket.timeout:
             error_msg = "Connection timed out"
+            status_string = 'Closed'
             status = False
         except socket.error as err:
             error_msg = str(err)
             result = re.search(r"(\[Errno \d+\] )?(.*)", error_msg)
             if result is not None:
                 error_msg = result.group(2)
+            status_string = 'Closed'
             status = False
-
-    if args.verbose is True:
-        spinner.write(stylize(f"Host: {target}, Port: {port}, Open?: {status}", colored.fg("cyan")))
 
     # Cache the service name in case we are hitting multiple IPs
     if port not in PSglobals.service_name_mapping:
@@ -80,6 +66,7 @@ def scan_target_port(target, port, spinner, args: argparse.Namespace) -> dict[st
             'ipnum': PSglobals.ip_ipnum_mapping[target],
             'port': port,
             'status': status,
+            'status_string': status_string,
             'service': PSglobals.service_name_mapping[port],
             'banner': banner,
             'error': error_msg

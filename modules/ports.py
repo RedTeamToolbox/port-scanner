@@ -2,13 +2,14 @@
 Docs
 """
 
-from fileinput import filename
 import os.path
 import re
 import socket
+import sys
 
 import colored
 from colored import stylize
+from yaspin import yaspin
 
 import modules.constants as PSconstants
 import modules.notify as PSnotify
@@ -105,7 +106,7 @@ def get_port_list_from_file(port: str) -> list[str]:
         fname = match_results.group(1)
 
         if not os.path.exists(fname):
-            PSnotify.warn(f"{filename} does not exist - aborting")
+            PSnotify.warn(f"{fname} does not exist - aborting")
         else:
             with open(fname, 'r', encoding='UTF-8') as f:
                 lines = f.readlines()
@@ -151,3 +152,29 @@ def get_port_list(supplied_port_list: str) -> list[int]:
             generated_port_list.append(port)
 
     return real_get_port_list(','.join(generated_port_list))
+
+
+def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
+    """
+    Docs
+    """
+    include_port_list = []
+    exclude_port_list = []
+    port_list = []
+
+    with yaspin(text=PSnotify.info_msg("[*] Generating a list of all target ports"), timer=True) as spinner:
+        include_port_list = get_port_list(include_ports)
+        if exclude_ports is not None:
+            exclude_port_list = get_port_list(exclude_ports)
+            if exclude_port_list:
+                port_list = [x for x in include_port_list if x not in exclude_port_list]
+        else:
+            port_list = include_port_list
+    spinner.stop()
+
+    if not port_list:
+        PSnotify.error("Fatal: No valid ports were found - Aborting!")
+        sys.exit(0)
+
+    return port_list
+

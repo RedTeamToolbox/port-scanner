@@ -79,10 +79,11 @@ optional arguments:
   -e EXCLUDE_PORTS, --exclude-ports EXCLUDE_PORTS
                         The ports you want to exclude from a scan (default: None)
   -T THREADS, --threads THREADS
-                        The number of threads to use (default: 1024)
+                        The number of threads to use (default: 40)
   -f FILENAME, --filename FILENAME
                         The filename to save the results to (default: portscan-results)
 ```
+> The default number of threads is calculated based on your server. (default_threads = multiprocessing.cpu_count() * 5). However if the number of ports you are testing is less than the default then the default is lowered to the number of checks.
 
 There are a number of ways to specify which ports to scan: service names, port numbers, port ranges and rulsets:
 
