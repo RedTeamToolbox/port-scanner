@@ -64,10 +64,10 @@ def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
     return results
 
 
-def create_bar(prefix: str, size: int, color: str = "cyan"):
+def create_bar(prefix: str, size: int, color: str = "cyan", leave: bool = True):
     """
     Docs
     """
-    bar_format = f"{prefix} |{{bar:80}}| {{percentage:3.0f}}% [Run: {{elapsed}} ETA: {{remaining}}]"
+    bar_format = f"{prefix} |{{bar:80}}| {{percentage:3.2f}}% [{{n_fmt}} of {{total}}] [Run: {{elapsed}} ETA: {{remaining}}]"
 
-    return tqdm(total=size, bar_format=bar_format, colour=color)
+    return tqdm(total=size, bar_format=bar_format, colour=color, leave=leave)

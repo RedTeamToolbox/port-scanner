@@ -13,6 +13,7 @@ import modules.cli as PScli
 import modules.config as PSconfig
 import modules.notify as PSnotify
 import modules.outputs as PSoutputs
+import modules.ports as PSports
 import modules.targets as PStargets
 
 
@@ -24,7 +25,7 @@ def main() -> None:
     # Increase the resource limit ??
 
     args = PScli.process_arguments()
-    config = PSconfig.build_configuration(args)
+    config = PSconfig.build_configuration(args, PSports.get_target_port_list, PStargets.get_target_ip_list)
     results = PStargets.scan_targets(config)
     PSoutputs.display_results(results, config)
 

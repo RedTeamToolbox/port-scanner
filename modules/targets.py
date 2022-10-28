@@ -3,11 +3,12 @@ Docs
 """
 import ipaddress
 import itertools
+import math
 import socket
 import sys
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
+from time import sleep
 from typing import Any
 
 import dns.resolver
@@ -91,35 +92,81 @@ def validate_targets(targets, ipv4_only, ipv6_only):
 
 # TODO: move this to somewhere else
 
-def get_all_host_port_combinations(targets, ports):
+def get_all_host_port_combinations(targets, ports) -> list[tuple]:
     """
     docs
     """
     return list(itertools.product(targets, ports))
 
 
-#
-# TODO: Move this to the scanner this is the wrong place
-#
-def scan_targets(config: PSconfig.Configuration) -> list:
+def handle_verbose_mode(thread_results: dict, pbar) -> None:
+    """
+    docs
+    """
+
+    verbose_msg = f"{thread_results['target']} port {thread_results['port']} is {thread_results['status_string']}"
+    if thread_results['status'] is True:
+        pbar.write(PSnotify.error_msg(f"[X] {verbose_msg}"))
+    else:
+        pbar.write(PSnotify.success_msg(f"[^] {verbose_msg}"))
+
+
+def get_how_many(targets: list, config: PSconfig.Configuration) -> int:
     """
     Docs
     """
-    results = []
-
-    # Take all the ips and ports and get ALL combinations
-    PSnotify.info("[*] Generating all host / port combinations")
-    targets = get_all_host_port_combinations(config.targets, config.ports)
-    if config.shuffle is True:
-        targets = PSutils.shuffled(targets)
 
     if config.threads > len(targets):
         how_many = len(targets)
     else:
         how_many = config.threads
 
-    # TODO: Add batching so you dont add to many workers at once
-    with PSutils.create_bar(f"Scanning Hosts with {how_many} threads", len(targets)) as pbar:
+    return how_many
+
+def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configuration) -> list:
+    """
+    Docs
+    """
+    results = []
+
+    number_of_batches = math.ceil(len(targets) / config.batch_size)
+    PSnotify.info(f"[+] We will execute the scans in {number_of_batches} batches with {config.batch_size} scan per batch")
+    batches = [targets[i * config.batch_size:(i + 1) * config.batch_size] for i in range((len(targets) + config.batch_size - 1) // config.batch_size )]
+
+    if how_many > config.batch_size:
+        how_many = config.batch_size
+
+    batch_counter = 0
+    
+    with PSutils.create_bar("Total", len(targets)) as pbar:
+        with ThreadPoolExecutor(max_workers=how_many) as executor:
+             with PSutils.create_bar("Batches", number_of_batches, leave = False) as pbar_batches:
+                for batch in batches:
+                    batch_counter += 1
+                    with PSutils.create_bar(f"Batches {batch_counter}", config.batch_size, leave = False) as batches:
+                        futures = [executor.submit(PSscanner.scan_target_port, target[0], target[1]) for target in batch]
+
+                        for future in as_completed(futures):
+                            pbar.update(1)
+                            batches.update(1)
+                            thread_results = future.result()
+                            if thread_results:
+                                results.append(thread_results)
+                                if config.verbose is True:
+                                    handle_verbose_mode(thread_results, pbar)
+
+                    pbar_batches.update(1)
+                    sleep(config.batch_delay)
+    return results
+
+
+def scan_targets_unbatched(targets: list, how_many: int, verbose: bool = False) -> list:
+    """
+    Docs
+    """
+    results = []
+
+    with PSutils.create_bar(f"{len(targets)} scans with {how_many} threads", len(targets)) as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
             futures = [executor.submit(PSscanner.scan_target_port, target[0], target[1]) for target in targets]
 
@@ -127,15 +174,27 @@ def scan_targets(config: PSconfig.Configuration) -> list:
                 pbar.update(1)
                 thread_results = future.result()
                 if thread_results:
-                    if config.verbose:
-                        verbose_msg = f"{thread_results['target']} port {thread_results['port']} is {thread_results['status_string']}"
-                        if thread_results['status'] is True:
-                            pbar.write(PSnotify.error_msg(f"[X] {verbose_msg}"))
-                        else:
-                            pbar.write(PSnotify.success_msg(f"[^] {verbose_msg}"))
                     results.append(thread_results)
-
+                    if verbose is True:
+                        handle_verbose_mode(thread_results, pbar)
     return results
+
+
+def scan_targets(config: PSconfig.Configuration) -> list:
+    """
+    docs
+    """
+    # Take all the ips and ports and get ALL combinations
+    PSnotify.info("[*] Generating all host / port combinations")
+    targets = get_all_host_port_combinations(config.targets, config.ports)
+    if config.shuffle is True:
+        targets = PSutils.shuffled(targets)
+    
+    how_many = get_how_many(targets, config)
+
+    if config.batched:
+        return scan_targets_batched(targets, how_many, config)
+    return scan_targets_unbatched(targets, how_many, config.verbose)
 
 
 def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:

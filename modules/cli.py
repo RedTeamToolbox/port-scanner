@@ -36,7 +36,6 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     flags.add_argument("-6", "--ipv6-only", action="store_true", help="Scan IPv6 addresses only", default=False)
     flags.add_argument("-A", "--all-results", action="store_true", help="Show or save all results (default is to list open ports only)", default=False)
     flags.add_argument("-c", "--csv", action="store_true", help="Save the results as a csv formatted file", default=False)
-    flags.add_argument("-b", "--batch", action="store_true", help="Use batches when processing the scan requests", default=False)
     flags.add_argument("-d", "--delay", action="store_true", help="Add a random delay to each thread", default=False)
     flags.add_argument("-j", "--json", action="store_true", help="Save the results as a json formatted file", default=False)
     flags.add_argument("-s", "--shuffle", action="store_true", help="Randomise the scanning order", default=False)
@@ -44,7 +43,8 @@ def setup_arg_parser() -> argparse.ArgumentParser:
 
     required.add_argument("-t", "--targets", type=str, help="A comma separated list of targets to scan")
 
-    optional.add_argument("-B", "--batch-size", type=int, help="The amount of checks to include in a batch", default=50)
+    optional.add_argument("-b", "--batch-size", type=int, help="The size of the batch to use when splitting larger scan sets (0 = no batching)", default=0)
+    optional.add_argument("-B", "--batch-delay", type=int, help="The amount of time to wait between batches in seconds", default=60)
     optional.add_argument("-D", "--delay-time", type=int, help="Random delay to use if --delay is given", default=3)
     optional.add_argument("-p", "--include-ports", type=str, help="The ports you want to scan", default="1-1024")
     optional.add_argument("-e", "--exclude-ports", type=str, help="The ports you want to exclude from a scan")
