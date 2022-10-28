@@ -8,7 +8,7 @@ import modules.ports as PSports
 import modules.targets as PStargets
 
 
-class Configuration():
+class Configuration():  # pylint: disable=too-many-instance-attributes,too-few-public-methods
     """
     Hold the global configuration
     """

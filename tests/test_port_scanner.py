@@ -1,15 +1,12 @@
 """
 Docs
 """
-from pprint import pprint
 
 import modules.constants as PSconstants
 import modules.globals as PSglobal
 import modules.notify as PSnotify
 import modules.ports as PSports
 import modules.utils as PSutils
-
-ERRORS_OCCURRED = "errors occurred:\n"
 
 
 def output_errors(errors, header = "Errors occurred:"):
