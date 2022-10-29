@@ -21,22 +21,6 @@ from tqdm import tqdm
 secretsGenerator = secrets.SystemRandom()
 
 
-def my_exit(func, message: str, code:int = 0) -> None:
-    """_summary_
-
-    _extended_summary_
-
-    Arguments:
-        func (_type_) -- _description_
-        message (str) -- _description_
-
-    Keyword Arguments:
-        code (int) -- _description_ (default: 0)
-    """
-
-    func("Fatal: No valid targets were found - Aborting!")
-    sys.exit(code)
-
 def secure_random(min_number: int, max_number: int):
     """_summary_
 

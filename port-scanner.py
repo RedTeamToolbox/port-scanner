@@ -20,9 +20,16 @@ import modules.targets as PStargets
 
 
 def main() -> None:
-    """_summary_
+    """The main function.
 
-    _extended_summary_
+    This is the main function for the port scanner. It has been kept intentionally as small as possible and just
+    defines the flow of the program.
+
+    1. Get the arguments from the user.
+    2. Create the configuration needed.
+    3. Scan the targets.
+    4. Process the results.
+    5. Exit.
     """
 
     args = PScli.process_arguments()

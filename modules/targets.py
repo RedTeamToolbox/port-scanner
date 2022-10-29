@@ -11,6 +11,7 @@ import ipaddress
 import itertools
 import math
 import socket
+import sys
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from time import sleep
@@ -196,16 +197,16 @@ def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configur
 
     number_of_batches = math.ceil(len(targets) / config.batch_size)
     PSnotify.info(f"[+] We will execute the scans in {number_of_batches} batches with {config.batch_size} scan per batch")
-    batches = [targets[i * config.batch_size:(i + 1) * config.batch_size] for i in range((len(targets) + config.batch_size - 1) // config.batch_size )]
+    batches = [targets[i * config.batch_size:(i + 1) * config.batch_size] for i in range((len(targets) + config.batch_size - 1) // config.batch_size)]
 
     if how_many > config.batch_size:
         how_many = config.batch_size
 
     batch_counter = 0
-    
+
     with PSutils.create_bar("Total", len(targets)) as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
-             with PSutils.create_bar("Batches", number_of_batches, leave = False) as pbar_batches:
+            with PSutils.create_bar("Batches", number_of_batches, leave = False) as pbar_batches:
                 for batch in batches:
                     batch_counter += 1
                     with PSutils.create_bar(f"Batches {batch_counter}", config.batch_size, leave = False) as batches:
@@ -270,7 +271,7 @@ def scan_targets(config: PSconfig.Configuration) -> list[dict]:
     targets = get_all_host_port_combinations(config.targets, config.ports)
     if config.shuffle is True:
         targets = PSutils.shuffled(targets)
-    
+
     how_many = get_how_many(targets, config)
 
     if config.batched:
@@ -298,6 +299,6 @@ def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[s
     spinner.stop()
 
     if not valid_targets:
-        PSutils.my_exit(PSnotify.error, "Fatal: No valid targets were found - Aborting!")
-
+        PSnotify.error("Fatal: No valid targets were found - Aborting!")
+        sys.exit(0)
     return valid_targets

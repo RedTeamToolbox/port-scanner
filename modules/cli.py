@@ -60,7 +60,7 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     application_flags.add_argument("-4", "--ipv4-only", action="store_true", help="Scan IPv4 addresses only", default=False)
     application_flags.add_argument("-6", "--ipv6-only", action="store_true", help="Scan IPv6 addresses only", default=False)
     application_flags.add_argument("-A", "--all-results", action="store_true", help="Show or save all results (default is to list open ports only)", default=False)
-   
+
     application_flags.add_argument("-c", "--csv", action="store_true", help="Save the results as a csv formatted file", default=False)
     application_flags.add_argument("-j", "--json", action="store_true", help="Save the results as a json formatted file", default=False)
     application_flags.add_argument("-s", "--shuffle", action="store_true", help="Randomise the scanning order", default=False)
