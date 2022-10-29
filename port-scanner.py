@@ -40,10 +40,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    """_summary_
-
-    _extended_summary_
-    """
     try:
         main()
     except KeyboardInterrupt:

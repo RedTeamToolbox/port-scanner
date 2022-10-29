@@ -9,7 +9,6 @@ line.
 """
 
 import secrets
-import sys
 
 from functools import cmp_to_key
 from operator import itemgetter
@@ -21,7 +20,7 @@ from tqdm import tqdm
 secretsGenerator = secrets.SystemRandom()
 
 
-def secure_random(min_number: int, max_number: int):
+def secure_random(min_number: int, max_number: int) -> int:
     """_summary_
 
     _extended_summary_
