@@ -1,24 +1,43 @@
-"""
-Docs
+# -*- coding: utf-8 -*-
+
+"""This is the summary line
+
+This is the further elaboration of the docstring. Within this section,
+you can elaborate further on details as appropriate for the situation.
+Notice that the summary and the elaboration is separated by a blank new
+line.
 """
 
 import ipaddress
 import re
 import socket
 
+from time import sleep
 from typing import Any
 
 import modules.globals as PSglobals
 
 
-def scan_target_port(target: str, port: int) -> dict[str, Any]:
-    """
-    docs
+def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        target (str) -- _description_
+        port (int) -- _description_
+        delay_time (int) -- _description_
+
+    Returns:
+        dict[str, Any] -- _description_
     """
     status = False
     status_string = "Closed"
     error_msg = None
     banner = None
+
+    if delay_time > 0:
+        sleep(delay_time)
 
     ip = ipaddress.ip_address(target)
     if isinstance(ip, ipaddress.IPv6Address) is True:

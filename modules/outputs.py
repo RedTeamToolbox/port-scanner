@@ -1,5 +1,11 @@
-"""
-Code for handling results processing
+# -*- coding: utf-8 -*-
+
+"""This is the summary line
+
+This is the further elaboration of the docstring. Within this section,
+you can elaborate further on details as appropriate for the situation.
+Notice that the summary and the elaboration is separated by a blank new
+line.
 """
 
 import csv
@@ -12,23 +18,33 @@ import modules.utils as PSutils
 
 
 def save_results_as_csv(results: list[dict], fname: str) -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        results (list[dict]) -- _description_
+        fname (str) -- _description_
     """
     if len(results) == 0:
         return
 
     with open(f"{fname}.csv", "w", encoding="utf-8") as outfile:
         writer = csv.writer(outfile)
-        columns = list({column for row in results for column in row.keys()})
+        columns = ['target', 'ip', 'port', 'service', 'status_string', 'banner', 'error']
         writer.writerow(columns)
         for row in results:
             writer.writerow([None if column not in row else row[column] for column in columns])
 
 
 def save_results_as_json(results: list[dict], fname: str) -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        results (list[dict]) -- _description_
+        fname (str) -- _description_
     """
     if len(results) == 0:
         return
@@ -38,8 +54,12 @@ def save_results_as_json(results: list[dict], fname: str) -> None:
 
 
 def print_table_of_results(results: list[dict]) -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        results (list[dict]) -- _description_
     """
     table = PrettyTable()
 
@@ -51,8 +71,18 @@ def print_table_of_results(results: list[dict]) -> None:
 
 
 def process_results(results: list[dict], all_results = True) -> list[dict]:
-    """
-    docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        results (list[dict]) -- _description_
+
+    Keyword Arguments:
+        all_results (bool) -- _description_ (default: True)
+
+    Returns:
+        list[dict] -- _description_
     """
     if all_results is False:
         results = [i for i in results if i['status'] is True]
@@ -60,8 +90,13 @@ def process_results(results: list[dict], all_results = True) -> list[dict]:
 
 
 def display_results(results: list[dict], config: PSconfig.Configuration) -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        results (list[dict]) -- _description_
+        config (PSconfig.Configuration) -- _description_
     """
     results = process_results(results, config.all_results)
 

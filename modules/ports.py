@@ -1,5 +1,11 @@
-"""
-Docs
+# -*- coding: utf-8 -*-
+
+"""This is the summary line
+
+This is the further elaboration of the docstring. Within this section,
+you can elaborate further on details as appropriate for the situation.
+Notice that the summary and the elaboration is separated by a blank new
+line.
 """
 
 import os.path
@@ -16,8 +22,9 @@ import modules.notify as PSnotify
 
 
 def list_all_port_rules() -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
     """
 
     print(stylize("Available rule sets:", colored.fg("cyan")))
@@ -28,8 +35,15 @@ def list_all_port_rules() -> None:
 
 
 def get_ports_by_name(port: str) -> list[int]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        port (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
     """
     ports = []
 
@@ -41,8 +55,15 @@ def get_ports_by_name(port: str) -> list[int]:
 
 
 def get_ports_by_number(port: str) -> list[int]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        port (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
     """
     ports = []
 
@@ -52,10 +73,16 @@ def get_ports_by_number(port: str) -> list[int]:
 
 
 def get_ports_from_rule(rule_name: str) -> list[int]:
-    """
-    Docs
-    """
+    """_summary_
 
+    _extended_summary_
+
+    Arguments:
+        rule_name (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
+    """
     for rule in PSconstants.PORT_RULES:
         if rule['rule'] == rule_name:
             return rule['ports']
@@ -64,8 +91,15 @@ def get_ports_from_rule(rule_name: str) -> list[int]:
 
 
 def get_ports_from_rule_sets(port: str) -> list[int]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        port (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
     """
     ports = []
 
@@ -78,26 +112,40 @@ def get_ports_from_rule_sets(port: str) -> list[int]:
 
 
 def get_ports_from_range(port: str) -> list[int]:
-    """
-    Get ports from a range
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        port (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
     """
 
     # Format A-B e.g. 1-1024
     result = re.search(r"(\d+)-(\d+)", port)
     if result is not None:
-        return list(range(int(result.group(1)), int(result.group(2))))
+        return list(range(int(result.group(1)), int(result.group(2)) + 1))
 
     # Format A:B e.g.
     result = re.search(r"(\d+):(\d+)", port)
     if result is not None:
-        return list(range(int(result.group(1)), int(result.group(2))))
+        return list(range(int(result.group(1)), int(result.group(2)) + 1))
 
     return []
 
 
 def get_port_list_from_file(port: str) -> list[str]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        port (str) -- _description_
+
+    Returns:
+        list[str] -- _description_
     """
     ports = []
 
@@ -117,8 +165,15 @@ def get_port_list_from_file(port: str) -> list[str]:
 
 
 def real_get_port_list(supplied_port_list: str) -> list[int]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        supplied_port_list (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
     """
     # This is order is important as once a port parameter is processed the loop is broken out of.
     functions_to_call = [get_ports_from_range, get_ports_from_rule_sets, get_ports_by_number, get_ports_by_name]
@@ -138,8 +193,15 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
 
 
 def get_port_list(supplied_port_list: str) -> list[int]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        supplied_port_list (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
     """
     # If there is a filename we need to pull the lists out of the file first!
     generated_port_list = []
@@ -155,8 +217,16 @@ def get_port_list(supplied_port_list: str) -> list[int]:
 
 
 def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        include_ports (str) -- _description_
+        exclude_ports (str) -- _description_
+
+    Returns:
+        list[int] -- _description_
     """
     include_port_list = []
     exclude_port_list = []

@@ -1,8 +1,15 @@
-"""
-A set of utility functions
+# -*- coding: utf-8 -*-
+
+"""This is the summary line
+
+This is the further elaboration of the docstring. Within this section,
+you can elaborate further on details as appropriate for the situation.
+Notice that the summary and the elaboration is separated by a blank new
+line.
 """
 
 import secrets
+import sys
 
 from functools import cmp_to_key
 from operator import itemgetter
@@ -14,23 +21,63 @@ from tqdm import tqdm
 secretsGenerator = secrets.SystemRandom()
 
 
-def secure_random(min_number: int, max_number: int):
+def my_exit(func, message: str, code:int = 0) -> None:
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        func (_type_) -- _description_
+        message (str) -- _description_
+
+    Keyword Arguments:
+        code (int) -- _description_ (default: 0)
     """
-    docs
+
+    func("Fatal: No valid targets were found - Aborting!")
+    sys.exit(code)
+
+def secure_random(min_number: int, max_number: int):
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        min_number (int) -- _description_
+        max_number (int) -- _description_
+
+    Returns:
+        _type_ -- _description_
     """
     return secretsGenerator.randint(min_number, max_number)
 
 
 def cmp(x, y) -> Any:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        x (_type_) -- _description_
+        y (_type_) -- _description_
+
+    Returns:
+        Any -- _description_
     """
     return (x > y) - (x < y)
 
 
 def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        items (list[dict]) -- _description_
+        columns (list[str]) -- _description_
+
+    Returns:
+        list[dict] -- _description_
     """
     comparers = [
         ((itemgetter(col[1:].strip()), -1) if col.startswith("-") else (itemgetter(col.strip()), 1))
@@ -47,8 +94,18 @@ def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
 
 
 def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
-    """
-    Simple function to shuffle the order of a list
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        things (list[Any]) -- _description_
+
+    Keyword Arguments:
+        depth (int) -- _description_ (default: 1)
+
+    Returns:
+        list[Any] -- _description_
     """
     results = []
 
@@ -65,8 +122,20 @@ def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
 
 
 def create_bar(prefix: str, size: int, color: str = "cyan", leave: bool = True):
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        prefix (str) -- _description_
+        size (int) -- _description_
+
+    Keyword Arguments:
+        color (str) -- _description_ (default: "cyan")
+        leave (bool) -- _description_ (default: True)
+
+    Returns:
+        _type_ -- _description_
     """
     bar_format = f"{prefix} |{{bar:80}}| {{percentage:3.2f}}% [{{n_fmt}} of {{total}}] [Run: {{elapsed}} ETA: {{remaining}}]"
 

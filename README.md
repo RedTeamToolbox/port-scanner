@@ -11,7 +11,7 @@
     </a>
     <a href="https://codecov.io/gh/SecOpsToolbox/port-scanner">
         <img src="https://img.shields.io/codecov/c/gh/SecOpsToolbox/port-scanner?label=code%20coverage&style=for-the-badge" alt="code coverage" />
-    </p>
+    </a>
     <br />
     <a href="https://github.com/SecOpsToolbox/threaded-portscanner/blob/master/.github/CODE_OF_CONDUCT.md">
         <img src="https://img.shields.io/badge/Code%20of%20Conduct-blue?style=for-the-badge" />

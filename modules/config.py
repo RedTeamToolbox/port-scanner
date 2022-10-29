@@ -1,14 +1,22 @@
-"""
-Global configuration
+# -*- coding: utf-8 -*-
+
+"""This is the summary line
+
+This is the further elaboration of the docstring. Within this section,
+you can elaborate further on details as appropriate for the situation.
+Notice that the summary and the elaboration is separated by a blank new
+line.
 """
 
 import argparse
 
 
 class Configuration():  # pylint: disable=too-many-instance-attributes,too-few-public-methods
+    """Store configuration
+
+    _extended_summary_
     """
-    Hold the global configuration
-    """
+
     ports = []
     targets = []
     quiet = False
@@ -22,16 +30,25 @@ class Configuration():  # pylint: disable=too-many-instance-attributes,too-few-p
     batch_size = False
     batch_delay = 0
     batched = False
-    delay = False  # TODO: make this do something
-    delay_time = 0  # TODO: make this do something
+    delay_time = 0
     filename = ''
     threads = 0
 
 
-def build_configuration(args: argparse.Namespace, get_target_port_list_fn, get_target_ip_list_fn) -> Configuration:
+def build_configuration(args: argparse.Namespace, get_target_port_list_fn, get_target_ip_list_fn ) -> Configuration:
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        args (argparse.Namespace) -- _description_
+        get_target_port_list_fn (_type_) -- _description_
+        get_target_ip_list_fn (_type_) -- _description_
+
+    Returns:
+        Configuration -- _description_
     """
-    Docs
-    """
+
     config = Configuration()
 
     config.ports = get_target_port_list_fn(args.include_ports, args.exclude_ports)
@@ -46,7 +63,6 @@ def build_configuration(args: argparse.Namespace, get_target_port_list_fn, get_t
     config.json = args.json
     config.batch_size = args.batch_size
     config.batch_delay = args.batch_delay
-    config.delay = args.delay
     config.delay_time = args.delay_time
     config.filename = args.filename
     config.threads = args.threads

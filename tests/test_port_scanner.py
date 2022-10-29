@@ -1,5 +1,11 @@
-"""
-Docs
+# -*- coding: utf-8 -*-
+
+"""This is the summary line
+
+This is the further elaboration of the docstring. Within this section,
+you can elaborate further on details as appropriate for the situation.
+Notice that the summary and the elaboration is separated by a blank new
+line.
 """
 
 import modules.constants as PSconstants
@@ -10,8 +16,15 @@ import modules.utils as PSutils
 
 
 def output_errors(errors, header = "Errors occurred:"):
-    """
-    Output the errors
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        errors (_type_) -- _description_
+
+    Keyword Arguments:
+        header (str) -- _description_ (default: "Errors occurred:")
     """
 
     print(header)
@@ -20,8 +33,12 @@ def output_errors(errors, header = "Errors occurred:"):
 
 
 def test_notify(capfd) -> None:
-    """
-    test notify
+    """_summary_
+
+    _extended_summary_
+
+    Arguments:
+        capfd (_type_) -- _description_
     """
     tests = [
               {"function": PSnotify.success, "color": PSconstants.SUCCESS, "strip": True, "return_value": False},
@@ -56,8 +73,9 @@ def test_notify(capfd) -> None:
 
 
 def test_globals() -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
     """
     tests = [PSglobal.host_ip_mapping, PSglobal.ip_ipnum_mapping, PSglobal.service_name_mapping]
     errors = []
@@ -72,8 +90,9 @@ def test_globals() -> None:
 
 
 def test_ports() -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
     """
     errors = []
     count = 0
@@ -92,8 +111,9 @@ def test_ports() -> None:
 
 
 def test_utils() -> None:
-    """
-    Docs
+    """_summary_
+
+    _extended_summary_
     """
     errors = []
     count = 0
