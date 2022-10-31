@@ -13,10 +13,9 @@ import re
 import socket
 import sys
 
-from yaspin import yaspin
-
 import modules.constants as PSconstants
 import modules.notify as PSnotify
+import modules.utils as PSutils
 
 
 def __get_ports_by_name(port: str) -> list[int]:
@@ -217,7 +216,7 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
     exclude_port_list = []
     port_list = []
 
-    with yaspin(text=PSnotify.info_msg("[*] Generating a list of all target ports"), timer=True) as spinner:
+    with PSutils.create_spinner(PSnotify.info_msg("[*] Processing target port list")) as spinner:
         include_port_list = __get_port_list(include_ports)
         if exclude_ports is not None:
             exclude_port_list = __get_port_list(exclude_ports)
@@ -225,7 +224,6 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
                 port_list = [x for x in include_port_list if x not in exclude_port_list]
         else:
             port_list = include_port_list
-    spinner.stop()
 
     if not port_list:
         PSnotify.error("Fatal: No valid ports were found - Aborting!")

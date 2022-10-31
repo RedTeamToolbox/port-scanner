@@ -23,6 +23,7 @@ class Configuration:  # pylint: disable=too-many-instance-attributes,too-few-pub
     targets: list = field(default_factory=list)
     quiet: bool = False
     verbose: bool = False
+    debug: bool = False
     shuffle: bool = True
     ipv4_only: bool = False
     ipv6_only: bool = False
@@ -53,6 +54,7 @@ def build_configuration(args: argparse.Namespace) -> Configuration:
 
     config.quiet = args.quiet
     config.verbose = args.verbose
+    config.debug = args.debug
     config.shuffle = args.shuffle
     config.ipv4_only = args.ipv4_only
     config.ipv6_only = args.ipv6_only

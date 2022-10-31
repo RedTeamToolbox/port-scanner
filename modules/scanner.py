@@ -99,7 +99,7 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
            }
 
 
-def handle_verbose_mode(thread_results: dict, pbar) -> None:
+def handle_verbose_mode(thread_results: dict) -> None:
     """_summary_
 
     Args:
@@ -109,9 +109,9 @@ def handle_verbose_mode(thread_results: dict, pbar) -> None:
 
     verbose_msg = f"{thread_results['target']} port {thread_results['port']} is {thread_results['status_string']}"
     if thread_results['status'] is True:
-        pbar.write(PSnotify.error_msg(f"[X] {verbose_msg}"))
+        print(PSnotify.error_msg(f"[X] {verbose_msg}"))
     else:
-        pbar.write(PSnotify.success_msg(f"[^] {verbose_msg}"))
+        print(PSnotify.success_msg(f"[^] {verbose_msg}"))
 
 
 def get_how_many(targets: list, config: PSconfig.Configuration) -> int:
@@ -159,25 +159,25 @@ def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configur
 
     batch_counter = 0
 
-    with PSutils.create_bar("Total", len(targets)) as pbar:
+    with PSutils.create_alive_bar(len(targets), title=f"{len(targets)} scans with {how_many} threads") as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
-            with PSutils.create_bar("Batches", number_of_batches, leave = False) as pbar_batches:
-                for batch in batches:
-                    batch_counter += 1
-                    with PSutils.create_bar(f"Batches {batch_counter}", config.batch_size, leave = False) as batches:
-                        futures = [executor.submit(scan_target_port, target[0], target[1], config.delay_time) for target in batch]
+            for batch in batches:
+                pbar.text = PSnotify.info_msg("Status: Submitting jobs for batch {batch_counter}")
+                batch_counter += 1
 
-                        for future in as_completed(futures):
-                            pbar.update(1)
-                            batches.update(1)
-                            thread_results = future.result()
-                            if thread_results:
-                                results.append(thread_results)
-                                if config.verbose is True:
-                                    handle_verbose_mode(thread_results, pbar)
+                futures = [executor.submit(scan_target_port, target[0], target[1], config.delay_time) for target in batch]
+                pbar.text = PSnotify.info_msg(f"Status: Batch {batch_counter} jobs submitted - awaiting results")
 
-                    pbar_batches.update(1)
-                    sleep(config.batch_delay)
+                for future in as_completed(futures):
+                    pbar.text = PSnotify.info_msg(f"Status: Processing results for batch {batch_counter}")
+                    pbar()
+                    thread_results = future.result()
+                    if thread_results:
+                        results.append(thread_results)
+                        if config.verbose is True:
+                            handle_verbose_mode(thread_results)
+
+                sleep(config.batch_delay)
     return results
 
 
@@ -196,17 +196,20 @@ def scan_targets_unbatched(targets: list, how_many: int, config: PSconfig.Config
     """
     results = []
 
-    with PSutils.create_bar(f"{len(targets)} scans with {how_many} threads", len(targets)) as pbar:
+    with PSutils.create_alive_bar(len(targets), title=f"{len(targets)} scans with {how_many} threads") as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
+            pbar.text = PSnotify.info_msg("Status: Submitting jobs")
             futures = [executor.submit(scan_target_port, target[0], target[1], config.delay_time) for target in targets]
+            pbar.text = PSnotify.info_msg("Status: Jobs submitted - awaiting results")
 
             for future in as_completed(futures):
-                pbar.update(1)
+                pbar()
+                pbar.text = PSnotify.info_msg("Status: Processing results")
                 thread_results = future.result()
                 if thread_results:
                     results.append(thread_results)
                     if config.verbose is True:
-                        handle_verbose_mode(thread_results, pbar)
+                        handle_verbose_mode(thread_results)
     return results
 
 
@@ -221,11 +224,11 @@ def scan_targets(config: PSconfig.Configuration) -> list[dict]:
     Returns:
         list[dict] -- _description_
     """
-    # Take all the ips and ports and get ALL combinations
-    PSnotify.info("[*] Generating all host / port combinations")
-    targets = PStargets.get_all_host_port_combinations(config.targets, config.ports)
-    if config.shuffle is True:
-        targets = PSordering.shuffled(targets)
+
+    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating all host / port combinations")) as spinner:
+        targets = PStargets.get_all_host_port_combinations(config.targets, config.ports)
+        if config.shuffle is True:
+            targets = PSordering.shuffled(targets)
 
     how_many = get_how_many(targets, config)
 

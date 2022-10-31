@@ -15,12 +15,10 @@ import sys
 from typing import Any
 
 import dns.resolver
-import colored
-from colored import stylize
-from yaspin import yaspin
 
 import modules.globals as PSglobals
 import modules.notify as PSnotify
+import modules.utils as PSutils
 
 
 def is_ip_address(target: str) -> Any:
@@ -114,7 +112,7 @@ def validate_targets(targets: list[str], ipv4_only: bool, ipv6_only: bool) -> li
                 valid_targets.append(ip)
 
         except socket.gaierror:
-            print(stylize(f"{target} is not valid - Skipping)", colored.fg("yellow")))
+            PSnotify.warn(f"{target} is not valid - Skipping)")
 
     # Now we need to remove any duplicates and sort
     valid_targets = sorted(list(set(valid_targets)))
@@ -152,10 +150,9 @@ def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[s
         list[str] -- _description_
     """
 
-    with yaspin(text=PSnotify.info_msg("[*] Generating a list of all target IP address"), timer=True) as spinner:
+    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating a list of all target IP address")) as spinner:
         target_list = targets.split(",")
         valid_targets = validate_targets(target_list, ipv4_only, ipv6_only)
-    spinner.stop()
 
     if not valid_targets:
         PSnotify.error("Fatal: No valid targets were found - Aborting!")

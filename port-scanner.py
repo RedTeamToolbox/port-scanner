@@ -5,8 +5,6 @@
 
 Usage:
     ./port-scan.py [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-j] [-s] [-r] [-t TARGETS] [-b BATCH_SIZE] [-B BATCH_DELAY] [-d DELAY_TIME] [-p INCLUDE_PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
-
-
 """
 
 import sys
@@ -28,9 +26,11 @@ def main() -> None:
 
     1. Get the arguments from the user.
     2. Create the configuration needed.
-    3. Scan the targets.
-    4. Process the results.
-    5. Exit.
+    3. Work out what ports needs to be scanned.
+    4. Work out what target ips need to be scanned.
+    5. Scan the targets / ports.
+    6. Process the results.
+    7. Exit.
     """
 
     args = PScli.process_command_line_arguments()
@@ -46,4 +46,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        PSnotify.info("[*] Exiting Program")
+        PSnotify.info("\n[*] Exiting Program\n")

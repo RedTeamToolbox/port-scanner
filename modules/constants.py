@@ -26,7 +26,7 @@ EPILOG = "For more detailed documentation please refer to: https://github.com/Se
 
 PORT_RULES = [
     # all available ports
-    {"rule": "all-ports", "ports": list(range(1, 65535))},
+    {"rule": "all-ports", "ports": range(1, 65535)},
     # mssql server, mssql browser, ingres, mysql, postgresql
     {"rule": "databases", "ports": [1433, 1434, 1524, 3306, 5432]},
     # smtp, pop3, imap, submission
