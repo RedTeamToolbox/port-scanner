@@ -17,19 +17,20 @@ import modules.notify as PSnotify
 import modules.ports as PSports
 
 
-class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+def __list_all_port_rules() -> None:
     """_summary_
 
     _extended_summary_
-
-    Arguments:
-        argparse (_type_) -- _description_
-        argparse (_type_) -- _description_
     """
-    pass
+
+    PSnotify.info("Available rule sets:")
+    count = 0
+    for rule in PSconstants.PORT_RULES:
+        count += 1
+        print(f"  Rule {count}: '{rule['rule']}': {rule['ports']}")
 
 
-def setup_arg_parser() -> argparse.ArgumentParser:
+def __setup_arg_parser() -> argparse.ArgumentParser:
     """_summary_
 
     _extended_summary_
@@ -47,7 +48,8 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     """
     default_threads = multiprocessing.cpu_count() * 5
 
-    parser = argparse.ArgumentParser(prog="port-scan", description="Check for open port(s) on target host(s)", add_help=False, epilog=PSconstants.EPILOG, formatter_class=CustomFormatter)
+    parser = argparse.ArgumentParser(prog="port-scan", description="Check for open port(s) on target host(s)", add_help=False, epilog=PSconstants.EPILOG)
+
     system_flags = parser.add_argument_group("system flags")
     application_flags = parser.add_argument_group("application flags")
     required = parser.add_argument_group("required arguments")
@@ -61,8 +63,6 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     application_flags.add_argument("-6", "--ipv6-only", action="store_true", help="Scan IPv6 addresses only", default=False)
     application_flags.add_argument("-A", "--all-results", action="store_true", help="Show or save all results (default is to list open ports only)", default=False)
 
-    application_flags.add_argument("-c", "--csv", action="store_true", help="Save the results as a csv formatted file", default=False)
-    application_flags.add_argument("-j", "--json", action="store_true", help="Save the results as a json formatted file", default=False)
     application_flags.add_argument("-s", "--shuffle", action="store_true", help="Randomise the scanning order", default=False)
     application_flags.add_argument("-r", "--list-rules", action="store_true", help="List the available rules", default=False)
 
@@ -79,7 +79,7 @@ def setup_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def process_arguments() -> argparse.Namespace:
+def process_command_line_arguments() -> argparse.Namespace:
     """_summary_
 
     _extended_summary_
@@ -88,11 +88,11 @@ def process_arguments() -> argparse.Namespace:
         argparse.Namespace -- _description_
     """
 
-    parser = setup_arg_parser()
+    parser = __setup_arg_parser()
     args = parser.parse_args()
 
     if args.list_rules is True:
-        PSports.list_all_port_rules()
+        __list_all_port_rules()
         sys.exit(0)
 
     if args.include_ports is None:

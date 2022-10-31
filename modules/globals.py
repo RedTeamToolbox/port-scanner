@@ -8,6 +8,10 @@ Notice that the summary and the elaboration is separated by a blank new
 line.
 """
 
+import secrets
+
 host_ip_mapping = {}
 ip_ipnum_mapping = {}
 service_name_mapping = {}
+
+secretsGenerator = secrets.SystemRandom()

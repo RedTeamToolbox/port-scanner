@@ -11,7 +11,8 @@ line.
 import modules.constants as PSconstants
 import modules.globals as PSglobal
 import modules.notify as PSnotify
-import modules.ports as PSports
+import modules.ordering as PSordering
+import modules.random as PSrandom
 import modules.utils as PSutils
 
 
@@ -89,27 +90,6 @@ def test_globals() -> None:
     assert not errors, output_errors(errors)  # nosec: B101
 
 
-def test_ports() -> None:
-    """_summary_
-
-    _extended_summary_
-    """
-    errors = []
-    count = 0
-
-    port = PSports.get_ports_by_number("22")
-    count += 1
-    if port != [22]:
-        errors.append(f"Test {count} get_ports_by_name'ssh' failed: {port}")
-
-    port = PSports.get_ports_by_name("ssh")
-    count += 1
-    if port != [22]:
-        errors.append(f"Test {count} get_ports_by_name'ssh' failed: {port}")
-
-    assert not errors, output_errors(errors)  # nosec: B101
-
-
 def test_utils() -> None:
     """_summary_
 
@@ -123,28 +103,28 @@ def test_utils() -> None:
     multisort_test_list = [{"name": "wolf"}, {"name": "software"}]
     multisort_sorted_list = [{"name": "software"}, {"name": "wolf"}]
 
-    rint = PSutils.secure_random(1, 10)
+    rint = PSrandom.secure_random(1, 10)
     count += 1
     if rint not in range(1, 11):
         errors.append(f"Test {count} security_random failed: {rint}")
 
-    slist = PSutils.shuffled(test_list, 0)
+    slist = PSordering.shuffled(test_list, 0)
     count += 1
     if slist != test_list:
         errors.append(f"Test {count} shuffled failed failed: {slist}")
 
-    slist = PSutils.shuffled(test_list)
+    slist = PSordering.shuffled(test_list)
     count += 1
     if slist == test_list:
         errors.append(f"Test {count} shuffled failed failed: {slist}")
 
-    slist = PSutils.shuffled(test_list_2)
+    slist = PSordering.shuffled(test_list_2)
     count += 1
     if slist == test_list:
         errors.append(f"Test {count} shuffled failed failed: {slist}")
 
     count += 1
-    sorted_list = PSutils.multikeysort(multisort_test_list, ['name'])
+    sorted_list = PSordering.multikeysort(multisort_test_list, ['name'])
     if sorted_list != multisort_sorted_list:
         errors.append(f"Test {count} multi sort failed: {multisort_test_list} vs {multisort_sorted_list}")
 

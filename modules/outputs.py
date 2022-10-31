@@ -14,7 +14,7 @@ import json
 from prettytable import PrettyTable
 
 import modules.config as PSconfig
-import modules.utils as PSutils
+import modules.ordering as PSOrdering
 
 
 def save_results_as_csv(results: list[dict], fname: str) -> None:
@@ -86,7 +86,7 @@ def process_results(results: list[dict], all_results = True) -> list[dict]:
     """
     if all_results is False:
         results = [i for i in results if i['status'] is True]
-    return PSutils.multikeysort(results, ['target', 'ipnum', 'port'])
+    return PSOrdering.multikeysort(results, ['target', 'ipnum', 'port'])
 
 
 def display_results(results: list[dict], config: PSconfig.Configuration) -> None:
@@ -100,9 +100,6 @@ def display_results(results: list[dict], config: PSconfig.Configuration) -> None
     """
     results = process_results(results, config.all_results)
 
-    if config.csv is True:
-        save_results_as_csv(results, config.filename)
-    if config.json is True:
-        save_results_as_json(results, config.filename)
+    # TODO Save the results in cache files?
     if config.quiet is False:
         print_table_of_results(results)

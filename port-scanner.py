@@ -16,6 +16,7 @@ import modules.config as PSconfig
 import modules.notify as PSnotify
 import modules.outputs as PSoutputs
 import modules.ports as PSports
+import modules.scanner as PSscanner
 import modules.targets as PStargets
 
 
@@ -32,9 +33,11 @@ def main() -> None:
     5. Exit.
     """
 
-    args = PScli.process_arguments()
-    config = PSconfig.build_configuration(args, PSports.get_target_port_list, PStargets.get_target_ip_list)
-    results = PStargets.scan_targets(config)
+    args = PScli.process_command_line_arguments()
+    config = PSconfig.build_configuration(args)
+    config.ports = PSports.get_target_port_list(args.include_ports, args.exclude_ports)
+    config.targets = PStargets.get_target_ip_list(args.targets, args.ipv4_only, args.ipv6_only)
+    results = PSscanner.scan_targets(config)
     PSoutputs.display_results(results, config)
     sys.exit(0)
 

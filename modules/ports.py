@@ -13,28 +13,13 @@ import re
 import socket
 import sys
 
-import colored
-from colored import stylize
 from yaspin import yaspin
 
 import modules.constants as PSconstants
 import modules.notify as PSnotify
 
 
-def list_all_port_rules() -> None:
-    """_summary_
-
-    _extended_summary_
-    """
-
-    print(stylize("Available rule sets:", colored.fg("cyan")))
-    count = 0
-    for rule in PSconstants.PORT_RULES:
-        count += 1
-        print(f"  Rule {count}: '{rule['rule']}': {rule['ports']}")
-
-
-def get_ports_by_name(port: str) -> list[int]:
+def __get_ports_by_name(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -54,7 +39,7 @@ def get_ports_by_name(port: str) -> list[int]:
     return ports
 
 
-def get_ports_by_number(port: str) -> list[int]:
+def __get_ports_by_number(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -72,7 +57,7 @@ def get_ports_by_number(port: str) -> list[int]:
     return ports
 
 
-def get_ports_from_rule(rule_name: str) -> list[int]:
+def __get_ports_from_rule(rule_name: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -90,7 +75,7 @@ def get_ports_from_rule(rule_name: str) -> list[int]:
     return []
 
 
-def get_ports_from_rule_sets(port: str) -> list[int]:
+def __get_ports_from_rule_sets(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -107,11 +92,11 @@ def get_ports_from_rule_sets(port: str) -> list[int]:
     if match_results is not None:
         rule_sets = match_results.group(1)
         for rule in rule_sets.split(","):
-            ports += get_ports_from_rule(rule)
+            ports += __get_ports_from_rule(rule)
     return ports
 
 
-def get_ports_from_range(port: str) -> list[int]:
+def __get_ports_from_range(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -136,7 +121,7 @@ def get_ports_from_range(port: str) -> list[int]:
     return []
 
 
-def get_port_list_from_file(port: str) -> list[str]:
+def __get_port_list_from_file(port: str) -> list[str]:
     """_summary_
 
     _extended_summary_
@@ -176,7 +161,7 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
         list[int] -- _description_
     """
     # This is order is important as once a port parameter is processed the loop is broken out of.
-    functions_to_call = [get_ports_from_range, get_ports_from_rule_sets, get_ports_by_number, get_ports_by_name]
+    functions_to_call = [__get_ports_from_range, __get_ports_from_rule_sets, __get_ports_by_number, __get_ports_by_name]
     generate_post_ports = []
 
     for port in supplied_port_list.split(","):
@@ -192,7 +177,7 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
     return generate_post_ports
 
 
-def get_port_list(supplied_port_list: str) -> list[int]:
+def __get_port_list(supplied_port_list: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -207,7 +192,7 @@ def get_port_list(supplied_port_list: str) -> list[int]:
     generated_port_list = []
 
     for port in supplied_port_list.split(","):
-        port_list = get_port_list_from_file(port)
+        port_list = __get_port_list_from_file(port)
         if port_list:
             generated_port_list += port_list
         else:
@@ -233,9 +218,9 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
     port_list = []
 
     with yaspin(text=PSnotify.info_msg("[*] Generating a list of all target ports"), timer=True) as spinner:
-        include_port_list = get_port_list(include_ports)
+        include_port_list = __get_port_list(include_ports)
         if exclude_ports is not None:
-            exclude_port_list = get_port_list(exclude_ports)
+            exclude_port_list = __get_port_list(exclude_ports)
             if exclude_port_list:
                 port_list = [x for x in include_port_list if x not in exclude_port_list]
         else:
