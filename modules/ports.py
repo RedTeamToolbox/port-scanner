@@ -216,7 +216,7 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
     exclude_port_list = []
     port_list = []
 
-    with PSutils.create_spinner(PSnotify.info_msg("[*] Processing target port list")) as spinner:
+    with PSutils.create_spinner(PSnotify.info_msg("[*] Processing target port list")):
         include_port_list = __get_port_list(include_ports)
         if exclude_ports is not None:
             exclude_port_list = __get_port_list(exclude_ports)

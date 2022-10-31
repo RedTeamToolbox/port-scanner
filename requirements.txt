@@ -1,6 +1,4 @@
+alive_progress==2.4.1
 colorama==0.4.5
-colored==1.4.3
 dnspython==2.2.1
 prettytable==2.1.0
-tqdm==4.64.1
-yaspin==2.2.0

@@ -150,7 +150,7 @@ def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[s
         list[str] -- _description_
     """
 
-    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating a list of all target IP address")) as spinner:
+    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating a list of all target IP address")):
         target_list = targets.split(",")
         valid_targets = validate_targets(target_list, ipv4_only, ipv6_only)
 

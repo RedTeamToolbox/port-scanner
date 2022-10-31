@@ -17,5 +17,3 @@ ip_ipnum_mapping = {}
 service_name_mapping = {}
 
 secretsGenerator = secrets.SystemRandom()
-
-config = Configuration()

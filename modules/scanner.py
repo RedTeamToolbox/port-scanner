@@ -225,7 +225,7 @@ def scan_targets(config: PSconfig.Configuration) -> list[dict]:
         list[dict] -- _description_
     """
 
-    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating all host / port combinations")) as spinner:
+    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating all host / port combinations")):
         targets = PStargets.get_all_host_port_combinations(config.targets, config.ports)
         if config.shuffle is True:
             targets = PSordering.shuffled(targets)
