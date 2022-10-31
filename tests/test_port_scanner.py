@@ -13,7 +13,6 @@ import modules.globals as PSglobal
 import modules.notify as PSnotify
 import modules.ordering as PSordering
 import modules.random as PSrandom
-import modules.utils as PSutils
 
 
 def output_errors(errors, header = "Errors occurred:"):

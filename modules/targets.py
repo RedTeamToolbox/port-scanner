@@ -19,12 +19,8 @@ import colored
 from colored import stylize
 from yaspin import yaspin
 
-import modules.config as PSconfig
 import modules.globals as PSglobals
 import modules.notify as PSnotify
-import modules.ordering as PSordering
-import modules.scanner as PSscanner
-import modules.utils as PSutils
 
 
 def is_ip_address(target: str) -> Any:
@@ -140,8 +136,6 @@ def get_all_host_port_combinations(targets: list[str], ports: list[int]) -> list
         list[tuple] -- _description_
     """
     return list(itertools.product(targets, ports))
-
-
 
 
 def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:

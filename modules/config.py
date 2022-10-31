@@ -11,6 +11,7 @@ line.
 import argparse
 from dataclasses import dataclass, field
 
+
 @dataclass
 class Configuration:  # pylint: disable=too-many-instance-attributes,too-few-public-methods
     """_summary_
@@ -27,7 +28,7 @@ class Configuration:  # pylint: disable=too-many-instance-attributes,too-few-pub
     ipv6_only: bool = False
     all_results: bool = False
     batch_size: int = 3
-    batch_delay: int  = 0
+    batch_delay: int = 0
     batched: bool = False
     delay_time: int = 0
     filename: str = ''

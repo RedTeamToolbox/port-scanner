@@ -14,7 +14,6 @@ import sys
 
 import modules.constants as PSconstants
 import modules.notify as PSnotify
-import modules.ports as PSports
 
 
 def __list_all_port_rules() -> None:

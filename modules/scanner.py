@@ -56,7 +56,7 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
         sock.settimeout(1)
         try:
             sock.connect((target, port))
-            #sock.settimeout(3)
+            # sock.settimeout(3)
             status_string = "Open"
             status = True
             try:
@@ -97,6 +97,7 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
             "banner": banner,
             "error": error_msg
            }
+
 
 def handle_verbose_mode(thread_results: dict, pbar) -> None:
     """_summary_
@@ -231,4 +232,3 @@ def scan_targets(config: PSconfig.Configuration) -> list[dict]:
     if config.batched:
         return scan_targets_batched(targets, how_many, config)
     return scan_targets_unbatched(targets, how_many, config)
-
