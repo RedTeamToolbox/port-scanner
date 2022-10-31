@@ -170,7 +170,7 @@ def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configur
 
                 for future in as_completed(futures):
                     pbar.text = PSnotify.info_msg(f"Status: Processing results for batch {batch_counter}")
-                    pbar()
+                    pbar()  # pylint: disable=not-callable
                     thread_results = future.result()
                     if thread_results:
                         results.append(thread_results)
@@ -203,7 +203,7 @@ def scan_targets_unbatched(targets: list, how_many: int, config: PSconfig.Config
             pbar.text = PSnotify.info_msg("Status: Jobs submitted - awaiting results")
 
             for future in as_completed(futures):
-                pbar()
+                pbar()  # pylint: disable=not-callable
                 pbar.text = PSnotify.info_msg("Status: Processing results")
                 thread_results = future.result()
                 if thread_results:

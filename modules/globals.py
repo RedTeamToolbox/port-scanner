@@ -10,8 +10,6 @@ line.
 
 import secrets
 
-from modules.config import Configuration
-
 host_ip_mapping = {}
 ip_ipnum_mapping = {}
 service_name_mapping = {}
