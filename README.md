@@ -1,28 +1,28 @@
 <p align="center">
-    <a href="https://github.com/SecOpsToolbox/">
-        <img src="https://cdn.wolfsoftware.com/assets/images/github/organisations/secopstoolbox/black-and-white-circle-256.png" alt="SecOpsToolbox logo" />
+    <a href="https://github.com/OffSecToolbox/">
+        <img src="https://cdn.wolfsoftware.com/assets/images/github/organisations/offsectoolbox/black-and-white-circle-256.png" alt="OffSecToolbox logo" />
     </a>
     <br />
-    <a href="https://github.com/SecOpsToolbox/threaded-portscanner/actions/workflows/cicd-pipeline-shared.yml">
-        <img src="https://img.shields.io/github/workflow/status/SecOpsToolbox/threaded-portscanner/CICD%20Pipeline%20(Shared)/master?label=shared%20pipeline&style=for-the-badge" alt="Github Build Status" />
+    <a href="https://github.com/OffSecToolbox/threaded-portscanner/actions/workflows/cicd-pipeline-shared.yml">
+        <img src="https://img.shields.io/github/workflow/status/OffSecToolbox/port-scanner/CICD%20Pipeline%20(Shared)/master?label=shared%20pipeline&style=for-the-badge" alt="Github Build Status" />
     </a>
-    <a href="https://github.com/SecOpsToolbox/threaded-portscanner/actions/workflows/cicd-pipeline-custom.yml">
-        <img src="https://img.shields.io/github/workflow/status/SecOpsToolbox/threaded-portscanner/CICD%20Pipeline%20(Custom)/master?label=custom%20pipeline&style=for-the-badge" alt="Github Build Status" />
+    <a href="https://github.com/OffSecToolbox/threaded-portscanner/actions/workflows/cicd-pipeline-custom.yml">
+        <img src="https://img.shields.io/github/workflow/status/OffSecToolbox/port-scanner/CICD%20Pipeline%20(Custom)/master?label=custom%20pipeline&style=for-the-badge" alt="Github Build Status" />
     </a>
-    <a href="https://codecov.io/gh/SecOpsToolbox/port-scanner">
-        <img src="https://img.shields.io/codecov/c/gh/SecOpsToolbox/port-scanner?label=code%20coverage&style=for-the-badge" alt="code coverage" />
+    <a href="https://codecov.io/gh/OffSecToolbox/port-scanner">
+        <img src="https://img.shields.io/codecov/c/gh/OffSecToolbox/port-scanner?label=code%20coverage&style=for-the-badge" alt="code coverage" />
     </a>
     <br />
-    <a href="https://github.com/SecOpsToolbox/threaded-portscanner/blob/master/.github/CODE_OF_CONDUCT.md">
+    <a href="https://github.com/OffSecToolbox/threaded-portscanner/blob/master/.github/CODE_OF_CONDUCT.md">
         <img src="https://img.shields.io/badge/Code%20of%20Conduct-blue?style=for-the-badge" />
     </a>
-    <a href="https://github.com/SecOpsToolbox/threaded-portscanner/blob/master/.github/CONTRIBUTING.md">
+    <a href="https://github.com/OffSecToolbox/threaded-portscanner/blob/master/.github/CONTRIBUTING.md">
         <img src="https://img.shields.io/badge/Contributing-blue?style=for-the-badge" />
     </a>
-    <a href="https://github.com/SecOpsToolbox/threaded-portscanner/blob/master/.github/SECURITY.md">
+    <a href="https://github.com/OffSecToolbox/threaded-portscanner/blob/master/.github/SECURITY.md">
         <img src="https://img.shields.io/badge/Report%20Security%20Concern-blue?style=for-the-badge" />
     </a>
-    <a href="https://github.com/SecOpsToolbox/threaded-portscanner/issues">
+    <a href="https://github.com/OffSecToolbox/threaded-portscanner/issues">
         <img src="https://img.shields.io/badge/Get%20Support-blue?style=for-the-badge" />
     </a>
 </p>
@@ -87,7 +87,7 @@ optional arguments:
   -f FILENAME, --filename FILENAME
                         The filename to save the results to (default: portscan-results)
 
-For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner
+For more detailed documentation please refer to: https://github.com/OffSecToolbox/port-scanner
 ```
 > The default number of threads is calculated based on your server. (default_threads = multiprocessing.cpu_count() * 5). However if the number of ports you are testing is less than the default then the default is lowered to the number of checks.
 
