@@ -3,26 +3,26 @@
         <img src="https://cdn.wolfsoftware.com/assets/images/github/organisations/offsectoolbox/black-and-white-circle-256.png" alt="OffSecToolbox logo" />
     </a>
     <br />
-    <a href="https://github.com/OffSecToolbox/threaded-portscanner/actions/workflows/cicd-pipeline-shared.yml">
+    <a href="https://github.com/OffSecToolbox/port-scanner/actions/workflows/cicd-pipeline-shared.yml">
         <img src="https://img.shields.io/github/workflow/status/OffSecToolbox/port-scanner/CICD%20Pipeline%20(Shared)/master?label=shared%20pipeline&style=for-the-badge" alt="Github Build Status" />
     </a>
-    <a href="https://github.com/OffSecToolbox/threaded-portscanner/actions/workflows/cicd-pipeline-custom.yml">
+    <a href="https://github.com/OffSecToolbox/port-scanner/actions/workflows/cicd-pipeline-custom.yml">
         <img src="https://img.shields.io/github/workflow/status/OffSecToolbox/port-scanner/CICD%20Pipeline%20(Custom)/master?label=custom%20pipeline&style=for-the-badge" alt="Github Build Status" />
     </a>
     <a href="https://codecov.io/gh/OffSecToolbox/port-scanner">
         <img src="https://img.shields.io/codecov/c/gh/OffSecToolbox/port-scanner?label=code%20coverage&style=for-the-badge" alt="code coverage" />
     </a>
     <br />
-    <a href="https://github.com/OffSecToolbox/threaded-portscanner/blob/master/.github/CODE_OF_CONDUCT.md">
+    <a href="https://github.com/OffSecToolbox/port-scanner/blob/master/.github/CODE_OF_CONDUCT.md">
         <img src="https://img.shields.io/badge/Code%20of%20Conduct-blue?style=for-the-badge" />
     </a>
-    <a href="https://github.com/OffSecToolbox/threaded-portscanner/blob/master/.github/CONTRIBUTING.md">
+    <a href="https://github.com/OffSecToolbox/port-scanner/blob/master/.github/CONTRIBUTING.md">
         <img src="https://img.shields.io/badge/Contributing-blue?style=for-the-badge" />
     </a>
-    <a href="https://github.com/OffSecToolbox/threaded-portscanner/blob/master/.github/SECURITY.md">
+    <a href="https://github.com/OffSecToolbox/port-scanner/blob/master/.github/SECURITY.md">
         <img src="https://img.shields.io/badge/Report%20Security%20Concern-blue?style=for-the-badge" />
     </a>
-    <a href="https://github.com/OffSecToolbox/threaded-portscanner/issues">
+    <a href="https://github.com/OffSecToolbox/port-scanner/issues">
         <img src="https://img.shields.io/badge/Get%20Support-blue?style=for-the-badge" />
     </a>
 </p>
