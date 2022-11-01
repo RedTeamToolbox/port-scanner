@@ -9,10 +9,10 @@ line.
 """
 
 import argparse
-import multiprocessing
 import sys
 
 import modules.constants as PSconstants
+import modules.globals as PSglobals
 import modules.notify as PSnotify
 
 
@@ -45,7 +45,6 @@ def __setup_arg_parser() -> argparse.ArgumentParser:
         store the results as a cache per IP (like the batching system I wrote)
         define a cache timeout (default 1 week)
     """
-    default_threads = multiprocessing.cpu_count() * 5
 
     parser = argparse.ArgumentParser(prog="port-scan", description="Check for open port(s) on target host(s)", add_help=False, epilog=PSconstants.EPILOG)
 
@@ -72,7 +71,7 @@ def __setup_arg_parser() -> argparse.ArgumentParser:
     optional.add_argument("-d", "--delay-time", type=int, help="Random delay to use if --delay is given", default=3)
     optional.add_argument("-p", "--include-ports", type=str, help="The ports you want to scan", default="1-1024")
     optional.add_argument("-e", "--exclude-ports", type=str, help="The ports you want to exclude from a scan")
-    optional.add_argument("-T", "--threads", type=int, help="The number of threads to use", default=default_threads)
+    optional.add_argument("-T", "--threads", type=int, help="The number of threads to use", default=PSglobals.default_threads)
     optional.add_argument("-f", "--filename", type=str, help="The filename to save the results to", default="portscan-results")
 
     return parser

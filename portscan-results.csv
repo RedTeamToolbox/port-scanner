@@ -1,3 +1,0 @@
-ipnum,ip,error,target,service,banner,status_string,status,port
-1296334051,77.68.124.227,,gghangout.com,ssh,SSH-2.0-OpenSSH_7.9p1 Debian-10+deb10u2,Open,True,22
-1296334051,77.68.124.227,timed out,gghangout.com,http,Unavailable,Open,True,80
