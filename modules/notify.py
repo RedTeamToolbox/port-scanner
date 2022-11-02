@@ -8,7 +8,7 @@ Notice that the summary and the elaboration is separated by a blank new
 line.
 """
 
-import modules.constants as PSconstants
+from .constants import ERROR, INFO, RESET, SUCCESS, WARN
 
 
 def success(message: str) -> None:
@@ -20,7 +20,7 @@ def success(message: str) -> None:
         message (str) -- _description_
     """
 
-    print(f"{PSconstants.SUCCESS}{message}{PSconstants.RESET}")
+    print(f"{SUCCESS}{message}{RESET}")
 
 
 def success_msg(message: str) -> str:
@@ -35,7 +35,7 @@ def success_msg(message: str) -> str:
         str -- _description_
     """
 
-    return f"{PSconstants.SUCCESS}{message}{PSconstants.RESET}"
+    return f"{SUCCESS}{message}{RESET}"
 
 
 def warn(message: str) -> None:
@@ -47,7 +47,7 @@ def warn(message: str) -> None:
         message (str) -- _description_
     """
 
-    print(f"{PSconstants.WARN}{message}{PSconstants.RESET}")
+    print(f"{WARN}{message}{RESET}")
 
 
 def warn_msg(message: str) -> str:
@@ -62,7 +62,7 @@ def warn_msg(message: str) -> str:
         str -- _description_
     """
 
-    return f"{PSconstants.WARN}{message}{PSconstants.RESET}"
+    return f"{WARN}{message}{RESET}"
 
 
 def error(message: str) -> None:
@@ -73,7 +73,7 @@ def error(message: str) -> None:
     Arguments:
         message (str) -- _description_
     """
-    print(f"{PSconstants.ERROR}{message}{PSconstants.RESET}")
+    print(f"{ERROR}{message}{RESET}")
 
 
 def error_msg(message: str) -> str:
@@ -87,7 +87,7 @@ def error_msg(message: str) -> str:
     Returns:
         str -- _description_
     """
-    return f"{PSconstants.ERROR}{message}{PSconstants.RESET}"
+    return f"{ERROR}{message}{RESET}"
 
 
 def info(message: str) -> None:
@@ -98,7 +98,7 @@ def info(message: str) -> None:
     Arguments:
         message (str) -- _description_
     """
-    print(f"{PSconstants.INFO}{message}{PSconstants.RESET}")
+    print(f"{INFO}{message}{RESET}")
 
 
 def info_msg(message: str) -> str:
@@ -112,4 +112,4 @@ def info_msg(message: str) -> str:
     Returns:
         str -- _description_
     """
-    return f"{PSconstants.INFO}{message}{PSconstants.RESET}"
+    return f"{INFO}{message}{RESET}"

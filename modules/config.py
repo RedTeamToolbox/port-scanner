@@ -54,7 +54,7 @@ def build_configuration(args: argparse.Namespace) -> Configuration:
 
     config.quiet = args.quiet
     config.verbose = args.verbose
-    config.debug = args.debug
+    # config.debug = args.debug
     config.shuffle = args.shuffle
     config.ipv4_only = args.ipv4_only
     config.ipv6_only = args.ipv6_only

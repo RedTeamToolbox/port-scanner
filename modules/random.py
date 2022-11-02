@@ -8,7 +8,7 @@ Notice that the summary and the elaboration is separated by a blank new
 line.
 """
 
-import modules.globals as PSglobals
+from .globals import secretsGenerator
 
 
 def secure_random(min_number: int, max_number: int) -> int:
@@ -23,4 +23,4 @@ def secure_random(min_number: int, max_number: int) -> int:
     Returns:
         _type_ -- _description_
     """
-    return PSglobals.secretsGenerator.randint(min_number, max_number)
+    return secretsGenerator.randint(min_number, max_number)

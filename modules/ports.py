@@ -13,9 +13,9 @@ import re
 import socket
 import sys
 
-import modules.constants as PSconstants
-import modules.notify as PSnotify
-import modules.utils as PSutils
+from .constants import PORT_RULES
+from .notify import error, info_msg, warn
+from .utils import create_spinner
 
 
 def __get_ports_by_name(port: str) -> list[int]:
@@ -34,7 +34,7 @@ def __get_ports_by_name(port: str) -> list[int]:
     try:
         ports.append(socket.getservbyname(port))
     except OSError:
-        PSnotify.warn(f"{port} is not a valid service name - Skipping!")
+        warn(f"{port} is not a valid service name - Skipping!")
     return ports
 
 
@@ -67,10 +67,10 @@ def __get_ports_from_rule(rule_name: str) -> list[int]:
     Returns:
         list[int] -- _description_
     """
-    for rule in PSconstants.PORT_RULES:
+    for rule in PORT_RULES:
         if rule['rule'] == rule_name:
             return rule['ports']
-    PSnotify.warn(f"{rule_name} is not a valid ruleset - Skipping!")
+    warn(f"{rule_name} is not a valid ruleset - Skipping!")
     return []
 
 
@@ -138,7 +138,7 @@ def __get_port_list_from_file(port: str) -> list[str]:
         fname = match_results.group(1)
 
         if not os.path.exists(fname):
-            PSnotify.warn(f"{fname} does not exist - aborting")
+            warn(f"{fname} does not exist - aborting")
         else:
             with open(fname, "r", encoding="UTF-8") as f:
                 lines = f.readlines()
@@ -216,7 +216,7 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
     exclude_port_list = []
     port_list = []
 
-    with PSutils.create_spinner(PSnotify.info_msg("[*] Processing target port list")):
+    with create_spinner(info_msg("[*] Processing target port list")):
         include_port_list = __get_port_list(include_ports)
         if exclude_ports is not None:
             exclude_port_list = __get_port_list(exclude_ports)
@@ -226,7 +226,7 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
             port_list = include_port_list
 
     if not port_list:
-        PSnotify.error("Fatal: No valid ports were found - Aborting!")
+        error("Fatal: No valid ports were found - Aborting!")
         sys.exit(0)
 
     return port_list

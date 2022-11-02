@@ -16,9 +16,9 @@ from typing import Any
 
 import dns.resolver
 
-import modules.globals as PSglobals
-import modules.notify as PSnotify
-import modules.utils as PSutils
+from .globals import host_ip_mapping, ip_ipnum_mapping
+from .notify import error, info_msg, warn
+from .utils import create_spinner
 
 
 def is_ip_address(target: str) -> Any:
@@ -106,13 +106,13 @@ def validate_targets(targets: list[str], ipv4_only: bool, ipv6_only: bool) -> li
     for target in targets:
         try:
             for ip in get_ips(target, ipv4_only, ipv6_only):
-                if (ip in PSglobals.host_ip_mapping and is_ip_address(target) is False) or ip not in PSglobals.host_ip_mapping:
-                    PSglobals.host_ip_mapping[ip] = target
-                PSglobals.ip_ipnum_mapping[ip] = int(ipaddress.ip_address(ip))
+                if (ip in host_ip_mapping and is_ip_address(target) is False) or ip not in host_ip_mapping:
+                    host_ip_mapping[ip] = target
+                ip_ipnum_mapping[ip] = int(ipaddress.ip_address(ip))
                 valid_targets.append(ip)
 
         except socket.gaierror:
-            PSnotify.warn(f"{target} is not valid - Skipping)")
+            warn(f"{target} is not valid - Skipping)")
 
     # Now we need to remove any duplicates and sort
     valid_targets = sorted(list(set(valid_targets)))
@@ -150,12 +150,12 @@ def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[s
         list[str] -- _description_
     """
 
-    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating a list of all target IP address")):
+    with create_spinner(info_msg("[*] Generating a list of all target IP address")):
         target_list = targets.split(",")
         valid_targets = validate_targets(target_list, ipv4_only, ipv6_only)
 
     if not valid_targets:
-        PSnotify.error("Fatal: No valid targets were found - Aborting!")
+        error("Fatal: No valid targets were found - Aborting!")
         sys.exit(0)
 
     return valid_targets

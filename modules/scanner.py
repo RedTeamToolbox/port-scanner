@@ -17,12 +17,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from time import sleep
 from typing import Any
 
-import modules.config as PSconfig
-import modules.globals as PSglobals
-import modules.notify as PSnotify
-import modules.ordering as PSordering
-import modules.targets as PStargets
-import modules.utils as PSutils
+from .config import Configuration
+from .globals import host_ip_mapping, ip_ipnum_mapping, service_name_mapping
+from .notify import error_msg, info_msg, success_msg, info
+from .ordering import shuffled
+from .targets import get_all_host_port_combinations
+from .utils import create_alive_bar, create_spinner
 
 
 def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
@@ -79,21 +79,21 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
             status = False
 
     # Cache the service name in case we are hitting multiple IPs
-    if port not in PSglobals.service_name_mapping:
+    if port not in service_name_mapping:
         try:
             service = socket.getservbyport(port, "tcp")
         except OSError:
             service = "Unknown"
-        PSglobals.service_name_mapping[port] = service
+        service_name_mapping[port] = service
 
     return {
-            "target": PSglobals.host_ip_mapping[target],
+            "target": host_ip_mapping[target],
             "ip": ip,
-            "ipnum": PSglobals.ip_ipnum_mapping[target],
+            "ipnum": ip_ipnum_mapping[target],
             "port": port,
             "status": status,
             "status_string": status_string,
-            "service": PSglobals.service_name_mapping[port],
+            "service": service_name_mapping[port],
             "banner": banner,
             "error": error_msg
            }
@@ -109,12 +109,12 @@ def handle_verbose_mode(thread_results: dict) -> None:
 
     verbose_msg = f"{thread_results['target']} port {thread_results['port']} is {thread_results['status_string']}"
     if thread_results['status'] is True:
-        print(PSnotify.error_msg(f"[X] {verbose_msg}"))
+        print(error_msg(f"[X] {verbose_msg}"))
     else:
-        print(PSnotify.success_msg(f"[^] {verbose_msg}"))
+        print(success_msg(f"[^] {verbose_msg}"))
 
 
-def get_how_many(targets: list, config: PSconfig.Configuration) -> int:
+def get_how_many(targets: list, config: Configuration) -> int:
     """_summary_
 
     _extended_summary_
@@ -135,7 +135,7 @@ def get_how_many(targets: list, config: PSconfig.Configuration) -> int:
     return how_many
 
 
-def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configuration) -> list[dict]:
+def scan_targets_batched(targets: list, how_many: int, config: Configuration) -> list[dict]:
     """_summary_
 
     _extended_summary_
@@ -151,7 +151,7 @@ def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configur
     results = []
 
     number_of_batches = math.ceil(len(targets) / config.batch_size)
-    PSnotify.info(f"[+] We will execute the scans in {number_of_batches} batches with {config.batch_size} scan per batch")
+    info(f"[+] We will execute the scans in {number_of_batches} batches with {config.batch_size} scan per batch")
     batches = [targets[i * config.batch_size:(i + 1) * config.batch_size] for i in range((len(targets) + config.batch_size - 1) // config.batch_size)]
 
     if how_many > config.batch_size:
@@ -159,17 +159,17 @@ def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configur
 
     batch_counter = 0
 
-    with PSutils.create_alive_bar(len(targets), title=f"{len(targets)} scans with {how_many} threads") as pbar:
+    with create_alive_bar(len(targets), title=f"{len(targets)} scans with {how_many} threads") as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
             for batch in batches:
-                pbar.text = PSnotify.info_msg("Status: Submitting jobs for batch {batch_counter}")
+                pbar.text = info_msg("Status: Submitting jobs for batch {batch_counter}")
                 batch_counter += 1
 
                 futures = [executor.submit(scan_target_port, target[0], target[1], config.delay_time) for target in batch]
-                pbar.text = PSnotify.info_msg(f"Status: Batch {batch_counter} jobs submitted - awaiting results")
+                pbar.text = info_msg(f"Status: Batch {batch_counter} jobs submitted - awaiting results")
 
                 for future in as_completed(futures):
-                    pbar.text = PSnotify.info_msg(f"Status: Processing results for batch {batch_counter}")
+                    pbar.text = info_msg(f"Status: Processing results for batch {batch_counter}")
                     pbar()  # pylint: disable=not-callable
                     thread_results = future.result()
                     if thread_results:
@@ -181,7 +181,7 @@ def scan_targets_batched(targets: list, how_many: int, config: PSconfig.Configur
     return results
 
 
-def scan_targets_unbatched(targets: list, how_many: int, config: PSconfig.Configuration) -> list[dict]:
+def scan_targets_unbatched(targets: list, how_many: int, config: Configuration) -> list[dict]:
     """_summary_
 
     _extended_summary_
@@ -196,15 +196,15 @@ def scan_targets_unbatched(targets: list, how_many: int, config: PSconfig.Config
     """
     results = []
 
-    with PSutils.create_alive_bar(len(targets), title=f"{len(targets)} scans with {how_many} threads") as pbar:
+    with create_alive_bar(len(targets), title=f"{len(targets)} scans with {how_many} threads") as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
-            pbar.text = PSnotify.info_msg("Status: Submitting jobs")
+            pbar.text = info_msg("Status: Submitting jobs")
             futures = [executor.submit(scan_target_port, target[0], target[1], config.delay_time) for target in targets]
-            pbar.text = PSnotify.info_msg("Status: Jobs submitted - awaiting results")
+            pbar.text = info_msg("Status: Jobs submitted - awaiting results")
 
             for future in as_completed(futures):
                 pbar()  # pylint: disable=not-callable
-                pbar.text = PSnotify.info_msg("Status: Processing results")
+                pbar.text = info_msg("Status: Processing results")
                 thread_results = future.result()
                 if thread_results:
                     results.append(thread_results)
@@ -213,7 +213,7 @@ def scan_targets_unbatched(targets: list, how_many: int, config: PSconfig.Config
     return results
 
 
-def scan_targets(config: PSconfig.Configuration) -> list[dict]:
+def scan_targets(config: Configuration) -> list[dict]:
     """_summary_
 
     _extended_summary_
@@ -225,10 +225,10 @@ def scan_targets(config: PSconfig.Configuration) -> list[dict]:
         list[dict] -- _description_
     """
 
-    with PSutils.create_spinner(PSnotify.info_msg("[*] Generating all host / port combinations")):
-        targets = PStargets.get_all_host_port_combinations(config.targets, config.ports)
+    with create_spinner(info_msg("[*] Generating all host / port combinations")):
+        targets = get_all_host_port_combinations(config.targets, config.ports)
         if config.shuffle is True:
-            targets = PSordering.shuffled(targets)
+            targets = shuffled(targets)
 
     how_many = get_how_many(targets, config)
 

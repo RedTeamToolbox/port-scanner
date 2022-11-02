@@ -12,7 +12,7 @@ from functools import cmp_to_key
 from operator import itemgetter
 from typing import Any
 
-import modules.globals as PSglobals
+from .globals import secretsGenerator
 
 
 def cmp(x, y) -> Any:
@@ -80,5 +80,5 @@ def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
             results.append(shuffled(sublist, depth - 1))
         else:
             results.append(sublist)
-    results = PSglobals.secretsGenerator.sample(results, len(results))
+    results = secretsGenerator.sample(results, len(results))
     return results

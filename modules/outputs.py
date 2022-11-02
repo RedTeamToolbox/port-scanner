@@ -13,8 +13,8 @@ import json
 
 from prettytable import PrettyTable
 
-import modules.config as PSconfig
-import modules.ordering as PSOrdering
+from .config import Configuration
+from .ordering import multikeysort
 
 
 def save_results_as_csv(results: list[dict], fname: str) -> None:
@@ -86,10 +86,10 @@ def process_results(results: list[dict], all_results = True) -> list[dict]:
     """
     if all_results is False:
         results = [i for i in results if i['status'] is True]
-    return PSOrdering.multikeysort(results, ['target', 'ipnum', 'port'])
+    return multikeysort(results, ['target', 'ipnum', 'port'])
 
 
-def display_results(results: list[dict], config: PSconfig.Configuration) -> None:
+def display_results(results: list[dict], config: Configuration) -> None:
     """_summary_
 
     _extended_summary_
