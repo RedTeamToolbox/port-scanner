@@ -31,7 +31,7 @@ def save_results_as_csv(results: list[dict], fname: str) -> None:
 
     with open(f"{fname}.csv", "w", encoding="utf-8") as outfile:
         writer = csv.writer(outfile)
-        columns = ['target', 'ip', 'port', 'service', 'status_string', 'banner', 'error']
+        columns: list[str] = ['target', 'ip', 'port', 'service', 'status_string', 'banner', 'error']
         writer.writerow(columns)
         for row in results:
             writer.writerow([None if column not in row else row[column] for column in columns])
@@ -61,7 +61,7 @@ def print_table_of_results(results: list[dict]) -> None:
     Arguments:
         results (list[dict]) -- _description_
     """
-    table = PrettyTable()
+    table: PrettyTable = PrettyTable()
 
     table.field_names = ["Target", "IP", "Port", "Service", "Open?", "Banner", "Errors"]
 
@@ -84,9 +84,10 @@ def process_results(results: list[dict], all_results = True) -> list[dict]:
     Returns:
         list[dict] -- _description_
     """
+    processed_results: list[dict] = results
     if all_results is False:
-        results = [i for i in results if i['status'] is True]
-    return multikeysort(results, ['target', 'ipnum', 'port'])
+        processed_results = [i for i in results if i['status'] is True]
+    return multikeysort(processed_results, ['target', 'ipnum', 'port'])
 
 
 def display_results(results: list[dict], config: Configuration) -> None:
@@ -98,8 +99,8 @@ def display_results(results: list[dict], config: Configuration) -> None:
         results (list[dict]) -- _description_
         config (PSconfig.Configuration) -- _description_
     """
-    results = process_results(results, config.all_results)
+    processed_results: list[dict] = process_results(results, config.all_results)
 
     # TODO Save the results in cache files?
     if config.quiet is False:
-        print_table_of_results(results)
+        print_table_of_results(processed_results)

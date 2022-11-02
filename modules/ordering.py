@@ -70,7 +70,7 @@ def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
     Returns:
         list[Any] -- _description_
     """
-    results = []
+    results: list = []
 
     if depth == 0:
         return things

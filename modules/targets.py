@@ -12,6 +12,7 @@ import itertools
 import socket
 import sys
 
+from ipaddress import IPv4Address, IPv6Address
 from typing import Any
 
 import dns.resolver
@@ -33,8 +34,8 @@ def is_ip_address(target: str) -> Any:
         Any -- _description_
     """
     try:
-        ip = ipaddress.ip_address(target)
-        status = bool(isinstance(ip, (ipaddress.IPv4Address, ipaddress.IPv6Address)))
+        ip: IPv4Address | IPv6Address = ipaddress.ip_address(target)
+        status: bool = bool(isinstance(ip, (ipaddress.IPv4Address, ipaddress.IPv6Address)))
     except ValueError:
         status = False
 
@@ -54,8 +55,8 @@ def get_records(host: str, record_type: str) -> list[str]:
         list[str] -- _description_
     """
     try:
-        resolver_results = dns.resolver.resolve(host, record_type)
-        results = [val.to_text() for val in resolver_results]
+        resolver_results: list = dns.resolver.resolve(host, record_type)
+        results: list = [val.to_text() for val in resolver_results]
     except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
         results = []
 
@@ -78,11 +79,11 @@ def get_ips(target: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:
 
     if is_ip_address(target) is False:
         if ipv4_only is True:
-            results = sorted(get_records(target, "A"))
+            results: list[str] = sorted(get_records(target, "A"))
         elif ipv6_only is True:
-            results = sorted(get_records(target, "AAAA"))
+            results: list[str] = sorted(get_records(target, "AAAA"))
         else:
-            results = sorted(get_records(target, "A")) + sorted(get_records(target, "AAAA"))
+            results: list[str] = sorted(get_records(target, "A")) + sorted(get_records(target, "AAAA"))
     else:
         results = [target]
     return results
@@ -101,7 +102,7 @@ def validate_targets(targets: list[str], ipv4_only: bool, ipv6_only: bool) -> li
     Returns:
         list[str] -- _description_
     """
-    valid_targets = []
+    valid_targets: list = []
 
     for target in targets:
         try:
@@ -151,8 +152,8 @@ def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[s
     """
 
     with create_spinner(info_msg("[*] Generating a list of all target IP address")):
-        target_list = targets.split(",")
-        valid_targets = validate_targets(target_list, ipv4_only, ipv6_only)
+        target_list: list[str] = targets.split(",")
+        valid_targets: list[str] = validate_targets(target_list, ipv4_only, ipv6_only)
 
     if not valid_targets:
         error("Fatal: No valid targets were found - Aborting!")

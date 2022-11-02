@@ -7,52 +7,52 @@ Usage:
     ./port-scan.py [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-j] [-s] [-r] [-t TARGETS] [-b BATCH_SIZE] [-B BATCH_DELAY] [-d DELAY_TIME] [-p INCLUDE_PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
 """
 
-import argparse
 import sys
+
+from argparse import _ArgumentGroup, ArgumentParser, Namespace, SUPPRESS
 
 from modules.constants import EPILOG, PORT_RULES
 from modules.core import run_scanner
 from modules.globals import default_threads
-from modules.notify import error, info, success, warn
+from modules.notify import error, info
+
 
 def __list_all_port_rules() -> None:
     """_summary_
 
     _extended_summary_
     """
-
     info("Available rule sets:")
-    count = 0
+    count: int = 0
     for rule in PORT_RULES:
         count += 1
         print(f"  Rule {count}: '{rule['rule']}': {rule['ports']}")
 
 
-def __setup_arg_parser() -> argparse.ArgumentParser:
+def __setup_arg_parser() -> ArgumentParser:
     """_summary_
 
     _extended_summary_
 
     Returns:
         argparse.ArgumentParser -- _description_
-
-    TODO:
-        add a way to define targets as ranges (like with ports) or using CIDR notation
-        add a way to load ips from file (same as with ports)
-        add an option to exclude targets incase you are using a range or CIDR
-        add an option to append to results files ?
-        store the results as a cache per IP (like the batching system I wrote)
-        define a cache timeout (default 1 week)
     """
 
-    parser = argparse.ArgumentParser(prog="port-scan", description="Check for open port(s) on target host(s)", add_help=False, epilog=EPILOG)
+    # TODO: this is the list of jobs to do
+    # TODO: add a way to define targets as ranges (like with ports) or using CIDR notation
+    # TODO: add a way to load ips from file (same as with ports)
+    # TODO: add an option to exclude targets incase you are using a range or CIDR
+    # TODO: add an option to append to results files ?
+    # TODO: store the results as a cache per IP (like the batching system I wrote)
+    # TODO: define a cache timeout (default 1 week)
+    parser: ArgumentParser = ArgumentParser(prog="port-scan", description="Check for open port(s) on target host(s)", add_help=False, epilog=EPILOG)
 
-    system_flags = parser.add_argument_group("system flags")
-    application_flags = parser.add_argument_group("application flags")
-    required = parser.add_argument_group("required arguments")
-    optional = parser.add_argument_group("optional arguments")
+    system_flags: _ArgumentGroup = parser.add_argument_group("system flags")
+    application_flags: _ArgumentGroup = parser.add_argument_group("application flags")
+    required: _ArgumentGroup = parser.add_argument_group("required arguments")
+    optional: _ArgumentGroup = parser.add_argument_group("optional arguments")
 
-    system_flags.add_argument("-h", "--help", action="help", default=argparse.SUPPRESS, help="show this help message and exit")
+    system_flags.add_argument("-h", "--help", action="help", default=SUPPRESS, help="show this help message and exit")
     system_flags.add_argument("-q", "--quiet", action="store_true", help="Do not show the results on the screen", default=False)
     system_flags.add_argument("-v", "--verbose", action="store_true", help="Verbose output - show scan results as they come in", default=False)
 
@@ -76,7 +76,7 @@ def __setup_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def process_command_line_arguments() -> argparse.Namespace:
+def process_command_line_arguments() -> Namespace:
     """_summary_
 
     _extended_summary_
@@ -85,8 +85,8 @@ def process_command_line_arguments() -> argparse.Namespace:
         argparse.Namespace -- _description_
     """
 
-    parser = __setup_arg_parser()
-    args = parser.parse_args()
+    parser: ArgumentParser = __setup_arg_parser()
+    args: Namespace = parser.parse_args()
 
     if args.list_rules is True:
         __list_all_port_rules()
@@ -126,7 +126,7 @@ def main() -> None:
     7. Exit.
     """
 
-    args = process_command_line_arguments()
+    args: Namespace = process_command_line_arguments()
     run_scanner(args)
     sys.exit(0)
 

@@ -2,5 +2,4 @@
 disable=global-statement,
         invalid-name,
         line-too-long,
-        unnecessary-pass,
         fixme

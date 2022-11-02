@@ -8,7 +8,7 @@ Notice that the summary and the elaboration is separated by a blank new
 line.
 """
 
-import argparse
+from argparse import Namespace
 from dataclasses import dataclass, field
 
 
@@ -36,7 +36,7 @@ class Configuration:  # pylint: disable=too-many-instance-attributes,too-few-pub
     threads: int = 0
 
 
-def build_configuration(args: argparse.Namespace) -> Configuration:
+def build_configuration(args: Namespace) -> Configuration:
     """_summary_
 
     _extended_summary_

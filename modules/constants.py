@@ -11,20 +11,20 @@ line.
 import colorama
 
 colorama.init()
-RED = colorama.Fore.RED
-YELLOW = colorama.Fore.YELLOW
-GREEN = colorama.Fore.GREEN
-GRAY = colorama.Fore.LIGHTBLACK_EX
-RESET = colorama.Style.RESET_ALL
+RED: str = colorama.Fore.RED
+YELLOW: str = colorama.Fore.YELLOW
+GREEN: str = colorama.Fore.GREEN
+GRAY: str = colorama.Fore.LIGHTBLACK_EX
+RESET: str = colorama.Style.RESET_ALL
 
-SUCCESS = colorama.Fore.GREEN
-WARN = colorama.Fore.YELLOW
-ERROR = colorama.Fore.RED
-INFO = colorama.Fore.CYAN
+SUCCESS: str = colorama.Fore.GREEN
+WARN: str = colorama.Fore.YELLOW
+ERROR: str = colorama.Fore.RED
+INFO: str = colorama.Fore.CYAN
 
-EPILOG = "For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner"
+EPILOG: str = "For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner"
 
-PORT_RULES = [
+PORT_RULES: list[dict] = [
     # all available ports
     {"rule": "all-ports", "ports": range(1, 65535)},
     # mssql server, mssql browser, ingres, mysql, postgresql

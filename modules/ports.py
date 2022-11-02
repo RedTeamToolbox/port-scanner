@@ -13,6 +13,8 @@ import re
 import socket
 import sys
 
+from re import Match
+
 from .constants import PORT_RULES
 from .notify import error, info_msg, warn
 from .utils import create_spinner
@@ -29,7 +31,7 @@ def __get_ports_by_name(port: str) -> list[int]:
     Returns:
         list[int] -- _description_
     """
-    ports = []
+    ports: list = []
 
     try:
         ports.append(socket.getservbyname(port))
@@ -49,7 +51,7 @@ def __get_ports_by_number(port: str) -> list[int]:
     Returns:
         list[int] -- _description_
     """
-    ports = []
+    ports: list = []
 
     if port.isnumeric():
         ports.append(int(port))
@@ -70,6 +72,7 @@ def __get_ports_from_rule(rule_name: str) -> list[int]:
     for rule in PORT_RULES:
         if rule['rule'] == rule_name:
             return rule['ports']
+
     warn(f"{rule_name} is not a valid ruleset - Skipping!")
     return []
 
@@ -85,11 +88,11 @@ def __get_ports_from_rule_sets(port: str) -> list[int]:
     Returns:
         list[int] -- _description_
     """
-    ports = []
+    ports: list = []
 
-    match_results = re.search(r"ruleset:(.*)", port, re.IGNORECASE)
+    match_results: Match[str] | None = re.search(r"ruleset:(.*)", port, re.IGNORECASE)
     if match_results is not None:
-        rule_sets = match_results.group(1)
+        rule_sets: str = match_results.group(1)
         for rule in rule_sets.split(","):
             ports += __get_ports_from_rule(rule)
     return ports
@@ -108,12 +111,12 @@ def __get_ports_from_range(port: str) -> list[int]:
     """
 
     # Format A-B e.g. 1-1024
-    result = re.search(r"(\d+)-(\d+)", port)
+    result: Match[str] | None = re.search(r"(\d+)-(\d+)", port)
     if result is not None:
         return list(range(int(result.group(1)), int(result.group(2)) + 1))
 
     # Format A:B e.g.
-    result = re.search(r"(\d+):(\d+)", port)
+    result: Match[str] | None = re.search(r"(\d+):(\d+)", port)
     if result is not None:
         return list(range(int(result.group(1)), int(result.group(2)) + 1))
 
@@ -131,17 +134,17 @@ def __get_port_list_from_file(port: str) -> list[str]:
     Returns:
         list[str] -- _description_
     """
-    ports = []
+    ports: list = []
 
-    match_results = re.search(r"file:(.*)", port, re.IGNORECASE)
+    match_results: Match[str] | None = re.search(r"file:(.*)", port, re.IGNORECASE)
     if match_results is not None:
-        fname = match_results.group(1)
+        fname: str = match_results.group(1)
 
         if not os.path.exists(fname):
             warn(f"{fname} does not exist - aborting")
         else:
             with open(fname, "r", encoding="UTF-8") as f:
-                lines = f.readlines()
+                lines: list[str] = f.readlines()
                 for line in lines:
                     for item in line.strip().split(","):
                         ports.append(item)
@@ -160,12 +163,12 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
         list[int] -- _description_
     """
     # This is order is important as once a port parameter is processed the loop is broken out of.
-    functions_to_call = [__get_ports_from_range, __get_ports_from_rule_sets, __get_ports_by_number, __get_ports_by_name]
-    generate_post_ports = []
+    functions_to_call: list = [__get_ports_from_range, __get_ports_from_rule_sets, __get_ports_by_number, __get_ports_by_name]
+    generate_post_ports: list = []
 
     for port in supplied_port_list.split(","):
         for func in functions_to_call:
-            port_list = func(port)
+            port_list: list[int] = func(port)
             if port_list:
                 generate_post_ports += port_list
                 break
@@ -188,10 +191,10 @@ def __get_port_list(supplied_port_list: str) -> list[int]:
         list[int] -- _description_
     """
     # If there is a filename we need to pull the lists out of the file first!
-    generated_port_list = []
+    generated_port_list: list = []
 
     for port in supplied_port_list.split(","):
-        port_list = __get_port_list_from_file(port)
+        port_list: list[str] = __get_port_list_from_file(port)
         if port_list:
             generated_port_list += port_list
         else:
@@ -212,9 +215,9 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
     Returns:
         list[int] -- _description_
     """
-    include_port_list = []
-    exclude_port_list = []
-    port_list = []
+    include_port_list: list = []
+    exclude_port_list: list = []
+    port_list: list = []
 
     with create_spinner(info_msg("[*] Processing target port list")):
         include_port_list = __get_port_list(include_ports)

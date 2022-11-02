@@ -9,12 +9,13 @@ line.
 """
 
 import multiprocessing
-import secrets
 
-default_threads = multiprocessing.cpu_count() * 5
+from secrets import SystemRandom
 
-host_ip_mapping = {}
-ip_ipnum_mapping = {}
-service_name_mapping = {}
+default_threads: int = multiprocessing.cpu_count() * 5
 
-secretsGenerator = secrets.SystemRandom()
+host_ip_mapping: dict = {}
+ip_ipnum_mapping: dict = {}
+service_name_mapping: dict = {}
+
+secretsGenerator: SystemRandom = SystemRandom()
