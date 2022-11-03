@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -14,21 +14,28 @@ from alive_progress import alive_bar
 
 
 def create_spinner(title: str) -> ContextManager:
-    """_summary_
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
-    Keyword Arguments:
-        title (str) -- _description_ (default: None)
+    Arguments:
+        title (str) -- _description_
 
     Returns:
         ContextManager -- _description_
     """
-    return alive_bar(title = title, stats = False, monitor = False, stats_end = False, receipt = True, bar = None)
+    return alive_bar(
+        title=title,
+        stats=False,
+        monitor=False,
+        stats_end=False,
+        receipt=True,
+        bar=None
+    )
 
 
 def create_alive_bar(size: int, title: str, length: int = 80) -> ContextManager:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -42,5 +49,4 @@ def create_alive_bar(size: int, title: str, length: int = 80) -> ContextManager:
     Returns:
         ContextManager -- _description_
     """
-
-    return alive_bar(size, title = title, length = length)
+    return alive_bar(size, title=title, length=length)

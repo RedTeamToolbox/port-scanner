@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -11,6 +11,7 @@ line.
 import csv
 import json
 
+from typing import Any
 from prettytable import PrettyTable
 
 from .config import Configuration
@@ -18,7 +19,7 @@ from .ordering import multikeysort
 
 
 def save_results_as_csv(results: list[dict], fname: str) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -30,15 +31,15 @@ def save_results_as_csv(results: list[dict], fname: str) -> None:
         return
 
     with open(f"{fname}.csv", "w", encoding="utf-8") as outfile:
-        writer = csv.writer(outfile)
+        csv_writer: Any = csv.writer(outfile)
         columns: list[str] = ['target', 'ip', 'port', 'service', 'status_string', 'banner', 'error']
-        writer.writerow(columns)
+        csv_writer.writerow(columns)
         for row in results:
-            writer.writerow([None if column not in row else row[column] for column in columns])
+            csv_writer.writerow([None if column not in row else row[column] for column in columns])
 
 
 def save_results_as_json(results: list[dict], fname: str) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -54,7 +55,7 @@ def save_results_as_json(results: list[dict], fname: str) -> None:
 
 
 def print_table_of_results(results: list[dict]) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -66,12 +67,20 @@ def print_table_of_results(results: list[dict]) -> None:
     table.field_names = ["Target", "IP", "Port", "Service", "Open?", "Banner", "Errors"]
 
     for parts in results:
-        table.add_row([parts['target'], parts['ip'], parts['port'], parts['service'], parts['status'], parts['banner'], parts['error']])
+        table.add_row([
+            parts['target'],
+            parts['ip'],
+            parts['port'],
+            parts['service'],
+            parts['status'],
+            parts['banner'],
+            parts['error']
+        ])
     print(table)
 
 
-def process_results(results: list[dict], all_results = True) -> list[dict]:
-    """_summary_
+def process_results(results: list[dict], all_results: bool = True) -> list[dict]:
+    """_summary_.
 
     _extended_summary_
 
@@ -91,7 +100,7 @@ def process_results(results: list[dict], all_results = True) -> list[dict]:
 
 
 def display_results(results: list[dict], config: Configuration) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 

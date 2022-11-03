@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -8,11 +8,11 @@ Notice that the summary and the elaboration is separated by a blank new
 line.
 """
 
-from .globals import secretsGenerator
+from .globals import secrets_generator
 
 
 def secure_random(min_number: int, max_number: int) -> int:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -23,4 +23,4 @@ def secure_random(min_number: int, max_number: int) -> int:
     Returns:
         _type_ -- _description_
     """
-    return secretsGenerator.randint(min_number, max_number)
+    return secrets_generator.randint(min_number, max_number)

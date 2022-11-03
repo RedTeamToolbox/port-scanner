@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -27,9 +27,25 @@ from .targets import get_all_host_port_combinations
 from .utils import create_alive_bar, create_spinner
 
 
+def add_to_service_mapping(port: int) -> None:
+    """Define a summary.
+
+    This is the extended summary from the template and needs to be replaced.
+
+    Arguments:
+        port (int) -- _description_
+    """
+    if port not in service_name_mapping:
+        try:
+            service: str = socket.getservbyport(port, "tcp")
+        except OSError:
+            service = "Unknown"
+        service_name_mapping[port] = service
+
+
 # TODO: define internal functions
 def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -45,15 +61,14 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
     status_string: str = "Closed"
     error_from_server: str = ""
     banner: str = ""
+    af_type: int = socket.AF_INET
 
     if delay_time > 0:
         sleep(delay_time)
 
-    ip: IPv4Address | IPv6Address = ipaddress.ip_address(target)
-    if isinstance(ip, ipaddress.IPv6Address) is True:
-        af_type: int = socket.AF_INET6
-    else:
-        af_type: int = socket.AF_INET
+    ip_address: IPv4Address | IPv6Address = ipaddress.ip_address(target)
+    if isinstance(ip_address, ipaddress.IPv6Address) is True:
+        af_type = socket.AF_INET6
 
     with socket.socket(af_type, socket.SOCK_STREAM) as sock:
         sock.settimeout(1)
@@ -82,34 +97,28 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
             status = False
 
     # Cache the service name in case we are hitting multiple IPs
-    if port not in service_name_mapping:
-        try:
-            service: str = socket.getservbyport(port, "tcp")
-        except OSError:
-            service = "Unknown"
-        service_name_mapping[port] = service
+    add_to_service_mapping(port)
 
     return {
-            "target": host_ip_mapping[target],
-            "ip": ip,
-            "ipnum": ip_ipnum_mapping[target],
-            "port": port,
-            "status": status,
-            "status_string": status_string,
-            "service": service_name_mapping[port],
-            "banner": banner,
-            "error": error_from_server
-           }
+        "target": host_ip_mapping[target],
+        "ip": ip_address,
+        "ipnum": ip_ipnum_mapping[target],
+        "port": port,
+        "status": status,
+        "status_string": status_string,
+        "service": service_name_mapping[port],
+        "banner": banner,
+        "error": error_from_server
+    }
 
 
 def handle_verbose_mode(thread_results: dict) -> None:
-    """_summary_
+    """_summary_.
 
     Args:
         thread_results (dict): _description_
         pbar (_type_): _description_
     """
-
     verbose_msg: str = f"{thread_results['target']} port {thread_results['port']} is {thread_results['status_string']}"
     if thread_results['status'] is True:
         print(error_msg(f"[X] {verbose_msg}"))
@@ -118,7 +127,7 @@ def handle_verbose_mode(thread_results: dict) -> None:
 
 
 def get_how_many(targets: list, config: Configuration) -> int:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -129,17 +138,16 @@ def get_how_many(targets: list, config: Configuration) -> int:
     Returns:
         int -- _description_
     """
+    how_many: int = config.threads
 
     if config.threads > len(targets):
-        how_many: int = len(targets)
-    else:
-        how_many: int = config.threads
+        how_many = len(targets)
 
     return how_many
 
 
 def scan_targets_batched(targets: list, how_many: int, config: Configuration) -> list[dict]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -186,7 +194,7 @@ def scan_targets_batched(targets: list, how_many: int, config: Configuration) ->
 
 
 def scan_targets_unbatched(targets: list, how_many: int, config: Configuration) -> list[dict]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -218,7 +226,7 @@ def scan_targets_unbatched(targets: list, how_many: int, config: Configuration) 
 
 
 def scan_targets(config: Configuration) -> list[dict]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -228,7 +236,6 @@ def scan_targets(config: Configuration) -> list[dict]:
     Returns:
         list[dict] -- _description_
     """
-
     with create_spinner(info_msg("[*] Generating all host / port combinations")):
         targets: list[tuple] = get_all_host_port_combinations(config.targets, config.ports)
         if config.shuffle is True:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -40,22 +40,3 @@ PORT_RULES: list[dict] = [
     # http, https, http-alt, pcsync-https, pcsync-http
     {"rule": "web-servers", "ports": [80, 443, 8080, 8443, 8444]},
 ]
-
-CLI_HELP: dict = {
-    "help": "show this help message and exit",
-    "quiet": "Do not show the results on the screen",
-    "verbose": "Verbose output - show scan results as they come in",
-    "ipv4-only": "Scan IPv4 addresses only",
-    "ipv6-only": "Scan IPv6 addresses only",
-    "all-results": "Show or save all results (default is to list open ports only)",
-    "shuffle": "Randomise the scanning order",
-    "list-rules": "List the available rules",
-    "targets": "A comma separated list of targets to scan",
-    "batch-size": "The size of the batch to use when splitting larger scan sets (0 = no batching)",
-    "batch-delay": "The amount of time to wait between batches",
-    "delay-time": "Random delay to use if --delay is given",
-    "include-ports": "The ports you want to scan",
-    "exclude-ports": "The ports you want to exclude from a scan",
-    "threads": "The number of threads to use",
-    "filename": "The filename to save the results to",
-}

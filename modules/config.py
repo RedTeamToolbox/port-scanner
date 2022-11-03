@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""
+This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
 Notice that the summary and the elaboration is separated by a blank new
 line.
 """
+import argparse
 
-from argparse import Namespace
 from dataclasses import dataclass, field
 
 
 @dataclass
-class Configuration:  # pylint: disable=too-many-instance-attributes,too-few-public-methods
-    """_summary_
+class Configuration:
+    """_summary_.
 
     _extended_summary_
     """
@@ -32,25 +33,23 @@ class Configuration:  # pylint: disable=too-many-instance-attributes,too-few-pub
     batch_delay: int = 0
     batched: bool = False
     delay_time: int = 0
+    cache_directory: str = ''
     filename: str = ''
     threads: int = 0
 
 
-def build_configuration(args: Namespace) -> Configuration:
-    """_summary_
+def build_configuration(args: argparse.Namespace) -> Configuration:
+    """_summary_.
 
     _extended_summary_
 
     Arguments:
         args (argparse.Namespace) -- _description_
-        get_target_port_list_fn (_type_) -- _description_
-        get_target_ip_list_fn (_type_) -- _description_
 
     Returns:
         Configuration -- _description_
     """
-
-    config = Configuration()
+    config: Configuration = Configuration()
 
     config.quiet = args.quiet
     config.verbose = args.verbose
@@ -62,6 +61,7 @@ def build_configuration(args: Namespace) -> Configuration:
     config.batch_size = args.batch_size
     config.batch_delay = args.batch_delay
     config.delay_time = args.delay_time
+    config.cache_directory = args.cache_directory
     config.filename = args.filename
     config.threads = args.threads
 

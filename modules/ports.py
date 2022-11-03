@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -21,7 +21,7 @@ from .utils import create_spinner
 
 
 def list_all_port_rules() -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
     """
@@ -33,7 +33,7 @@ def list_all_port_rules() -> None:
 
 
 def _get_ports_by_name(port: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -53,7 +53,7 @@ def _get_ports_by_name(port: str) -> list[int]:
 
 
 def _get_ports_by_number(port: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -71,7 +71,7 @@ def _get_ports_by_number(port: str) -> list[int]:
 
 
 def _get_ports_from_rule(rule_name: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -90,7 +90,7 @@ def _get_ports_from_rule(rule_name: str) -> list[int]:
 
 
 def _get_ports_from_rule_sets(port: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -111,7 +111,7 @@ def _get_ports_from_rule_sets(port: str) -> list[int]:
 
 
 def _get_ports_from_range(port: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -121,14 +121,7 @@ def _get_ports_from_range(port: str) -> list[int]:
     Returns:
         list[int] -- _description_
     """
-
-    # Format A-B e.g. 1-1024
-    result: Match[str] | None = re.search(r"(\d+)-(\d+)", port)
-    if result is not None:
-        return list(range(int(result.group(1)), int(result.group(2)) + 1))
-
-    # Format A:B e.g.
-    result: Match[str] | None = re.search(r"(\d+):(\d+)", port)
+    result: Match[str] | None = re.search(r"(\d+)[-:](\d+)", port)
     if result is not None:
         return list(range(int(result.group(1)), int(result.group(2)) + 1))
 
@@ -136,7 +129,7 @@ def _get_ports_from_range(port: str) -> list[int]:
 
 
 def _get_port_list_from_file(port: str) -> list[str]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -155,8 +148,8 @@ def _get_port_list_from_file(port: str) -> list[str]:
         if not os.path.exists(fname):
             warn(f"{fname} does not exist - aborting")
         else:
-            with open(fname, "r", encoding="UTF-8") as f:
-                lines: list[str] = f.readlines()
+            with open(fname, "r", encoding="UTF-8") as readfile:
+                lines: list[str] = readfile.readlines()
                 for line in lines:
                     for item in line.strip().split(","):
                         ports.append(item)
@@ -164,7 +157,7 @@ def _get_port_list_from_file(port: str) -> list[str]:
 
 
 def real_get_port_list(supplied_port_list: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -175,7 +168,12 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
         list[int] -- _description_
     """
     # This is order is important as once a port parameter is processed the loop is broken out of.
-    functions_to_call: list = [_get_ports_from_range, _get_ports_from_rule_sets, _get_ports_by_number, _get_ports_by_name]
+    functions_to_call: list = [
+        _get_ports_from_range,
+        _get_ports_from_rule_sets,
+        _get_ports_by_number,
+        _get_ports_by_name
+    ]
     generate_post_ports: list = []
 
     for port in supplied_port_list.split(","):
@@ -192,7 +190,7 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
 
 
 def _get_port_list(supplied_port_list: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -216,7 +214,7 @@ def _get_port_list(supplied_port_list: str) -> list[int]:
 
 
 def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 

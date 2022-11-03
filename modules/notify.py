@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -12,19 +12,18 @@ from .constants import ERROR, INFO, RESET, SUCCESS, WARN
 
 
 def success(message: str) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
     Arguments:
         message (str) -- _description_
     """
-
     print(f"{SUCCESS}{message}{RESET}")
 
 
 def success_msg(message: str) -> str:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -34,24 +33,22 @@ def success_msg(message: str) -> str:
     Returns:
         str -- _description_
     """
-
     return f"{SUCCESS}{message}{RESET}"
 
 
 def warn(message: str) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
     Arguments:
         message (str) -- _description_
     """
-
     print(f"{WARN}{message}{RESET}")
 
 
 def warn_msg(message: str) -> str:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -61,12 +58,11 @@ def warn_msg(message: str) -> str:
     Returns:
         str -- _description_
     """
-
     return f"{WARN}{message}{RESET}"
 
 
 def error(message: str) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -77,7 +73,7 @@ def error(message: str) -> None:
 
 
 def error_msg(message: str) -> str:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -91,7 +87,7 @@ def error_msg(message: str) -> str:
 
 
 def info(message: str) -> None:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -102,7 +98,7 @@ def info(message: str) -> None:
 
 
 def info_msg(message: str) -> str:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 

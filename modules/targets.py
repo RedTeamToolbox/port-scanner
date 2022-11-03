@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -24,7 +24,7 @@ from .utils import create_spinner
 
 # TODO: define internal functions
 def is_ip_address(target: str) -> Any:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -35,8 +35,8 @@ def is_ip_address(target: str) -> Any:
         Any -- _description_
     """
     try:
-        ip: IPv4Address | IPv6Address = ipaddress.ip_address(target)
-        status: bool = bool(isinstance(ip, (ipaddress.IPv4Address, ipaddress.IPv6Address)))
+        ip_address: IPv4Address | IPv6Address = ipaddress.ip_address(target)
+        status: bool = bool(isinstance(ip_address, (ipaddress.IPv4Address, ipaddress.IPv6Address)))
     except ValueError:
         status = False
 
@@ -44,7 +44,7 @@ def is_ip_address(target: str) -> Any:
 
 
 def get_records(host: str, record_type: str) -> list[str]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -65,7 +65,7 @@ def get_records(host: str, record_type: str) -> list[str]:
 
 
 def get_ips(target: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -77,21 +77,43 @@ def get_ips(target: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:
     Returns:
         list[str] -- _description_
     """
+    results: list = []
 
     if is_ip_address(target) is False:
         if ipv4_only is True:
-            results: list[str] = sorted(get_records(target, "A"))
+            results = sorted(get_records(target, "A"))
         elif ipv6_only is True:
-            results: list[str] = sorted(get_records(target, "AAAA"))
+            results = sorted(get_records(target, "AAAA"))
         else:
-            results: list[str] = sorted(get_records(target, "A")) + sorted(get_records(target, "AAAA"))
+            results = sorted(get_records(target, "A")) + sorted(get_records(target, "AAAA"))
     else:
         results = [target]
     return results
 
 
-def validate_targets(targets: list[str], ipv4_only: bool, ipv6_only: bool) -> list[str]:
-    """_summary_
+def store_host_ip_mapping(target: str, ip_address: str) -> bool:
+    """Define a summary.
+
+    This is the extended summary from the template and needs to be replaced.
+
+    Arguments:
+        target (str) -- _description_
+        ip_address (str) -- _description_
+
+    Returns:
+        bool -- _description_
+    """
+    if ip_address in host_ip_mapping and is_ip_address(target) is False:
+        return True
+    if ip_address not in host_ip_mapping:
+        return True
+    return False
+
+
+def validate_targets(targets: list[str],
+                     ipv4_only: bool,
+                     ipv6_only: bool) -> list[str]:
+    """_summary_.
 
     _extended_summary_
 
@@ -107,11 +129,13 @@ def validate_targets(targets: list[str], ipv4_only: bool, ipv6_only: bool) -> li
 
     for target in targets:
         try:
-            for ip in get_ips(target, ipv4_only, ipv6_only):
-                if (ip in host_ip_mapping and is_ip_address(target) is False) or ip not in host_ip_mapping:
-                    host_ip_mapping[ip] = target
-                ip_ipnum_mapping[ip] = int(ipaddress.ip_address(ip))
-                valid_targets.append(ip)
+            for ip_address in get_ips(target, ipv4_only, ipv6_only):
+                if (ip_address in host_ip_mapping and is_ip_address(target) is False) or ip_address not in host_ip_mapping:
+                    host_ip_mapping[ip_address] = target
+
+                ipnum: int = int(ipaddress.ip_address(ip_address))
+                ip_ipnum_mapping[ip_address] = ipnum
+                valid_targets.append(ip_address)
 
         except socket.gaierror:
             warn(f"{target} is not valid - Skipping)")
@@ -123,8 +147,9 @@ def validate_targets(targets: list[str], ipv4_only: bool, ipv6_only: bool) -> li
 
 # TODO: move this to somewhere else
 
-def get_all_host_port_combinations(targets: list[str], ports: list[int]) -> list[tuple]:
-    """_summary_
+def get_all_host_port_combinations(targets: list[str],
+                                   ports: list[int]) -> list[tuple]:
+    """_summary_.
 
     _extended_summary_
 
@@ -138,8 +163,10 @@ def get_all_host_port_combinations(targets: list[str], ports: list[int]) -> list
     return list(itertools.product(targets, ports))
 
 
-def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:
-    """_summary_
+def get_target_ip_list(targets: str,
+                       ipv4_only: bool,
+                       ipv6_only: bool) -> list[str]:
+    """_summary_.
 
     _extended_summary_
 
@@ -151,7 +178,6 @@ def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[s
     Returns:
         list[str] -- _description_
     """
-
     with create_spinner(info_msg("[*] Generating a list of all target IP address")):
         target_list: list[str] = targets.split(",")
         valid_targets: list[str] = validate_targets(target_list, ipv4_only, ipv6_only)

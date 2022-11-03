@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -9,7 +9,7 @@ line.
 
 
 class PortScannerException(Exception):
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -19,7 +19,7 @@ class PortScannerException(Exception):
 
 
 class InvalidParameters(PortScannerException):
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This is the summary line
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -10,28 +10,28 @@ line.
 
 from functools import cmp_to_key
 from operator import itemgetter
-from typing import Any
+from typing import Any, Generator
 
-from .globals import secretsGenerator
+from .globals import secrets_generator
 
 
-def cmp(x, y) -> Any:
-    """_summary_
+def cmp(left, right) -> Any:
+    """_summary_.
 
     _extended_summary_
 
     Arguments:
-        x (_type_) -- _description_
+        left (_type_) -- _description_
         y (_type_) -- _description_
 
     Returns:
         Any -- _description_
     """
-    return (x > y) - (x < y)
+    return (left > right) - (left < right)
 
 
 def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -42,13 +42,13 @@ def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
     Returns:
         list[dict] -- _description_
     """
-    comparers = [
+    comparers: list = [
         ((itemgetter(col[1:].strip()), -1) if col.startswith("-") else (itemgetter(col.strip()), 1))
         for col in columns
     ]
 
     def comparer(left, right) -> int:
-        comparer_iter = (
+        comparer_iter: Generator = (
             cmp(fn(left), fn(right)) * mult
             for fn, mult in comparers
         )
@@ -57,7 +57,7 @@ def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
 
 
 def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
-    """_summary_
+    """_summary_.
 
     _extended_summary_
 
@@ -80,5 +80,5 @@ def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
             results.append(shuffled(sublist, depth - 1))
         else:
             results.append(sublist)
-    results = secretsGenerator.sample(results, len(results))
+    results = secrets_generator.sample(results, len(results))
     return results
