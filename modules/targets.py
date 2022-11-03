@@ -24,9 +24,9 @@ from .utils import create_spinner
 
 # TODO: define internal functions
 def is_ip_address(target: str) -> Any:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         target (str) -- _description_
@@ -44,9 +44,9 @@ def is_ip_address(target: str) -> Any:
 
 
 def get_records(host: str, record_type: str) -> list[str]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         host (str) -- _description_
@@ -65,9 +65,9 @@ def get_records(host: str, record_type: str) -> list[str]:
 
 
 def get_ips(target: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         target (str) -- _description_
@@ -110,12 +110,10 @@ def store_host_ip_mapping(target: str, ip_address: str) -> bool:
     return False
 
 
-def validate_targets(targets: list[str],
-                     ipv4_only: bool,
-                     ipv6_only: bool) -> list[str]:
-    """_summary_.
+def validate_targets(targets: list[str], ipv4_only: bool, ipv6_only: bool) -> list[str]:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         targets (list[str]) -- _description_
@@ -147,11 +145,10 @@ def validate_targets(targets: list[str],
 
 # TODO: move this to somewhere else
 
-def get_all_host_port_combinations(targets: list[str],
-                                   ports: list[int]) -> list[tuple]:
-    """_summary_.
+def get_all_host_port_combinations(targets: list[str], ports: list[int]) -> list[tuple]:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         targets (list[str]) -- _description_
@@ -163,12 +160,10 @@ def get_all_host_port_combinations(targets: list[str],
     return list(itertools.product(targets, ports))
 
 
-def get_target_ip_list(targets: str,
-                       ipv4_only: bool,
-                       ipv6_only: bool) -> list[str]:
-    """_summary_.
+def get_target_ip_list(targets: str, ipv4_only: bool, ipv6_only: bool) -> list[str]:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         targets (str) -- _description_
@@ -183,6 +178,7 @@ def get_target_ip_list(targets: str,
         valid_targets: list[str] = validate_targets(target_list, ipv4_only, ipv6_only)
 
     if not valid_targets:
+        # TODO: raise an exception
         error("Fatal: No valid targets were found - Aborting!")
         sys.exit(0)
 

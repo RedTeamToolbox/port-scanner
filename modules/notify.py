@@ -12,9 +12,9 @@ from .constants import ERROR, INFO, RESET, SUCCESS, WARN
 
 
 def success(message: str) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_
@@ -23,9 +23,9 @@ def success(message: str) -> None:
 
 
 def success_msg(message: str) -> str:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_
@@ -37,9 +37,9 @@ def success_msg(message: str) -> str:
 
 
 def warn(message: str) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_
@@ -48,9 +48,9 @@ def warn(message: str) -> None:
 
 
 def warn_msg(message: str) -> str:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_
@@ -62,9 +62,9 @@ def warn_msg(message: str) -> str:
 
 
 def error(message: str) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_
@@ -73,9 +73,9 @@ def error(message: str) -> None:
 
 
 def error_msg(message: str) -> str:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_
@@ -87,9 +87,9 @@ def error_msg(message: str) -> str:
 
 
 def info(message: str) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_
@@ -98,9 +98,9 @@ def info(message: str) -> None:
 
 
 def info_msg(message: str) -> str:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         message (str) -- _description_

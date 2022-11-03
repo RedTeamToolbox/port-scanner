@@ -17,9 +17,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from ipaddress import IPv4Address, IPv6Address
 from re import Match
 from time import sleep
+from types import SimpleNamespace
 from typing import Any
 
-from .config import Configuration
 from .globals import host_ip_mapping, ip_ipnum_mapping, service_name_mapping
 from .notify import error_msg, info_msg, success_msg, info
 from .ordering import shuffled
@@ -45,9 +45,9 @@ def add_to_service_mapping(port: int) -> None:
 
 # TODO: define internal functions
 def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         target (str) -- _description_
@@ -113,48 +113,50 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
 
 
 def handle_verbose_mode(thread_results: dict) -> None:
-    """_summary_.
+    """Define a summary.
 
-    Args:
-        thread_results (dict): _description_
-        pbar (_type_): _description_
+    This is the extended summary from the template and needs to be replaced.
+
+    Arguments:
+        thread_results (dict) -- _description_
     """
     verbose_msg: str = f"{thread_results['target']} port {thread_results['port']} is {thread_results['status_string']}"
+
     if thread_results['status'] is True:
         print(error_msg(f"[X] {verbose_msg}"))
     else:
         print(success_msg(f"[^] {verbose_msg}"))
 
 
-def get_how_many(targets: list, config: Configuration) -> int:
-    """_summary_.
+def get_how_many(config: SimpleNamespace) -> int:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         targets (list) -- _description_
-        config (PSconfig.Configuration) -- _description_
+        args (_type_) -- _description_
 
     Returns:
         int -- _description_
     """
     how_many: int = config.threads
 
-    if config.threads > len(targets):
-        how_many = len(targets)
+    if config.threads > len(config.targets):
+        how_many = len(config.targets)
 
     return how_many
 
 
-def scan_targets_batched(targets: list, how_many: int, config: Configuration) -> list[dict]:
-    """_summary_.
+def scan_targets_batched(targets: list, how_many: int, config: SimpleNamespace) -> list[dict]:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         targets (list) -- _description_
         how_many (int) -- _description_
-        config (PSconfig.Configuration) -- _description_
+        args (_type_) -- _description_
 
     Returns:
         list[dict] -- _description_
@@ -193,15 +195,15 @@ def scan_targets_batched(targets: list, how_many: int, config: Configuration) ->
     return results
 
 
-def scan_targets_unbatched(targets: list, how_many: int, config: Configuration) -> list[dict]:
-    """_summary_.
+def scan_targets_unbatched(targets: list, how_many: int, config: SimpleNamespace) -> list[dict]:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         targets (list) -- _description_
         how_many (int) -- _description_
-        config (PSconfig.Configuration) -- _description_
+        args (_type_) -- _description_
 
     Returns:
         list[dict] -- _description_
@@ -225,24 +227,26 @@ def scan_targets_unbatched(targets: list, how_many: int, config: Configuration) 
     return results
 
 
-def scan_targets(config: Configuration) -> list[dict]:
-    """_summary_.
+def scan_targets(config: SimpleNamespace) -> list[dict]:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
-        config (PSconfig.Configuration) -- _description_
+        targets (list[str]) -- _description_
+        ports (list[int]) -- _description_
+        args (_type_) -- _description_
 
     Returns:
         list[dict] -- _description_
     """
     with create_spinner(info_msg("[*] Generating all host / port combinations")):
-        targets: list[tuple] = get_all_host_port_combinations(config.targets, config.ports)
+        targets_and_ports: list[tuple] = get_all_host_port_combinations(config.targets, config.ports)
         if config.shuffle is True:
-            targets = shuffled(targets)
+            targets_and_ports = shuffled(targets_and_ports)
 
-    how_many: int = get_how_many(targets, config)
+    how_many: int = get_how_many(config)
 
     if config.batched:
-        return scan_targets_batched(targets, how_many, config)
-    return scan_targets_unbatched(targets, how_many, config)
+        return scan_targets_batched(targets_and_ports, how_many, config)
+    return scan_targets_unbatched(targets_and_ports, how_many, config)

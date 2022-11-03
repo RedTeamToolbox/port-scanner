@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
-"""
-This is the summary line.
+"""This is the summary line.
 
 This is the further elaboration of the docstring. Within this section,
 you can elaborate further on details as appropriate for the situation.
@@ -10,61 +8,36 @@ line.
 """
 import argparse
 
-from dataclasses import dataclass, field
+from types import SimpleNamespace
 
 
-@dataclass
-class Configuration:
-    """_summary_.
+def create_configuration_from_arguments(args: argparse.Namespace) -> SimpleNamespace:
+    """Define a summary.
 
-    _extended_summary_
-    """
-
-    ports: list = field(default_factory=list)
-    targets: list = field(default_factory=list)
-    quiet: bool = False
-    verbose: bool = False
-    debug: bool = False
-    shuffle: bool = True
-    ipv4_only: bool = False
-    ipv6_only: bool = False
-    all_results: bool = False
-    batch_size: int = 3
-    batch_delay: int = 0
-    batched: bool = False
-    delay_time: int = 0
-    cache_directory: str = ''
-    filename: str = ''
-    threads: int = 0
-
-
-def build_configuration(args: argparse.Namespace) -> Configuration:
-    """_summary_.
-
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         args (argparse.Namespace) -- _description_
 
     Returns:
-        Configuration -- _description_
+        SimpleNamespace -- _description_
     """
-    config: Configuration = Configuration()
+    configuration: SimpleNamespace = SimpleNamespace()
 
-    config.quiet = args.quiet
-    config.verbose = args.verbose
-    # config.debug = args.debug
-    config.shuffle = args.shuffle
-    config.ipv4_only = args.ipv4_only
-    config.ipv6_only = args.ipv6_only
-    config.all_results = args.all_results
-    config.batch_size = args.batch_size
-    config.batch_delay = args.batch_delay
-    config.delay_time = args.delay_time
-    config.cache_directory = args.cache_directory
-    config.filename = args.filename
-    config.threads = args.threads
+    configuration.quiet = args.quiet
+    configuration.verbose = args.verbose
+    configuration.debug = args.debug
+    configuration.shuffle = args.shuffle
+    configuration.ipv4_only = args.ipv4_only
+    configuration.ipv6_only = args.ipv6_only
+    configuration.all_results = args.all_results
+    configuration.batch_size = args.batch_size
+    configuration.batch_delay = args.batch_delay
+    configuration.delay_time = args.delay_time
+    configuration.cache_directory = args.cache_directory
+    configuration.filename = args.filename
+    configuration.threads = args.threads
 
-    if config.batch_size:
-        config.batched = True
-    return config
+    configuration.batched = bool(configuration.batch_size > 0)
+
+    return configuration

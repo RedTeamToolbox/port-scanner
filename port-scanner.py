@@ -12,7 +12,6 @@ line.
 import argparse
 import sys
 
-
 from modules.cli import process_command_line_arguments
 from modules.core import run_scanner
 from modules.exceptions import InvalidParameters

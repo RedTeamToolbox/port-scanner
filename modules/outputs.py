@@ -11,17 +11,17 @@ line.
 import csv
 import json
 
+from types import SimpleNamespace
 from typing import Any
 from prettytable import PrettyTable
 
-from .config import Configuration
 from .ordering import multikeysort
 
 
 def save_results_as_csv(results: list[dict], fname: str) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         results (list[dict]) -- _description_
@@ -39,9 +39,9 @@ def save_results_as_csv(results: list[dict], fname: str) -> None:
 
 
 def save_results_as_json(results: list[dict], fname: str) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         results (list[dict]) -- _description_
@@ -55,9 +55,9 @@ def save_results_as_json(results: list[dict], fname: str) -> None:
 
 
 def print_table_of_results(results: list[dict]) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         results (list[dict]) -- _description_
@@ -80,9 +80,9 @@ def print_table_of_results(results: list[dict]) -> None:
 
 
 def process_results(results: list[dict], all_results: bool = True) -> list[dict]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         results (list[dict]) -- _description_
@@ -99,14 +99,14 @@ def process_results(results: list[dict], all_results: bool = True) -> list[dict]
     return multikeysort(processed_results, ['target', 'ipnum', 'port'])
 
 
-def display_results(results: list[dict], config: Configuration) -> None:
-    """_summary_.
+def display_results(results: list[dict], config: SimpleNamespace) -> None:
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         results (list[dict]) -- _description_
-        config (PSconfig.Configuration) -- _description_
+        args (_type_) -- _description_
     """
     processed_results: list[dict] = process_results(results, config.all_results)
 

@@ -21,9 +21,9 @@ from .utils import create_spinner
 
 
 def list_all_port_rules() -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
     """
     info("Available rule sets:")
     count: int = 0
@@ -33,9 +33,9 @@ def list_all_port_rules() -> None:
 
 
 def _get_ports_by_name(port: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         port (str) -- _description_
@@ -53,9 +53,9 @@ def _get_ports_by_name(port: str) -> list[int]:
 
 
 def _get_ports_by_number(port: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         port (str) -- _description_
@@ -71,9 +71,9 @@ def _get_ports_by_number(port: str) -> list[int]:
 
 
 def _get_ports_from_rule(rule_name: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         rule_name (str) -- _description_
@@ -90,9 +90,9 @@ def _get_ports_from_rule(rule_name: str) -> list[int]:
 
 
 def _get_ports_from_rule_sets(port: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         port (str) -- _description_
@@ -111,9 +111,9 @@ def _get_ports_from_rule_sets(port: str) -> list[int]:
 
 
 def _get_ports_from_range(port: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         port (str) -- _description_
@@ -129,9 +129,9 @@ def _get_ports_from_range(port: str) -> list[int]:
 
 
 def _get_port_list_from_file(port: str) -> list[str]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         port (str) -- _description_
@@ -157,9 +157,9 @@ def _get_port_list_from_file(port: str) -> list[str]:
 
 
 def real_get_port_list(supplied_port_list: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         supplied_port_list (str) -- _description_
@@ -190,9 +190,9 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
 
 
 def _get_port_list(supplied_port_list: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         supplied_port_list (str) -- _description_
@@ -214,9 +214,9 @@ def _get_port_list(supplied_port_list: str) -> list[int]:
 
 
 def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         include_ports (str) -- _description_
@@ -239,6 +239,7 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
             port_list = include_port_list
 
     if not port_list:
+        # TODO : raise an exception
         error("Fatal: No valid ports were found - Aborting!")
         sys.exit(0)
 

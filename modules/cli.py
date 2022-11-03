@@ -15,9 +15,9 @@ from .ports import list_all_port_rules
 
 
 def _add_flags_to_parser(parser: argparse.ArgumentParser) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         parser (argparse.ArgumentParser) -- _description_
@@ -30,15 +30,18 @@ def _add_flags_to_parser(parser: argparse.ArgumentParser) -> None:
     flags.add_argument("-h", "--help",
                        action="help",
                        help="show this help message and exit")
-    flags.add_argument("-q", "--quiet",
+    flags.add_argument("-d", "--debug",
                        action="store_true", default=False,
-                       help="Do not show the results on the screen")
+                       help="Very noisy")
     flags.add_argument("-v", "--verbose",
                        action="store_true", default=False,
                        help="Verbose output - show scan results as they come in")
     flags.add_argument("-V", "--very-verbose",
                        action="store_true", default=False,
                        help="Very noisy and details all connections etc")
+    flags.add_argument("-q", "--quiet",
+                       action="store_true", default=False,
+                       help="Do not show the results on the screen")
     flags.add_argument("-4", "--ipv4-only",
                        action="store_true", default=False,
                        help="Scan IPv4 addresses only")
@@ -57,9 +60,9 @@ def _add_flags_to_parser(parser: argparse.ArgumentParser) -> None:
 
 
 def _add_required_parameters(parser: argparse.ArgumentParser) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         parser (argparse.ArgumentParser) -- _description_
@@ -77,9 +80,9 @@ def _add_required_parameters(parser: argparse.ArgumentParser) -> None:
 
 
 def _add_optional_parameters(parser: argparse.ArgumentParser) -> None:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         parser (argparse.ArgumentParser) -- _description_
@@ -96,7 +99,7 @@ def _add_optional_parameters(parser: argparse.ArgumentParser) -> None:
     optional.add_argument("-B", "--batch-delay",
                           type=int, default=0,
                           help="The amount of time to wait between batches")
-    optional.add_argument("-d", "--delay-time",
+    optional.add_argument("-D", "--delay-time",
                           type=int, default=3,
                           help="Random delay to use if --delay is given")
     optional.add_argument("-e", "--exclude-ports",
@@ -121,9 +124,9 @@ def _add_optional_parameters(parser: argparse.ArgumentParser) -> None:
 # TODO: store the results as a cache per IP (like the batching system I wrote)
 # TODO: define a cache timeout (default 1 week)
 def _setup_arg_parser() -> argparse.ArgumentParser:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Returns:
         argparse.ArgumentParser -- _description_
@@ -132,8 +135,7 @@ def _setup_arg_parser() -> argparse.ArgumentParser:
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Check for open port(s) on target host(s)",
-        epilog="""For detailed documentation please refer to:
-                  https://github.com/OffSecToolbox/port-scanner""",
+        epilog="For detailed documentation please refer to: https://github.com/OffSecToolbox/port-scanner",
     )
     _add_flags_to_parser(parser)
     _add_required_parameters(parser)
@@ -143,9 +145,9 @@ def _setup_arg_parser() -> argparse.ArgumentParser:
 
 
 def process_command_line_arguments() -> argparse.Namespace:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Raises:
         InvalidParameters: _description_

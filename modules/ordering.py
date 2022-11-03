@@ -16,13 +16,13 @@ from .globals import secrets_generator
 
 
 def cmp(left, right) -> Any:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         left (_type_) -- _description_
-        y (_type_) -- _description_
+        right (_type_) -- _description_
 
     Returns:
         Any -- _description_
@@ -31,9 +31,9 @@ def cmp(left, right) -> Any:
 
 
 def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         items (list[dict]) -- _description_
@@ -57,9 +57,9 @@ def multikeysort(items: list[dict], columns: list[str]) -> list[dict]:
 
 
 def shuffled(things: list[Any], depth: int = 1) -> list[Any]:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         things (list[Any]) -- _description_

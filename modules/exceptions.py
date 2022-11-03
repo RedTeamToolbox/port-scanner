@@ -9,9 +9,9 @@ line.
 
 
 class PortScannerException(Exception):
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         Exception (_type_) -- _description_
@@ -19,9 +19,9 @@ class PortScannerException(Exception):
 
 
 class InvalidParameters(PortScannerException):
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         PortScannerException (_type_) -- _description_

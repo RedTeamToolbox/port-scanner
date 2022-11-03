@@ -12,15 +12,15 @@ from .globals import secrets_generator
 
 
 def secure_random(min_number: int, max_number: int) -> int:
-    """_summary_.
+    """Define a summary.
 
-    _extended_summary_
+    This is the extended summary from the template and needs to be replaced.
 
     Arguments:
         min_number (int) -- _description_
         max_number (int) -- _description_
 
     Returns:
-        _type_ -- _description_
+        int -- _description_
     """
     return secrets_generator.randint(min_number, max_number)
