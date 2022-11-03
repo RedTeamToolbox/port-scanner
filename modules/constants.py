@@ -41,8 +41,6 @@ PORT_RULES: list[dict] = [
     {"rule": "web-servers", "ports": [80, 443, 8080, 8443, 8444]},
 ]
 
-CLI_EPILOG: str = "For more detailed documentation please refer to: https://github.com/SecOpsToolbox/port-scanner"
-CLI_DESC: str = "Check for open port(s) on target host(s)"
 CLI_HELP: dict = {
     "help": "show this help message and exit",
     "quiet": "Do not show the results on the screen",

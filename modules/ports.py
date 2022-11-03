@@ -16,11 +16,23 @@ import sys
 from re import Match
 
 from .constants import PORT_RULES
-from .notify import error, info_msg, warn
+from .notify import error, info, info_msg, warn
 from .utils import create_spinner
 
 
-def __get_ports_by_name(port: str) -> list[int]:
+def list_all_port_rules() -> None:
+    """_summary_
+
+    _extended_summary_
+    """
+    info("Available rule sets:")
+    count: int = 0
+    for rule in PORT_RULES:
+        count += 1
+        print(f"  Rule {count}: '{rule['rule']}': {rule['ports']}")
+
+
+def _get_ports_by_name(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -40,7 +52,7 @@ def __get_ports_by_name(port: str) -> list[int]:
     return ports
 
 
-def __get_ports_by_number(port: str) -> list[int]:
+def _get_ports_by_number(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -58,7 +70,7 @@ def __get_ports_by_number(port: str) -> list[int]:
     return ports
 
 
-def __get_ports_from_rule(rule_name: str) -> list[int]:
+def _get_ports_from_rule(rule_name: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -77,7 +89,7 @@ def __get_ports_from_rule(rule_name: str) -> list[int]:
     return []
 
 
-def __get_ports_from_rule_sets(port: str) -> list[int]:
+def _get_ports_from_rule_sets(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -94,11 +106,11 @@ def __get_ports_from_rule_sets(port: str) -> list[int]:
     if match_results is not None:
         rule_sets: str = match_results.group(1)
         for rule in rule_sets.split(","):
-            ports += __get_ports_from_rule(rule)
+            ports += _get_ports_from_rule(rule)
     return ports
 
 
-def __get_ports_from_range(port: str) -> list[int]:
+def _get_ports_from_range(port: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -123,7 +135,7 @@ def __get_ports_from_range(port: str) -> list[int]:
     return []
 
 
-def __get_port_list_from_file(port: str) -> list[str]:
+def _get_port_list_from_file(port: str) -> list[str]:
     """_summary_
 
     _extended_summary_
@@ -163,7 +175,7 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
         list[int] -- _description_
     """
     # This is order is important as once a port parameter is processed the loop is broken out of.
-    functions_to_call: list = [__get_ports_from_range, __get_ports_from_rule_sets, __get_ports_by_number, __get_ports_by_name]
+    functions_to_call: list = [_get_ports_from_range, _get_ports_from_rule_sets, _get_ports_by_number, _get_ports_by_name]
     generate_post_ports: list = []
 
     for port in supplied_port_list.split(","):
@@ -179,7 +191,7 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
     return generate_post_ports
 
 
-def __get_port_list(supplied_port_list: str) -> list[int]:
+def _get_port_list(supplied_port_list: str) -> list[int]:
     """_summary_
 
     _extended_summary_
@@ -194,7 +206,7 @@ def __get_port_list(supplied_port_list: str) -> list[int]:
     generated_port_list: list = []
 
     for port in supplied_port_list.split(","):
-        port_list: list[str] = __get_port_list_from_file(port)
+        port_list: list[str] = _get_port_list_from_file(port)
         if port_list:
             generated_port_list += port_list
         else:
@@ -220,9 +232,9 @@ def get_target_port_list(include_ports: str, exclude_ports: str) -> list[int]:
     port_list: list = []
 
     with create_spinner(info_msg("[*] Processing target port list")):
-        include_port_list = __get_port_list(include_ports)
+        include_port_list = _get_port_list(include_ports)
         if exclude_ports is not None:
-            exclude_port_list = __get_port_list(exclude_ports)
+            exclude_port_list = _get_port_list(exclude_ports)
             if exclude_port_list:
                 port_list = [x for x in include_port_list if x not in exclude_port_list]
         else:

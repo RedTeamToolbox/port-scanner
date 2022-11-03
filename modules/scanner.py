@@ -27,6 +27,7 @@ from .targets import get_all_host_port_combinations
 from .utils import create_alive_bar, create_spinner
 
 
+# TODO: define internal functions
 def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
     """_summary_
 

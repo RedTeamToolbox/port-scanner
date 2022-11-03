@@ -22,6 +22,7 @@ from .notify import error, info_msg, warn
 from .utils import create_spinner
 
 
+# TODO: define internal functions
 def is_ip_address(target: str) -> Any:
     """_summary_
 
