@@ -40,4 +40,6 @@ def create_configuration_from_arguments(args: argparse.Namespace) -> SimpleNames
 
     configuration.batched = bool(configuration.batch_size > 0)
 
+    configuration.socket_timeout = 1
+
     return configuration

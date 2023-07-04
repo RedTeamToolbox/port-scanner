@@ -2,6 +2,9 @@ name: Greetings
 
 on: [pull_request_target, issues]
 
+env:
+  SLACK_NOTIFY: false
+
 jobs:
   greeting:
     name: Handle Greetings
@@ -16,3 +19,19 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         issue-message: "Thank you for raising your first issue - all contributions to this project are welcome!"
         pr-message: "Thank you for raising your first pull request - all contributions to this project are welcome!"
+
+  slack-workflow-status:
+    if: always()
+    name: Slack Post Workflow Notification
+    needs:
+      - greeting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Workflow Notifications
+        if: ${{ env.SLACK_NOTIFY == 'true' && github.event_name == 'push' }}
+        uses: Gamesight/slack-workflow-status@v1.1.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          include_jobs: on-failure
+          include_commit_message: true

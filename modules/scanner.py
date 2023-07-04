@@ -14,7 +14,7 @@ import re
 import socket
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from ipaddress import IPv4Address, IPv6Address
+from ipaddress import IPv6Address
 from re import Match
 from time import sleep
 from types import SimpleNamespace
@@ -44,7 +44,7 @@ def add_to_service_mapping(port: int) -> None:
 
 
 # TODO: define internal functions
-def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
+def scan_target_port(target: str, port: int, socket_timeout: int, delay_time: int) -> dict[str, Any]:
     """Define a summary.
 
     This is the extended summary from the template and needs to be replaced.
@@ -58,7 +58,6 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
         dict[str, Any] -- _description_
     """
     status: bool = False
-    status_string: str = "Closed"
     error_from_server: str = ""
     banner: str = ""
     af_type: int = socket.AF_INET
@@ -66,42 +65,38 @@ def scan_target_port(target: str, port: int, delay_time: int) -> dict[str, Any]:
     if delay_time > 0:
         sleep(delay_time)
 
-    ip_address: IPv4Address | IPv6Address = ipaddress.ip_address(target)
-    if isinstance(ip_address, ipaddress.IPv6Address) is True:
+    if isinstance(ipaddress.ip_address(target), IPv6Address) is True:
         af_type = socket.AF_INET6
 
     with socket.socket(af_type, socket.SOCK_STREAM) as sock:
-        sock.settimeout(1)
+        sock.settimeout(socket_timeout)
         try:
             sock.connect((target, port))
-            # sock.settimeout(3)
-            status_string = "Open"
             status = True
             try:
                 banner = sock.recv(2048).decode("utf-8").strip()
             except socket.error as err:
-                banner = "Unavailable"
                 error_from_server = str(err)
             sock.shutdown(0)
             sock.close()
         except socket.timeout:
             error_from_server = "Connection timed out"
-            status_string = "Closed"
             status = False
         except socket.error as err:
             error_from_server = str(err)
             result: Match[str] | None = re.search(r"(\[Errno \d+\] )?(.*)", error_from_server)
             if result is not None:
                 error_from_server = result.group(2)
-            status_string = "Closed"
             status = False
 
     # Cache the service name in case we are hitting multiple IPs
     add_to_service_mapping(port)
 
+    status_string: str = "Open" if status is True else "Closed"
+
     return {
         "target": host_ip_mapping[target],
-        "ip": ip_address,
+        "ip": target,
         "ipnum": ip_ipnum_mapping[target],
         "port": port,
         "status": status,
@@ -179,7 +174,7 @@ def scan_targets_batched(targets: list, how_many: int, config: SimpleNamespace) 
                 pbar.text = info_msg("Status: Submitting jobs for batch {batch_counter}")
                 batch_counter += 1
 
-                futures: list = [executor.submit(scan_target_port, target[0], target[1], config.delay_time) for target in batch]
+                futures: list = [executor.submit(scan_target_port, target[0], target[1], config.socket_timeout, config.delay_time) for target in batch]
                 pbar.text = info_msg(f"Status: Batch {batch_counter} jobs submitted - awaiting results")
 
                 for future in as_completed(futures):
@@ -213,7 +208,7 @@ def scan_targets_unbatched(targets: list, how_many: int, config: SimpleNamespace
     with create_alive_bar(len(targets), title=f"{len(targets)} scans with {how_many} threads") as pbar:
         with ThreadPoolExecutor(max_workers=how_many) as executor:
             pbar.text = info_msg("Status: Submitting jobs")
-            futures: list = [executor.submit(scan_target_port, target[0], target[1], config.delay_time) for target in targets]
+            futures: list = [executor.submit(scan_target_port, target[0], target[1], config.socket_timeout, config.delay_time) for target in targets]
             pbar.text = info_msg("Status: Jobs submitted - awaiting results")
 
             for future in as_completed(futures):

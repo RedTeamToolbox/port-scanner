@@ -174,19 +174,19 @@ def real_get_port_list(supplied_port_list: str) -> list[int]:
         _get_ports_by_number,
         _get_ports_by_name
     ]
-    generate_post_ports: list = []
+    generated_port_list: list = []
 
     for port in supplied_port_list.split(","):
         for func in functions_to_call:
             port_list: list[int] = func(port)
             if port_list:
-                generate_post_ports += port_list
+                generated_port_list += port_list
                 break
 
     # Now we need to remove any duplicates and sort
-    generate_post_ports = sorted(list(set(generate_post_ports)))
+    generated_port_list = sorted(list(set(generated_port_list)))
 
-    return generate_post_ports
+    return generated_port_list
 
 
 def _get_port_list(supplied_port_list: str) -> list[int]:

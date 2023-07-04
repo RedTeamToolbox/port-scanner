@@ -1,4 +1,5 @@
 name: Delete old workflow runs
+
 on:
   workflow_dispatch:
     inputs:
@@ -13,8 +14,11 @@ on:
   schedule:
     - cron: '7 2 * * *'
 
+env:
+  SLACK_NOTIFY: false
+
 jobs:
-  delete_old_workflows:
+  delete-old-workflows:
     name: Delete old workflow runs
     runs-on: ubuntu-latest
     steps:
@@ -32,3 +36,19 @@ jobs:
           repository: ${{ github.repository }}
           retain_days: ${{ env.DAYS }}
           keep_minimum_runs: ${{ env.MINIMUM_RUNS }}
+
+  slack-workflow-status:
+    if: always()
+    name: Slack Post Workflow Notification
+    needs:
+      - delete-old-workflows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Workflow Notifications
+        if: ${{ env.SLACK_NOTIFY == 'true' && github.event_name == 'push' }}
+        uses: Gamesight/slack-workflow-status@v1.1.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          include_jobs: on-failure
+          include_commit_message: true

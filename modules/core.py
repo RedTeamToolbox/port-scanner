@@ -26,6 +26,6 @@ def run_scanner(args: argparse.Namespace) -> None:
     """
     config: SimpleNamespace = create_configuration_from_arguments(args)
     config.ports = get_target_port_list(args.ports, args.exclude_ports)
-    config.targets = get_target_ip_list(args.targets, config.ipv4_only, config.ipv6_only)
+    config.targets = get_target_ip_list(args.targets, args.exclude_targets, config)
     results: list[dict] = scan_targets(config)
     display_results(results, config)

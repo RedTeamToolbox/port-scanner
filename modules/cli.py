@@ -105,6 +105,9 @@ def _add_optional_parameters(parser: argparse.ArgumentParser) -> None:
     optional.add_argument("-e", "--exclude-ports",
                           type=int,
                           help="The ports you want to exclude from a scan")
+    optional.add_argument("-E", "--exclude-targets",
+                          type=str,
+                          help="The targets you want to exclude from a scan")
     optional.add_argument("-T", "--threads",
                           type=int, default=default_threads,
                           help="The number of threads to use")
@@ -116,10 +119,6 @@ def _add_optional_parameters(parser: argparse.ArgumentParser) -> None:
                           help="Not Yet Implemented")
 
 
-# TODO: this is the list of jobs to do
-# TODO: add a way to define targets as ranges (like with ports) or using CIDR notation
-# TODO: add a way to load ips from file (same as with ports)
-# TODO: add an option to exclude targets incase you are using a range or CIDR
 # TODO: add an option to append to results files ?
 # TODO: store the results as a cache per IP (like the batching system I wrote)
 # TODO: define a cache timeout (default 1 week)

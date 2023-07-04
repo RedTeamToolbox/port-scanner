@@ -6,11 +6,14 @@ on:
       - 'v*'
       - '!v*-rc.*'
 
+env:
+  SLACK_NOTIFY: false
+
 permissions:
   contents: write
 
 jobs:
-  build:
+  create-release:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +37,23 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref }}
-          name: Release ${{ env.RELEASE_VERSION }}
+          name: ${{ env.RELEASE_VERSION }}
           body: ${{ steps.Changelog.outputs.changelog }}
           draft: false
           prerelease: false
+
+  slack-workflow-status:
+    if: always()
+    name: Slack Post Workflow Notification
+    needs:
+      - create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Workflow Notifications
+        if: ${{ env.SLACK_NOTIFY == 'true' && github.event_name == 'push' }}
+        uses: Gamesight/slack-workflow-status@v1.1.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          include_jobs: on-failure
+          include_commit_message: true

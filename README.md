@@ -31,63 +31,10 @@
 
 A multi-server mult-threaded multi-port scanner.
 
-## Disclaimer
-
-This tool has been designed and built with a number of specific people and purposes in mind:
-1. To assist offensive security specialists to identify issues with systems they are `legally responsible for` to help in the timely remediation of security issues.
-2. To insist system owners to identify issues with systems they are `legally responsible for` to help in the timely remediation of security issues.
-3. For people interested in security to learn about different ways of testing a system `within the bounds of the law`.
-
-The one thing tying all of these uses together is `legal ownership or responsibility`. Any system that you use as a `target` for this tool must be a system you have permission to target!
-
-If you do not have permission then you are very likely committing a criminal offense in the jurisdiction where you reside as well as the jurisdiction where the targeted system resides. For example in the United Kingdom, this would be covered by the [`Police and Justice Act 2006: Section 36`](https://www.legislation.gov.uk/ukpga/2006/48/part/5/crossheading/computer-misuse)
-
-Don't download this tool if you want to use it for nefarious purposes. In short:
-
-<br />
-<p align="center"><img src="https://cdn.wolfsoftware.com/assets/images/misc/dbad.png" alt="Don't be a dick" /></p>
 
 ## Usage
 
 ```text
-usage: port-scan [-h] [-q] [-v] [-4] [-6] [-A] [-c] [-d] [-j] [-s] [-r] [-t TARGETS] [-b BATCH_SIZE] [-B BATCH_DELAY] [-D DELAY_TIME] [-p INCLUDE_PORTS] [-e EXCLUDE_PORTS] [-T THREADS] [-f FILENAME]
-
-Check for open port(s) on target host(s)
-
-flags:
-  -h, --help            show this help message and exit
-  -q, --quiet           Do not show the results on the screen (default: False)
-  -v, --verbose         Verbose output - show scan results as they come in (default: False)
-  -4, --ipv4-only       Scan IPv4 addresses only (default: False)
-  -6, --ipv6-only       Scan IPv6 addresses only (default: False)
-  -A, --all-results     Show or save all results (default is to list open ports only) (default: False)
-  -c, --csv             Save the results as a csv formatted file (default: False)
-  -d, --delay           Add a random delay to each thread (default: False)
-  -j, --json            Save the results as a json formatted file (default: False)
-  -s, --shuffle         Randomise the scanning order (default: False)
-  -r, --list-rules      List the available rules (default: False)
-
-required arguments:
-  -t TARGETS, --targets TARGETS
-                        A comma separated list of targets to scan (default: None)
-
-optional arguments:
-  -b BATCH_SIZE, --batch-size BATCH_SIZE
-                        The size of the batch to use when splitting larger scan sets (0 = no batching) (default: 0)
-  -B BATCH_DELAY, --batch-delay BATCH_DELAY
-                        The amount of time to wait between batches in seconds (default: 60)
-  -D DELAY_TIME, --delay-time DELAY_TIME
-                        Random delay to use if --delay is given (default: 3)
-  -p INCLUDE_PORTS, --include-ports INCLUDE_PORTS
-                        The ports you want to scan (default: 1-1024)
-  -e EXCLUDE_PORTS, --exclude-ports EXCLUDE_PORTS
-                        The ports you want to exclude from a scan (default: None)
-  -T THREADS, --threads THREADS
-                        The number of threads to use (default: 40)
-  -f FILENAME, --filename FILENAME
-                        The filename to save the results to (default: portscan-results)
-
-For more detailed documentation please refer to: https://github.com/OffSecToolbox/port-scanner
 ```
 > The default number of threads is calculated based on your server. (default_threads = multiprocessing.cpu_count() * 5). However if the number of ports you are testing is less than the default then the default is lowered to the number of checks.
 

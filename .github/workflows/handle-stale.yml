@@ -1,8 +1,12 @@
 name: Stale issue/pr handler
+
 on:
   workflow_dispatch:
   schedule:
     - cron: '25 4 * * *'
+
+env:
+  SLACK_NOTIFY: false
 
 permissions:
   issues: write
@@ -31,3 +35,19 @@ jobs:
           stale-pr-label: 'state: stale'
           close-pr-label: 'resolution: closed'
           exempt-pr-labels: 'state: blocked,state: keep'
+
+  slack-workflow-status:
+    if: always()
+    name: Slack Post Workflow Notification
+    needs:
+      - handle-stale-entries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Workflow Notifications
+        if: ${{ env.SLACK_NOTIFY == 'true' && github.event_name == 'push' }}
+        uses: Gamesight/slack-workflow-status@v1.1.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          include_jobs: on-failure
+          include_commit_message: true
